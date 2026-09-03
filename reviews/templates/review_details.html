@@ -1,18 +1,100 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width" initial-scale="1.0">
 
-        <title>{{ review.title }}</title>
-    </head>
+<html lang="en">
 
-    <body>
-        <h1>{{ review.title }}</h1>
-        <h3>{{ review.rating }}</h3>
+<head>
 
-        <p>{{ review.body }}</p>
+    <meta charset="UTF-8">
 
-        <a href="reviews/">Back to Reviews</a>
-    </body>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ review.title }} | KrushComics</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reviews/reviews.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+    <header class="site-header">
+
+        <nav class="nav">
+
+            <p class="site-title">
+                KRUSHCOMICS
+            </p>
+
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="{% url 'reviews' %}">Reviews</a>
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <article class="review-detail">
+
+            <a
+                class="back-link"
+                href="{% url 'reviews' %}"
+            >
+                ← Back to Reviews
+            </a>
+
+
+            <header>
+
+                <p class="review-label">
+                    Review
+                </p>
+
+                <h1>
+                    {{ review.title }}
+                </h1>
+
+                <div class="review-meta">
+
+                    <span>
+                        {{ review.rating }} / 10
+                    </span>
+
+                    <span>•</span>
+
+                    <span>
+                        {{ review.created_at|date:"F j, Y" }}
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <hr class="review-divider">
+
+
+            <div class="review-body">
+
+                {{ review.body|linebreaks }}
+
+            </div>
+
+        </article>
+
+    </main>
+
+</body>
+
 </html>
