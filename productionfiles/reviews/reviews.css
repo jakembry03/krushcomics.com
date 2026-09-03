@@ -1,0 +1,262 @@
+:root {
+    --background: #f7f7f5;
+    --surface: #ffffff;
+    --text: #181818;
+    --muted-text: #6d6b6b;
+    --border: #3157d5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+        background-color: var(--background);
+        color: var(--text);
+
+        line-height: 1.6;
+}
+
+.site-header {
+    border-bottom: 1px solid var(--border);
+    background-color: var(--background);
+}
+
+.nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    margin: 0;
+
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: var(--muted-text);
+    text-decoration: none
+}
+
+.nav-links a:hover {
+    color: var(--text);
+}
+
+.container {
+    width: min(100% - 48px, 900px);
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    margin: 0;
+
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.page-description {
+    max-width: 600px;
+    margin-top: 20px;
+
+    font-size: 1.1rem;
+    color: var(--muted-text);
+}
+
+.search-form {
+    max-width: 650px;
+
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 64px;
+}
+
+.search-form input {
+    flex: 1;
+    padding: 14px 16px;
+    font: inherit;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: var(--accent);
+}
+
+.search-form button {
+    padding: 14px 22px;
+    font: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--text);
+    color: white;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    opacity: 0.85;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted-text);
+}
+
+.revew-list {
+    display: grid;
+    gap: 14px;
+    padding-bottom: 80px;
+}
+
+.review-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+    border-color: #b5b5b1;
+}
+
+.review-link {
+    display: block;
+    padding: 24px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.review-title {
+    margin: 0;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.review-date {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+/* Review details page */
+
+.review-detail {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 100px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 56px;
+    color: var(--muted-text);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: var(--text);
+}
+
+.review-label {
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.review-detail h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+}
+
+.review-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    color: var(--muted-text);
+}
+
+.review-divider {
+    margin: 48px 0;
+    border: none;
+    border-top: 1px solid var(--border);
+}
+
+.review-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.review-body p {
+    margin: 0 0 24px;
+}
+
+@media (max-width: 600px) {
+    .nav {
+        padding: 18px 20px;
+    }
+
+    .container {
+        width: min(100% - 32px, 900px);
+    }
+
+    .page-header {
+        padding-top: 56px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .review-card-header {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .review-detail {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
