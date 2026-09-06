@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+
+        <title>KrushComics</title>
+
+        <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            
+            <div class="nav-brand">
+                KrushComics
+            </div>
+
+            <div class="nav-links">
+                <a href="#">About</a>
+                <a href="{% url 'reviews' %}">Reviews</a>
+            </div>
+
+        </nav>
+
+        <main class="hero">
+
+            <div class="hero-content">
+
+                <h1>KRUSHCOMICS</h1>
+
+                <p class="hero-subtitle">
+                    Comics. Technology. Writing. Reviews
+                </p>
+
+                <div class="hero-image">
+                    <img src="{% static 'core/images/profile.jpg' %}" alt="Photo of Jake">
+                </div>
+
+            </div>
+
+        </main>
+
+    </body>
+</html>
