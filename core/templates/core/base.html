@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+
+        <title>
+            {% block title %}
+                KrushComics
+            {% endblock %}
+        </title>
+
+        <link
+            rel="stylesheet"
+            href="{% static 'core/css/site.css' %}"
+        >
+
+        {% block extra_css %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <nav class="navbar">
+            <a 
+                class="nav-brand"
+                href="{% url 'home' %}"
+            >
+                KrushComics
+            </a>
+
+            <div class="nav-links">
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+
+                <a href="{% url 'about' %}">
+                    About
+                </a>
+
+                <a href="{% url 'reviews' %}">
+                    Reviews
+                </a>
+
+            </div>
+
+        </nav>
+
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

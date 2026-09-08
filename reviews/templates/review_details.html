@@ -1,47 +1,23 @@
+{% extends "core/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
 
-<html lang="en">
+{% block title %}
+    {{ review.title }} | KrushComics
+{% endblock %}
 
-<head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>{{ review.title }} | KrushComics</title>
+{% block extra_css %}
 
     <link
         rel="stylesheet"
         href="{% static 'reviews/reviews.css' %}"
     >
 
-</head>
+{% endblock %}
 
 
-<body>
-
-    <header class="site-header">
-
-        <nav class="nav">
-
-            <p class="site-title">
-                KRUSHCOMICS
-            </p>
-
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="{% url 'reviews' %}">Reviews</a>
-            </div>
-
-        </nav>
-
-    </header>
-
+{% block content %}
 
     <main>
 
@@ -55,19 +31,21 @@
             </a>
 
 
-            <header>
+            <header class="review-detail-header">
 
                 <p class="review-label">
                     Review
                 </p>
 
+
                 <h1>
                     {{ review.title }}
                 </h1>
 
+
                 <div class="review-meta">
 
-                    <span>
+                    <span class="review-detail-rating">
                         {{ review.rating }} / 10
                     </span>
 
@@ -95,6 +73,4 @@
 
     </main>
 
-</body>
-
-</html>
+{% endblock %}

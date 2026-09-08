@@ -1,48 +1,45 @@
+{% extends "core/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width" initial-scale="1.0">
 
-        <title>KrushComics</title>
+{% block title %}
+    KrushComics
+{% endblock %}
 
-        <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
-    </head>
 
-    <body>
+{% block extra_css %}
 
-        <nav class="navbar">
-            
-            <div class="nav-brand">
-                KrushComics
-            </div>
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/home.css' %}"
+    >
 
-            <div class="nav-links">
-                <a href="#">About</a>
-                <a href="{% url 'reviews' %}">Reviews</a>
-            </div>
+{% endblock %}
 
-        </nav>
 
-        <main class="hero">
+{% block content %}
 
-            <div class="hero-content">
+    <main class="hero">
 
-                <h1>KRUSHCOMICS</h1>
+        <div class="hero-content">
 
-                <p class="hero-subtitle">
-                    Comics. Technology. Writing. Reviews
-                </p>
+            <h1>KRUSHCOMICS</h1>
 
-                <div class="hero-image">
-                    <img src="{% static 'core/images/profile.jpg' %}" alt="Photo of Jake">
-                </div>
+            <p class="hero-subtitle">
+                Comics. Technology. Writing. Reviews
+            </p>
+
+            <div class="hero-image">
+
+                <img
+                    src="{% static 'core/images/profile.jpg' %}"
+                    alt="Photo of Jake"
+                >
 
             </div>
 
-        </main>
+        </div>
 
-    </body>
-</html>
+    </main>
+
+{% endblock %}

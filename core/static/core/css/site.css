@@ -1,0 +1,105 @@
+:root {
+    --background: #ffffff;
+    --surface: #ffffff;
+
+    --text: #111111;
+    --muted-text: #555555;
+
+    --brand: #b23a48;
+    --accent: #c1121f;
+
+    --brand-hover: #f3d7da;
+
+    --border: #eeeeee;
+}
+
+
+/* ---------------------------------
+   Global Reset
+--------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ---------------------------------
+   Global Page Styling
+--------------------------------- */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    background-color: var(--background);
+
+    color: var(--text);
+
+    line-height: 1.6;
+}
+
+
+/* ---------------------------------
+   Navigation
+--------------------------------- */
+
+.navbar {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 60px;
+
+    border-bottom: 1px solid var(--border);
+
+    background-color: var(--brand);
+}
+
+.nav-brand {
+    font-size: 22px;
+    font-weight: bold;
+
+    color: white;
+
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--brand-hover);
+}
+
+
+/* ---------------------------------
+   Responsive Navigation
+--------------------------------- */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 18px 20px;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+}

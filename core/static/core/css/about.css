@@ -1,0 +1,49 @@
+.about-container {
+    width: min(100% - 48px, 900px);
+
+    margin: 0 auto;
+
+    padding: 70px 0 100px;
+}
+
+
+.about-header {
+    margin-bottom: 60px;
+}
+
+
+.about-header h1 {
+    margin-bottom: 15px;
+
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+
+    color: var(--accent);
+}
+
+
+.about-intro {
+    font-size: 1.2rem;
+
+    color: var(--muted-text);
+}
+
+
+.about-section {
+    margin-bottom: 50px;
+}
+
+
+.about-section h2 {
+    margin-bottom: 15px;
+
+    color: var(--brand);
+}
+
+
+.about-section p {
+    max-width: 700px;
+
+    font-size: 1.05rem;
+
+    line-height: 1.8;
+}

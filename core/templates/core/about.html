@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    About | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/about.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="about-container">
+
+    <section class="about-header">
+
+        <h1>About Me</h1>
+
+        <p class="about-intro">
+            Welcome to KrushComics.
+        </p>
+
+    </section>
+
+
+    <section class="about-section">
+
+        <h2>Who I Am</h2>
+
+        <p>
+            Add your introduction here.
+        </p>
+
+    </section>
+
+
+    <section class="about-section">
+
+        <h2>What I Do</h2>
+
+        <p>
+            Add information about your work, projects, interests,
+            technology, writing, or anything else you want visitors
+            to know about you.
+        </p>
+
+    </section>
+
+
+    <section class="about-section">
+
+        <h2>About KrushComics</h2>
+
+        <p>
+            Add information here about why you created this website
+            and what you plan to use it for.
+        </p>
+
+    </section>
+
+</main>
+
+{% endblock %}
