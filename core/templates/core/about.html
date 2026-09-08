@@ -1,71 +1,136 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-
 {% block title %}
     About | KrushComics
 {% endblock %}
 
-
 {% block extra_css %}
-
     <link
         rel="stylesheet"
         href="{% static 'core/css/about.css' %}"
     >
-
 {% endblock %}
-
 
 {% block content %}
 
 <main class="about-container">
 
-    <section class="about-header">
+    {% if profile %}
+
+        <article class="about-content">
+
+            {% if profile.profile_picture %}
+                <img
+                    class="about-profile-picture"
+                    src="{{ profile.profile_picture.url }}"
+                    alt="{{ profile.name }}"
+                >
+            {% endif %}
+
+
+            <h1>About Me</h1>
+
+
+            {% if profile.tagline %}
+                <p class="about-tagline">
+                    {{ profile.tagline }}
+                </p>
+            {% endif %}
+
+
+            {% if profile.intro %}
+                <div class="about-intro">
+                    {{ profile.intro|linebreaks }}
+                </div>
+            {% endif %}
+
+
+            {% if profile.about_body %}
+                <section class="about-section">
+
+                    <h2>About Me</h2>
+
+                    <div class="about-body">
+                        {{ profile.about_body|linebreaks }}
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if profile.site_story %}
+                <section class="about-section">
+
+                    <h2>Why I Built KrushComics</h2>
+
+                    <div class="about-body">
+                        {{ profile.site_story|linebreaks }}
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if profile.interests %}
+                <section class="about-section">
+
+                    <h2>Interests</h2>
+
+                    <div class="about-body">
+                        {{ profile.interests|linebreaks }}
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if profile.github_url or profile.linkedin_url %}
+
+                <section class="about-section">
+
+                    <h2>Find Me Online</h2>
+
+                    <div class="about-links">
+
+                        {% if profile.github_url %}
+                            <a
+                                href="{{ profile.github_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                GitHub
+                            </a>
+                        {% endif %}
+
+
+                        {% if profile.linkedin_url %}
+                            <a
+                                href="{{ profile.linkedin_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                LinkedIn
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+            {% endif %}
+
+        </article>
+
+    {% else %}
 
         <h1>About Me</h1>
 
-        <p class="about-intro">
-            Welcome to KrushComics.
-        </p>
-
-    </section>
-
-
-    <section class="about-section">
-
-        <h2>Who I Am</h2>
-
         <p>
-            Add your introduction here.
+            About information has not been added yet.
         </p>
 
-    </section>
-
-
-    <section class="about-section">
-
-        <h2>What I Do</h2>
-
-        <p>
-            Add information about your work, projects, interests,
-            technology, writing, or anything else you want visitors
-            to know about you.
-        </p>
-
-    </section>
-
-
-    <section class="about-section">
-
-        <h2>About KrushComics</h2>
-
-        <p>
-            Add information here about why you created this website
-            and what you plan to use it for.
-        </p>
-
-    </section>
+    {% endif %}
 
 </main>
 

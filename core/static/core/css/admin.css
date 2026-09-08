@@ -1,0 +1,128 @@
+/* ---------------------------------
+   KrushComics Django Admin
+--------------------------------- */
+
+:root {
+    --krush-brand: #b23a48;
+    --krush-accent: #c1121f;
+    --krush-dark: #111111;
+    --krush-muted: #555555;
+    --krush-light: #ffffff;
+    --krush-border: #eeeeee;
+}
+
+
+/* ---------------------------------
+   Header
+--------------------------------- */
+
+#header {
+    background: var(--krush-brand);
+
+    color: white;
+}
+
+#site-name a {
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+
+/* ---------------------------------
+   Links
+--------------------------------- */
+
+a:link,
+a:visited {
+    color: var(--krush-brand);
+}
+
+a:hover {
+    color: var(--krush-accent);
+}
+
+
+/* ---------------------------------
+   Module Headings
+--------------------------------- */
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: var(--krush-brand);
+
+    color: white;
+}
+
+
+/* ---------------------------------
+   Buttons
+--------------------------------- */
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input {
+    background: var(--krush-brand);
+
+    border: none;
+
+    color: white;
+
+    border-radius: 6px;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.submit-row input:hover {
+    background: var(--krush-accent);
+}
+
+
+/* ---------------------------------
+   Default Save Button
+--------------------------------- */
+
+.button.default,
+input[type="submit"].default {
+    background: var(--krush-accent);
+}
+
+
+/* ---------------------------------
+   Breadcrumbs
+--------------------------------- */
+
+div.breadcrumbs {
+    background: #8f2f3b;
+
+    color: white;
+}
+
+
+/* ---------------------------------
+   Login
+--------------------------------- */
+
+.login #container {
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.login #header {
+    padding: 22px;
+}
+
+.login .submit-row input {
+    width: 100%;
+
+    padding: 12px;
+}
