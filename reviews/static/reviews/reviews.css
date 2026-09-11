@@ -62,6 +62,7 @@
     font: inherit;
 
     background-color: var(--surface);
+    color: var(--text);
 
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -118,14 +119,18 @@
 .review-list {
     display: grid;
 
-    gap: 14px;
+    gap: 18px;
 
     padding-bottom: 80px;
 }
 
+.no-reviews {
+    color: var(--muted-text);
+}
+
 
 /* ---------------------------------
-   Review Cards
+   Review Card
 --------------------------------- */
 
 .review-card {
@@ -133,6 +138,8 @@
 
     border: 1px solid var(--border);
     border-radius: 14px;
+
+    overflow: hidden;
 
     transition:
         transform 0.15s ease,
@@ -151,52 +158,131 @@
 .review-link {
     display: block;
 
-    padding: 24px;
+    padding: 20px;
 
     color: inherit;
 
     text-decoration: none;
 }
 
-.review-card-header {
+
+/* ---------------------------------
+   Review Card Layout
+--------------------------------- */
+
+.review-card-layout {
     display: flex;
 
-    justify-content: space-between;
-    align-items: flex-start;
+    gap: 24px;
 
-    gap: 20px;
+    min-height: 190px;
+}
+
+
+/* ---------------------------------
+   Review Thumbnail
+--------------------------------- */
+
+.review-thumbnail-container {
+    flex: 0 0 135px;
+
+    width: 135px;
+    height: 190px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background-color: var(--border);
+}
+
+.review-card .review-thumbnail {
+    display: block;
+
+    width: 135px;
+    height: 190px;
+
+    max-width: 135px;
+
+    object-fit: cover;
+}
+
+
+/* ---------------------------------
+   Review Card Information
+--------------------------------- */
+
+.review-card-info {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ---------------------------------
+   Review Card Title + Rating
+--------------------------------- */
+
+.review-card-top {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 24px;
 }
 
 .review-title {
     margin: 0;
 
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+
+    line-height: 1.3;
 
     letter-spacing: -0.02em;
+
+    color: var(--text);
 }
 
 .review-rating {
     flex-shrink: 0;
 
-    font-weight: bold;
+    font-weight: 700;
 
     color: var(--accent);
 }
 
+
+/* ---------------------------------
+   Review Preview
+--------------------------------- */
+
+.review-preview {
+    margin: 22px 0 20px;
+
+    max-width: 550px;
+
+    line-height: 1.6;
+
+    color: var(--text);
+}
+
+
+/* ---------------------------------
+   Review Date
+--------------------------------- */
+
 .review-date {
-    margin: 8px 0 0;
+    margin: auto 0 0;
+
+    text-align: right;
 
     font-size: 0.9rem;
 
     color: var(--muted-text);
-}
-
-.review-preview {
-    margin-top: 16px;
-
-    color: var(--text);
-
-    line-height: 1.6;
 }
 
 
@@ -205,7 +291,7 @@
 --------------------------------- */
 
 .review-detail {
-    max-width: 720px;
+    max-width: 800px;
 
     margin: 0 auto;
 
@@ -228,7 +314,38 @@
     color: var(--brand);
 }
 
+
+/* ---------------------------------
+   Review Details Hero
+--------------------------------- */
+
+.review-detail-hero {
+    display: flex;
+    align-items: center;
+
+    gap: 36px;
+}
+
+.review-detail-image {
+    width: 200px;
+    height: 280px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 14px;
+
+    background-color: var(--surface);
+
+    border: 1px solid var(--border);
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
 .review-detail-header {
+    flex: 1;
+
     margin-bottom: 0;
 }
 
@@ -269,10 +386,15 @@
 }
 
 .review-detail-rating {
-    font-weight: bold;
+    font-weight: 700;
 
     color: var(--brand);
 }
+
+
+/* ---------------------------------
+   Review Body
+--------------------------------- */
 
 .review-divider {
     margin: 48px 0;
@@ -296,10 +418,10 @@
 
 
 /* ---------------------------------
-   Responsive Layout
+   Responsive - Tablet
 --------------------------------- */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
     .container {
         width: min(100% - 32px, 900px);
@@ -315,11 +437,45 @@
         flex-direction: column;
     }
 
-    .review-card-header {
-        flex-direction: column;
 
-        gap: 6px;
+    /* Review Cards */
+
+    .review-card-layout {
+        gap: 16px;
+
+        min-height: 160px;
     }
+
+    .review-thumbnail-container {
+        flex: 0 0 110px;
+
+        width: 110px;
+        height: 160px;
+    }
+
+    .review-card .review-thumbnail {
+        width: 110px;
+        height: 160px;
+
+        max-width: 110px;
+    }
+
+    .review-card-top {
+        gap: 12px;
+    }
+
+    .review-title {
+        font-size: 1.1rem;
+    }
+
+    .review-preview {
+        margin-top: 14px;
+
+        font-size: 0.95rem;
+    }
+
+
+    /* Review Detail */
 
     .review-detail {
         padding:
@@ -328,7 +484,87 @@
             80px;
     }
 
+    .back-link {
+        margin-bottom: 36px;
+    }
+
+    .review-detail-hero {
+        align-items: flex-start;
+
+        gap: 24px;
+    }
+
+    .review-detail-image {
+        width: 150px;
+        height: 210px;
+    }
+
     .review-meta {
         flex-wrap: wrap;
+    }
+}
+
+
+/* ---------------------------------
+   Responsive - Mobile
+--------------------------------- */
+
+@media (max-width: 500px) {
+
+    .review-link {
+        padding: 16px;
+    }
+
+
+    /* Review Cards */
+
+    .review-card-layout {
+        gap: 14px;
+
+        min-height: 130px;
+    }
+
+    .review-thumbnail-container {
+        flex: 0 0 90px;
+
+        width: 90px;
+        height: 130px;
+    }
+
+    .review-card .review-thumbnail {
+        width: 90px;
+        height: 130px;
+
+        max-width: 90px;
+    }
+
+    .review-card-top {
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+    .review-preview {
+        margin: 12px 0;
+
+        font-size: 0.9rem;
+    }
+
+    .review-date {
+        margin-top: auto;
+
+        font-size: 0.8rem;
+    }
+
+
+    /* Review Detail */
+
+    .review-detail-hero {
+        flex-direction: column;
+    }
+
+    .review-detail-image {
+        width: 180px;
+        height: 250px;
     }
 }

@@ -31,33 +31,48 @@
             </a>
 
 
-            <header class="review-detail-header">
+            <div class="review-detail-hero">
 
-                <p class="review-label">
-                    Review
-                </p>
+                {% if review.thumbnail %}
+
+                    <img
+                        class="review-detail-image"
+                        src="{{ review.thumbnail.url }}"
+                        alt="Cover image for {{ review.title }}"
+                    >
+
+                {% endif %}
 
 
-                <h1>
-                    {{ review.title }}
-                </h1>
+                <header class="review-detail-header">
+
+                    <p class="review-label">
+                        Review
+                    </p>
 
 
-                <div class="review-meta">
+                    <h1>
+                        {{ review.title }}
+                    </h1>
 
-                    <span class="review-detail-rating">
-                        {{ review.rating }} / 10
-                    </span>
 
-                    <span>•</span>
+                    <div class="review-meta">
 
-                    <span>
-                        {{ review.created_at|date:"F j, Y" }}
-                    </span>
+                        <span class="review-detail-rating">
+                            {{ review.rating }} / 10
+                        </span>
 
-                </div>
+                        <span>•</span>
 
-            </header>
+                        <span>
+                            {{ review.created_at|date:"F j, Y" }}
+                        </span>
+
+                    </div>
+
+                </header>
+
+            </div>
 
 
             <hr class="review-divider">

@@ -12,6 +12,11 @@ class Review(models.Model):
             MaxValueValidator(10),
         ]
     )
+    thumbnail = models.ImageField(
+        upload_to="reviews/thumbnails/",
+        blank=True,
+        null=True
+    )
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
