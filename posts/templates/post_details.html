@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ post.title }} | KrushComics
+{% endblock %}
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'posts/posts.css' %}"
+    >
+
+{% endblock %}
+
+{% block content %}
+
+    <main>
+
+        <article class="post-detail">
+
+            <a
+                class="back-link"
+                href="{% url 'posts' %}"
+            >
+                ← Back to Posts
+            </a>
+
+            <div class="post-detail-hero">
+
+                {% if post.thumbnail %}
+
+                    <img
+                        class="post-detail-image"
+                        src="{{ post.thumbnail.url }}"
+                        alt="Cover image for {{ post.title }}"
+                    >
+                
+                {% endif %}
+
+                <header class="post-detail-header">
+
+                    <p class="post-label">
+                        Post
+                    </p>
+
+                    <h1>
+                        {{ post.title }}
+                    </h1>
+
+                    <div class="post-meta">
+
+                        <span>
+                            {{ post.created_at|date:"F j, Y" }}
+                        </span>
+
+                    </div>
+
+                </header>
+
+            </div>
+
+
+            <hr class="post-divider">
+
+
+            <div class="post-body">
+
+                {{ post.body|linebreaks }}
+
+            </div>
+
+        </article>
+
+    </main>
+
+{% endblock %}
