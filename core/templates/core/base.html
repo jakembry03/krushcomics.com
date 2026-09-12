@@ -26,39 +26,7 @@
     </head>
 
     <body>
-        <nav class="navbar">
-            <a 
-                class="nav-brand"
-                href="{% url 'home' %}"
-            >
-                KrushComics
-            </a>
-
-            <div class="nav-links">
-
-                <a href="{% url 'home' %}">
-                    Home
-                </a>
-
-                <a href="{% url 'about' %}">
-                    About
-                </a>
-
-                <a href="{% url 'reviews' %}">
-                    Reviews
-                </a>
-
-                <a href="{% url 'posts' %}">
-                    Posts
-                </a>
-
-                <a href="{% url 'admin:index' %}">
-                    Admin
-                </a>
-
-            </div>
-
-        </nav>
+        {% include "core/_navbar.html" %}
 
         {% block content %}
         {% endblock %}

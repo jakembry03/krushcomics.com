@@ -1,0 +1,103 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Thoughts | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/thoughts.css' %}"
+    >
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+
+    <section class="page-header">
+
+        <h1>Thoughts</h1>
+
+        <p class="page-description">
+            Reviews and posts on movies, comics, anime, games,
+            and anything else I want to write about.
+        </p>
+
+    </section>
+
+
+    <form
+        class="search-form"
+        method="GET"
+        action="{% url 'thoughts' %}"
+    >
+
+        <input
+            type="text"
+            name="q"
+            value="{{ query|default:'' }}"
+            placeholder="Search thoughts..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    {% if query %}
+
+        <h2 class="section-title">
+            Search Results
+        </h2>
+
+        <div class="thought-list">
+
+            {% for thought in search_results %}
+
+                {% include "thoughts/_thought_card.html" %}
+
+            {% empty %}
+
+                <p class="no-thoughts">
+                    No thoughts found for "{{ query }}".
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <h2 class="section-title">
+            Latest Thoughts
+        </h2>
+
+        <div class="thought-list">
+
+            {% for thought in latest_thoughts %}
+
+                {% include "thoughts/_thought_card.html" %}
+
+            {% empty %}
+
+                <p class="no-thoughts">
+                    Nothing has been posted yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+{% endblock %}

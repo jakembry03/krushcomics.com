@@ -1,0 +1,84 @@
+{% comment %}
+    One card in the Thoughts list.
+
+    Expects `thought` to be either a Review or a Post. `thought.kind` is the
+    plain class attribute set on each model ("review" / "post"), which is what
+    picks the detail URL, the type label and whether a rating is shown.
+{% endcomment %}
+
+<article class="thought-card">
+
+    <a
+        class="thought-link"
+        {% if thought.kind == 'review' %}
+            href="{% url 'review_detail' thought.id %}"
+        {% else %}
+            href="{% url 'post_detail' thought.id %}"
+        {% endif %}
+    >
+
+        <div class="thought-card-layout">
+
+            {% if thought.thumbnail %}
+
+                <div class="thought-thumbnail-container">
+
+                    <img
+                        class="thought-thumbnail"
+                        src="{{ thought.thumbnail.url }}"
+                        alt="{{ thought.title }}"
+                    >
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="thought-card-info">
+
+                <div class="thought-card-top">
+
+                    <div class="thought-card-heading">
+
+                        <span class="thought-kind">
+                            {% if thought.kind == 'review' %}
+                                Review
+                            {% else %}
+                                Post
+                            {% endif %}
+                        </span>
+
+                        <h3 class="thought-title">
+                            {{ thought.title }}
+                        </h3>
+
+                    </div>
+
+
+                    {% if thought.kind == 'review' %}
+
+                        <span class="thought-rating">
+                            {{ thought.rating }} / 10
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <p class="thought-preview">
+                    {{ thought.body|truncatewords:35 }}
+                </p>
+
+
+                <p class="thought-date">
+                    {{ thought.created_at|date:"F j, Y" }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </a>
+
+</article>

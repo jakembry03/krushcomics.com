@@ -1,0 +1,40 @@
+{% comment %}
+    Site-wide navbar.
+
+    Single source of truth for the navigation, included by both the public
+    site (core/base.html) and the Django admin (templates/admin/base_site.html)
+    so the link list only ever has to be edited in one place.
+
+    The markup is unchanged from what core/base.html used to hold inline.
+{% endcomment %}
+
+<nav class="navbar">
+
+    <a
+        class="nav-brand"
+        href="{% url 'home' %}"
+    >
+        KrushComics
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'about' %}">
+            About
+        </a>
+
+        <a href="{% url 'thoughts' %}">
+            Thoughts
+        </a>
+
+        <a href="{% url 'admin:index' %}">
+            Admin
+        </a>
+
+    </div>
+
+</nav>

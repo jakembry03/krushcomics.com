@@ -1,0 +1,85 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ post.title }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/thoughts.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+    <main>
+
+        <article class="thought-detail">
+
+            <a
+                class="back-link"
+                href="{% url 'thoughts' %}"
+            >
+                ← Back to Thoughts
+            </a>
+
+
+            <div class="thought-detail-hero">
+
+                {% if post.thumbnail %}
+
+                    <img
+                        class="thought-detail-image"
+                        src="{{ post.thumbnail.url }}"
+                        alt="Cover image for {{ post.title }}"
+                    >
+
+                {% endif %}
+
+
+                <header class="thought-detail-header">
+
+                    <p class="thought-label">
+                        Post
+                    </p>
+
+
+                    <h1>
+                        {{ post.title }}
+                    </h1>
+
+
+                    <div class="thought-meta">
+
+                        <span>
+                            {{ post.created_at|date:"F j, Y" }}
+                        </span>
+
+                    </div>
+
+                </header>
+
+            </div>
+
+
+            <hr class="thought-divider">
+
+
+            <div class="thought-body">
+
+                {{ post.body|linebreaks }}
+
+            </div>
+
+        </article>
+
+    </main>
+
+{% endblock %}

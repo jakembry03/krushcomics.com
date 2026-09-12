@@ -1,112 +1,287 @@
 /* ---------------------------------
    KrushComics Django Admin
---------------------------------- */
 
-:root {
-    --krush-brand: #b23a48;
-    --krush-accent: #c1121f;
-    --krush-dark: #111111;
-    --krush-muted: #555555;
-    --krush-light: #ffffff;
-    --krush-border: #eeeeee;
-}
+   Loaded ONLY by templates/admin/base_site.html, never by public pages.
+
+   Django 6.1's admin stylesheets are written entirely against CSS custom
+   properties, so almost all of the recolouring below is done by redefining
+   those properties rather than by writing new rules. That keeps this file
+   small, avoids broad selectors that could fight the admin's own layout,
+   and means built-in widgets recolour themselves automatically.
+
+   Colour values are the same ones used by core/css/site.css.
+--------------------------------- */
 
 
 /* ---------------------------------
-   Header
+   Palette
+
+   The selector list covers all three states Django's theme switcher can
+   produce: no data-theme attribute (auto), data-theme="light", and
+   data-theme="dark".
+
+   This file is loaded from the {% extrastyle %} block, which comes AFTER
+   admin/css/dark_mode.css. So for the auto case, this plain :root block
+   wins over dark_mode.css's @media :root block on source order, and for the
+   explicit case the html[data-theme="dark"] selector matches Django's own
+   specificity and wins on source order too.
+
+   Net effect: the admin stays light and red in every case, which is what
+   removes the dark background and yellow lettering. Nothing is hidden and
+   the theme toggle still works -- it simply no longer has a dark palette
+   to switch to.
 --------------------------------- */
 
-#header {
-    background: var(--krush-brand);
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
 
-    color: white;
+    /* KrushComics colours, mirroring core/css/site.css */
+    --krush-brand: #b23a48;
+    --krush-accent: #c1121f;
+    --krush-brand-dark: #7a1f28;
+    --krush-brand-deep: #5c161d;
+    --krush-brand-tint: #f3d7da;
+    --krush-text: #111111;
+    --krush-muted: #555555;
+    --krush-border: #eeeeee;
+
+    /* Base */
+    --primary: var(--krush-brand);
+    --secondary: var(--krush-brand);
+    --primary-fg: #ffffff;
+
+    /* Django uses --accent for the header site name, so it must read as
+       white on the red header. The one place it is used as a background
+       (the calendar caption) is re-pointed at the brand tint further down. */
+    --accent: #ffffff;
+
+    /* Page body: light background, dark text */
+    --body-fg: var(--krush-text);
+    --body-bg: #ffffff;
+    --body-quiet-color: var(--krush-muted);
+    --body-medium-color: #333333;
+    --body-loud-color: #000000;
+
+    /* Admin header + module headings: brand red with white text.
+       .module h2 / .module caption / .inline-group h2 all read
+       --header-bg and --header-link-color, so module headers follow. */
+    --header-color: #ffffff;
+    --header-branding-color: #ffffff;
+    --header-bg: var(--krush-brand);
+    --header-link-color: #ffffff;
+
+    /* Breadcrumbs: light background, red/dark-red text */
+    --breadcrumbs-bg: var(--krush-brand-tint);
+    --breadcrumbs-fg: var(--krush-brand-dark);
+    --breadcrumbs-link-fg: var(--krush-brand);
+
+    /* Links */
+    --link-fg: var(--krush-brand);
+    --link-hover-color: var(--krush-accent);
+    --link-selected-fg: var(--krush-brand-dark);
+
+    /* Rules and borders: subtle and neutral */
+    --hairline-color: var(--krush-border);
+    --border-color: #cccccc;
+
+    --error-fg: var(--krush-accent);
+
+    /* Surfaces. --selected-row was Django's yellow (#ffc); it is now a very
+       light red tint, used for sorted columns and the active sidebar item. */
+    --darkened-bg: #fafafa;
+    --selected-bg: var(--krush-brand-tint);
+    --selected-row: #fbeef0;
+
+    /* Buttons: red background, white text.
+       Save and Delete are deliberately separated by lightness rather than
+       hue, since the whole palette is red -- Save is the bright accent,
+       Delete is a much deeper maroon. */
+    --button-fg: #ffffff;
+    --button-bg: var(--krush-brand);
+    --button-hover-bg: var(--krush-accent);
+    --default-button-bg: var(--krush-accent);
+    --default-button-hover-bg: var(--krush-brand);
+    --close-button-bg: var(--krush-muted);
+    --close-button-hover-bg: var(--krush-text);
+    --delete-button-bg: var(--krush-brand-deep);
+    --delete-button-hover-bg: #3f0f14;
+
+    /* Object tools ("Add", "History") */
+    --object-tools-bg: var(--krush-brand);
+    --object-tools-hover-bg: var(--krush-accent);
+
+    color-scheme: light;
 }
 
-#site-name a {
-    color: white;
+/* Message colours are intentionally left at Django's defaults: green for
+   success and red for error carry meaning, and flattening them to brand red
+   would cost more in readability than it gains in consistency. */
 
+
+/* ---------------------------------
+   Site-wide navbar
+
+   Reproduces the public navbar's appearance from core/css/site.css. The
+   public stylesheet is deliberately NOT loaded here -- it carries a global
+   `* { margin: 0; padding: 0 }` reset that would break the admin's layout.
+
+   Everything is scoped to #krush-admin-nav, the admin-only wrapper, so
+   these rules cannot reach any other part of the admin.
+--------------------------------- */
+
+#krush-admin-nav .navbar {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 60px;
+
+    border-bottom: 1px solid var(--krush-border);
+
+    background-color: #343232;
+}
+
+#krush-admin-nav .navbar .nav-brand {
     font-size: 22px;
     font-weight: bold;
 
+    color: #ffffff;
+}
+
+#krush-admin-nav .navbar .nav-links {
+    display: flex;
+
+    gap: 30px;
+}
+
+#krush-admin-nav .navbar .nav-links a {
+    color: #ffffff;
+
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+#krush-admin-nav .navbar .nav-links a:hover,
+#krush-admin-nav .navbar .nav-links a:focus {
+    color: #cccccc;
+}
+
+/* Django underlines links via
+   `a:not([role="button"], #header a, ...)`, which has a higher specificity
+   than a plain `.navbar a`. These two selectors carry one id and two
+   classes so they win without needing !important. The public navbar has no
+   underline, so this keeps the two navbars looking the same. */
+#krush-admin-nav .navbar a.nav-brand,
+#krush-admin-nav .navbar .nav-links a {
     text-decoration: none;
 }
 
-
-/* ---------------------------------
-   Links
---------------------------------- */
-
-a:link,
-a:visited {
-    color: var(--krush-brand);
-}
-
-a:hover {
-    color: var(--krush-accent);
+/* Keyboard focus stays visible. */
+#krush-admin-nav .navbar a.nav-brand:focus-visible,
+#krush-admin-nav .navbar .nav-links a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
 }
 
 
 /* ---------------------------------
-   Module Headings
+   Responsive Navigation
+
+   Mirrors the 600px breakpoint in core/css/site.css.
 --------------------------------- */
 
-.module h2,
-.module caption,
-.inline-group h2 {
-    background: var(--krush-brand);
+@media (max-width: 600px) {
 
-    color: white;
+    #krush-admin-nav .navbar {
+        padding: 18px 20px;
+    }
+
+    #krush-admin-nav .navbar .nav-links {
+        gap: 18px;
+    }
+
 }
 
 
 /* ---------------------------------
-   Buttons
+   Targeted patches
+
+   Two places where Django reuses a variable in a context that the palette
+   above would otherwise leave with poor contrast.
 --------------------------------- */
 
-.button,
-input[type="submit"],
-input[type="button"],
-.submit-row input {
-    background: var(--krush-brand);
+/* The "Remove all" control in the many-to-many selector is painted with
+   --breadcrumbs-fg on a --primary background. Breadcrumbs are now light with
+   dark red text, so that pairing would be dark red on red. */
+.selector-chosen .list-footer-display__clear {
+    color: #ffffff;
+}
 
-    border: none;
+/* The calendar caption uses --accent as a background behind hard-coded #333
+   text. --accent is white now (it also paints the header site name), so the
+   caption is given the brand tint directly instead. */
+.calendarbox h2,
+.calendar caption {
+    background: var(--krush-brand-tint);
+    color: var(--krush-brand-dark);
+}
 
-    color: white;
 
+/* ---------------------------------
+   Form fields
+
+   Django already paints inputs with --body-bg, --body-fg and --border-color,
+   so they are white with dark text and neutral borders from the palette
+   alone. Only the focus state is adjusted, to match the brand-coloured
+   focus used by the search box on the public site.
+--------------------------------- */
+
+#content input:not([type]):focus,
+#content input[type="text"]:focus,
+#content input[type="password"]:focus,
+#content input[type="email"]:focus,
+#content input[type="url"]:focus,
+#content input[type="number"]:focus,
+#content input[type="tel"]:focus,
+#content textarea:focus,
+#content select:focus,
+#content .vTextField:focus {
+    border-color: var(--krush-brand);
+}
+
+
+/* ---------------------------------
+   Rounding
+
+   The public site uses generously rounded cards and controls. The admin is
+   a denser interface, so it gets a smaller radius rather than the site's.
+--------------------------------- */
+
+#container .messagelist li {
+    border-radius: 8px;
+}
+
+#container .button,
+#container input[type="submit"],
+#container input[type="button"],
+#container .submit-row input,
+#container .object-tools a {
     border-radius: 6px;
 }
 
-.button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover,
-.submit-row input:hover {
-    background: var(--krush-accent);
-}
-
 
 /* ---------------------------------
-   Default Save Button
---------------------------------- */
+   Login Page
 
-.button.default,
-input[type="submit"].default {
-    background: var(--krush-accent);
-}
+   The site navbar is omitted here (see templates/admin/base_site.html):
+   Django narrows #container to a 480px card on this page. The colours still
+   come from the palette above, so the form is already light with a red
+   header and a red submit button. Only the card shape is adjusted.
 
-
-/* ---------------------------------
-   Breadcrumbs
---------------------------------- */
-
-div.breadcrumbs {
-    background: #8f2f3b;
-
-    color: white;
-}
-
-
-/* ---------------------------------
-   Login
+   Nothing here touches authentication behaviour.
 --------------------------------- */
 
 .login #container {

@@ -1,0 +1,91 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ review.title }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/thoughts.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+    <main>
+
+        <article class="thought-detail">
+
+            <a
+                class="back-link"
+                href="{% url 'thoughts' %}"
+            >
+                ← Back to Thoughts
+            </a>
+
+
+            <div class="thought-detail-hero">
+
+                {% if review.thumbnail %}
+
+                    <img
+                        class="thought-detail-image"
+                        src="{{ review.thumbnail.url }}"
+                        alt="Cover image for {{ review.title }}"
+                    >
+
+                {% endif %}
+
+
+                <header class="thought-detail-header">
+
+                    <p class="thought-label">
+                        Review
+                    </p>
+
+
+                    <h1>
+                        {{ review.title }}
+                    </h1>
+
+
+                    <div class="thought-meta">
+
+                        <span class="thought-detail-rating">
+                            {{ review.rating }} / 10
+                        </span>
+
+                        <span>•</span>
+
+                        <span>
+                            {{ review.created_at|date:"F j, Y" }}
+                        </span>
+
+                    </div>
+
+                </header>
+
+            </div>
+
+
+            <hr class="thought-divider">
+
+
+            <div class="thought-body">
+
+                {{ review.body|linebreaks }}
+
+            </div>
+
+        </article>
+
+    </main>
+
+{% endblock %}

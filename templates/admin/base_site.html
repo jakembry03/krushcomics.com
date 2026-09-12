@@ -1,9 +1,18 @@
 {% extends "admin/base.html" %}
 {% load static %}
 
+{% comment %}
+    KrushComics admin shell.
+
+    Extends Django's own admin/base.html and only fills in blocks -- no admin
+    template is copied wholesale, so every built-in feature (breadcrumbs,
+    changelists, filters, search, pagination, history, delete confirmation,
+    messages, login/logout, permissions) keeps working untouched.
+{% endcomment %}
+
 
 {% block title %}
-    {{ title }} | KrushComics Admin
+    {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}
 {% endblock %}
 
 
@@ -19,14 +28,45 @@
 {% endblock %}
 
 
+{% block header %}
+
+    {% comment %}
+        The site-wide navbar sits above Django's own admin header.
+
+        `has_permission` is false for anonymous visitors, which keeps the
+        navbar off the login page -- Django narrows #container to a 480px
+        card there, so a full-width navbar would not fit inside it.
+
+        The #krush-admin-nav wrapper exists only here, not in the shared
+        partial, so the public markup is untouched and every navbar rule in
+        admin.css stays scoped to the admin.
+    {% endcomment %}
+
+    {% if has_permission %}
+
+        <div id="krush-admin-nav">
+            {% include "core/_navbar.html" %}
+        </div>
+
+    {% endif %}
+
+    {{ block.super }}
+
+{% endblock %}
+
+
 {% block branding %}
 
     <div id="site-name">
 
         <a href="{% url 'admin:index' %}">
-            KrushComics Administration
+            {{ site_header|default:_('Django administration') }}
         </a>
 
     </div>
+
+    {% if user.is_anonymous %}
+        {% include "admin/color_theme_toggle.html" %}
+    {% endif %}
 
 {% endblock %}
