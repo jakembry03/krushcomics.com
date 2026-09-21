@@ -12,6 +12,11 @@
         rel="stylesheet"
         href="{% static 'thoughts/thoughts.css' %}"
     >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/carousel.css' %}"
+    >
 {% endblock %}
 
 
@@ -77,8 +82,10 @@
     {% else %}
 
         <h2 class="section-title">
-            Latest Thoughts
+            Latest Thoughts ({{ latest_thoughts|length }})
         </h2>
+
+        {% include "thoughts/_thought_carousel.html" with items=latest_thoughts %}
 
         <div class="thought-list">
 

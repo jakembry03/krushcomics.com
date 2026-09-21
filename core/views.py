@@ -2,10 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from .models import SiteProfile
+from thoughts.services import get_latest_thoughts
 
 # Create your views here.
 def home(request):
-    return render(request, "core/home.html")
+    profile = SiteProfile.objects.first()
+
+    latest_thoughts = get_latest_thoughts()
+
+    context = {
+        "profile": profile,
+        "latest_thoughts": latest_thoughts,
+    }
+
+    return render(request, "core/home.html", context)
 
 def about(request):
     profile = SiteProfile.objects.first()

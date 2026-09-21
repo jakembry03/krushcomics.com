@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, render
+from .services import get_latest_thoughts, newest_first
 from django.db.models import Q
 from .models import Review, Post
 
 # How many writeups the Thoughts page shows, Reviews and Posts combined.
-LATEST_COUNT = 5
 
 
 def _newest_first(*querysets):
@@ -31,7 +31,7 @@ def thoughts(request):
             Q(body__icontains=query)
         )
 
-        search_results = _newest_first(
+        search_results = newest_first(
             Review.objects.filter(matches),
             Post.objects.filter(matches),
         )
@@ -40,10 +40,7 @@ def thoughts(request):
         # The newest LATEST_COUNT writeups overall cannot include anything
         # outside each model's own newest LATEST_COUNT, so slicing first keeps
         # this to two small queries instead of loading every row.
-        latest_thoughts = _newest_first(
-            Review.objects.order_by('-created_at')[:LATEST_COUNT],
-            Post.objects.order_by('-created_at')[:LATEST_COUNT],
-        )[:LATEST_COUNT]
+        latest_thoughts = get_latest_thoughts()
 
     context = {
         'latest_thoughts': latest_thoughts,

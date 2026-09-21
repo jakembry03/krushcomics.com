@@ -14,32 +14,134 @@
         href="{% static 'core/css/home.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/thoughts.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'thoughts/carousel.css' %}"
+    >
+
 {% endblock %}
 
 
 {% block content %}
 
-    <main class="hero">
+    <main class="home-page">
 
-        <div class="hero-content">
+        <!--INTRODUCTION SECTION-->
+        <section class="home-hero">
 
-            <h1>KRUSHCOMICS</h1>
+            <!--Left Column: Introduction-->
+            <div class="hero-content">
 
-            <p class="hero-subtitle">
-                Comics. Technology. Writing. Reviews
-            </p>
+                <span class="section-label">
+                    01 / INTRODUCTION
+                </span>
 
-            <div class="hero-image">
+                <h1>
+                    Hey, I'm {{ profile.name|default:"Jake" }}.
+                </h1>
 
-                <img
-                    src="{% static 'core/images/profile.jpg' %}"
-                    alt="Photo of Jake"
-                >
+                <p class="hero-tagline">
+                    {% if profile and profile.tagline %}
+                        {{ profile.tagline }}
+                    {% else %}
+                        Comics. Technology. Writing. Reviews.
+                    {% endif %}
+                </p>
+
+                <p class="hero-description">
+                    {% if profile and profile.intro %}
+                        {{ profile.intro|truncatewords:35 }}
+                    {% else %}
+                        Welcome to my corner of the internet.
+                        A place for the things I create,
+                        the stories I love, and everything
+                        I'm learning along the way.
+                    {% endif %}
+                </p>
+
+                <!--Navigation buttons-->
+                <div class="hero-actions">
+
+                    <a
+                        href="{% url 'about' %}"
+                        class="hero-button hero-button-primary"
+                    >
+                        About Me &rarr;
+                    </a>
+
+                    <a
+                        href="{% url 'thoughts' %}"
+                        class="hero-button hero-button-secondary"
+                    >
+                        Explore Thoughts &rarr;
+                    </a>
+            
+                </div>
 
             </div>
 
-        </div>
+            <!--Right Column: Profile Photo-->
+            <div class="hero-image">
 
+                {% if profile and profile.profile_picture %}
+
+                    <img
+                        src="{{ profile.profile_picture.url }}"
+                        alt="Photo of {{ profile.name }}"
+                    >
+                
+                {% else %}
+
+                    <img
+                        src="{% static 'core/images/profile.jpg' %}"
+                        alt="Photo of Jake"
+                    >
+                
+                {% endif %}
+            </div>
+
+        </section>
+
+        <!--LATEST THOUGHTS SECTION-->
+
+        <section class="latest-section">
+
+            <div class="latest-section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        02 / Writing
+                    </span>
+
+                    <h2>
+                        Latest Thoughts
+                    </h2>
+
+                    <p class="section-description">
+                        {{ latest_thoughts|length }} recent entries
+                        &middot; Scroll to explore &rarr;
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'thoughts' %}"
+                    class="section-link"
+                >
+                    View All &rarr;
+                </a>
+
+            </div>
+
+            {% include "thoughts/_thought_carousel.html" with items=latest_thoughts %}
+        </section>
+        
     </main>
 
 {% endblock %}

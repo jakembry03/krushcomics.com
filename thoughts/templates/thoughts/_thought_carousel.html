@@ -1,0 +1,23 @@
+{% if items %}
+
+    <div
+        class="thought-carousel"
+        role="region"
+        aria-label="Latest Thoughts"
+        tabindex="0"
+    >
+
+        {% for thought in items %}
+    
+            {% include "thoughts/_thought_card.html" with excerpt_words=18 %}
+        {% endfor %}
+    </div>
+
+{% else %}
+
+    <p class="no-thoughts">
+        Nothing has been posted yet.
+        Check back soon!
+    </p>
+
+{% endif %}

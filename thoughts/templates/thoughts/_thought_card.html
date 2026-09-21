@@ -67,7 +67,9 @@
 
 
                 <p class="thought-preview">
-                    {{ thought.body|truncatewords:35 }}
+                    {% with words=excerpt_words|default:35 %}
+                        {{ thought.body|truncatewords:words }}
+                    {% endwith %}
                 </p>
 
 

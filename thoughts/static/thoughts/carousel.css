@@ -1,0 +1,118 @@
+
+/* ---------------------------------
+   Horizontal Thought Carousel
+--------------------------------- */
+
+.thought-carousel {
+    display: flex;
+
+    gap: 18px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 8px 2px 22px;
+
+    scroll-snap-type: x proximity;
+
+    overscroll-behavior-x: contain;
+
+    scrollbar-color: var(--brand) var(--border);
+}
+
+
+/* ---------------------------------
+   Carousel Cards
+--------------------------------- */
+
+.thought-carousel .thought-card {
+    flex: 0 0 clamp(245px, 30vw, 310px);
+
+    min-width: 0;
+
+    scroll-snap-align: start;
+}
+
+.thought-carousel .thought-link {
+    height: 100%;
+}
+
+
+/* ---------------------------------
+   Card Layout
+--------------------------------- */
+
+.thought-carousel .thought-card-layout {
+    flex-direction: column;
+
+    gap: 14px;
+
+    min-height: 0;
+}
+
+
+/* ---------------------------------
+   Thumbnails
+--------------------------------- */
+
+.thought-carousel .thought-thumbnail-container {
+    flex: none;
+
+    width: 100%;
+    height: 160px;
+}
+
+.thought-carousel .thought-card .thought-thumbnail {
+    width: 100%;
+    max-width: none;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ---------------------------------
+   Card Text
+--------------------------------- */
+
+.thought-carousel .thought-card-info {
+    flex: 1;
+
+    min-height: 170px;
+}
+
+.thought-carousel .thought-card-top {
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.thought-carousel .thought-title {
+    font-size: 1.15rem;
+}
+
+.thought-carousel .thought-preview {
+    margin: 10px 0 14px;
+
+    font-size: 0.95rem;
+}
+
+.thought-carousel .thought-date {
+    margin-top: auto;
+
+    text-align: left;
+}
+
+
+/* ---------------------------------
+   Mobile
+--------------------------------- */
+
+@media (max-width: 600px) {
+
+    .thought-carousel .thought-card {
+        flex-basis: min(85vw, 300px);
+    }
+
+}
