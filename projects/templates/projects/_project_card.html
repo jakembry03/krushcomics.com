@@ -1,0 +1,51 @@
+<article class="project-card">
+
+    <a
+        class="project-card-link"
+        href="{% url 'project_detail' project.pk %}"
+    >
+
+        <!-- Project thumbnail -->
+        <div class="project-card-image">
+
+            {% if project.thumbnail %}
+
+                <img
+                    src="{{ project.thumbnail.url }}"
+                    alt="Thumbnail for {{ project.title }}"
+                    loading="lazy"
+                >
+            
+            {% else %}
+
+                <span
+                    class="project-placeholder"
+                    aria-hidden="true"
+                >
+                    &lt; &gt;
+                </span>
+
+            {% endif %}
+
+        </div>
+    
+        <!--Project information -->
+        <div class="project-card-content">
+
+            <h3 class="project-card-title">
+                {{ project.title }}
+            </h3>
+
+            <p class="project-card-description">
+                {{ project.description|truncatewords:28 }}
+            </p>
+
+            <span class="project-card-action">
+                Explore Project &rarr;
+            </span>
+
+        </div>
+    
+    </a>
+    
+</article>

@@ -1,0 +1,79 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+    Projects | KrushComics
+{% endblock %}
+
+{% block extra_css %}
+    <link
+        rel="stylesheet"
+        href="{% static 'projects/css/projects.css' %}"
+    >
+{% endblock %}
+
+{% block content %}
+
+<main class="projects-page">
+    <!--PAGE INTRODUCTION-->
+
+    <header class="projects-header">
+
+        <span class="projects-label">
+            DEVELOPMENT / PROJECTS
+        </span>
+
+        <h1>
+            Things I'm Building
+        </h1>
+
+        <p class="projects-intro">
+            A collection of applications,
+            experiments, and ideas I've
+            brought to life.
+        </p>
+
+    </header>
+
+    <!--PROJECT COLLECTION-->
+
+    <section
+        class="projects-collection"
+        aria-labelledby="projects-heading"
+    >
+
+        <div class="projects-section-header">
+
+            <h2 id="projects-heading">
+                Explore My Projects
+            </h2>
+
+            <p>
+                {{ projects|length }}
+                project{{ projects|length|pluralize }}
+            </p>
+
+        </div>
+    
+        
+        <div class="project-grid">
+
+            {% for project in projects %}
+
+                {% include "projects/_project_card.html" %}
+            
+            {% empty %}
+
+                <p class="projects-empty">
+                    No projects have been added yet.
+                    Check back soon!
+                </p>
+
+            {% endfor %}
+        </div>
+    
+    </section>
+
+</main>
+
+{% endblock %}

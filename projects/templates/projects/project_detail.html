@@ -1,0 +1,128 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ project.title }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'projects/css/projects.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="project-detail">
+
+    <a
+        class="project-back-link"
+        href="{% url 'projects' %}"
+    >
+        &larr; Back to Projects
+    </a>
+
+
+    <!-- PROJECT INTRODUCTION -->
+
+    <header class="project-detail-header">
+
+        <span class="projects-label">
+            PROJECT / DEVELOPMENT
+        </span>
+
+        <h1>
+            {{ project.title }}
+        </h1>
+
+        <p class="project-detail-description">
+            {{ project.description }}
+        </p>
+
+    </header>
+
+
+    <!-- PROJECT IMAGE -->
+
+    <div class="project-detail-image">
+
+        {% if project.thumbnail %}
+
+            <img
+                src="{{ project.thumbnail.url }}"
+                alt="Thumbnail for {{ project.title }}"
+            >
+
+        {% else %}
+
+            <span
+                class="project-placeholder"
+                aria-hidden="true"
+            >
+                &lt; &gt;
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- PROJECT INFORMATION -->
+
+    <section class="project-detail-section">
+
+        <h2>
+            About This Project
+        </h2>
+
+        <div class="project-detail-text">
+            {{ project.description|linebreaks }}
+        </div>
+
+    </section>
+
+
+    <!-- PLANNED ADDITIONS -->
+
+    {% if project.planned_additions %}
+
+        <section class="project-detail-section">
+
+            <h2>
+                Planned Additions
+            </h2>
+
+            <div class="project-detail-text">
+                {{ project.planned_additions|linebreaks }}
+            </div>
+
+        </section>
+
+    {% endif %}
+
+
+    <!-- GITHUB LINK -->
+
+    {% if project.github_url %}
+
+        <a
+            class="project-github-button"
+            href="{{ project.github_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            View on GitHub &nearr;
+        </a>
+
+    {% endif %}
+
+</main>
+
+{% endblock %}

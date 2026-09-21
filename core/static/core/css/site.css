@@ -92,14 +92,17 @@ body {
    Responsive Navigation
 --------------------------------- */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
     .navbar {
         padding: 18px 20px;
+
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
     .nav-links {
-        gap: 18px;
+        flex-wrap: wrap;
+        gap: 10px 16px;
     }
-
 }
