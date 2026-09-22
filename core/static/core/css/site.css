@@ -1,16 +1,16 @@
 :root {
-    --background: #ffffff;
-    --surface: #ffffff;
+    --background: #2b2b2b;
+    --surface: #000000;
 
-    --text: #111111;
-    --muted-text: #555555;
+    --text: #ffffff;
+    --muted-text: #ffffff;
 
-    --brand: #b23a48;
-    --accent: #c1121f;
+    --brand: #0066da;
+    --accent: #ffffff;
 
-    --brand-hover: #f3d7da;
+    --brand-hover: #d5eafc;
 
-    --border: #eeeeee;
+    --border: #2b2b2b;
 }
 
 
@@ -55,7 +55,7 @@ body {
 
     border-bottom: 1px solid var(--border);
 
-    background-color: var(--brand);
+    background-color: var(--surface);
 }
 
 .nav-brand {

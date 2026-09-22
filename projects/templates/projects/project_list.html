@@ -1,21 +1,33 @@
+
 {% extends "core/base.html" %}
 {% load static %}
+
 
 {% block title %}
     Projects | KrushComics
 {% endblock %}
 
+
 {% block extra_css %}
-    <link
-        rel="stylesheet"
-        href="{% static 'projects/css/projects.css' %}"
-    >
+
+<link
+    rel="stylesheet"
+    href="{% static 'projects/css/projects.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'projects/css/project_carousel.css' %}"
+>
+
 {% endblock %}
+
 
 {% block content %}
 
 <main class="projects-page">
-    <!--PAGE INTRODUCTION-->
+
+    <!-- PAGE INTRODUCTION -->
 
     <header class="projects-header">
 
@@ -24,7 +36,7 @@
         </span>
 
         <h1>
-            Things I'm Building
+            Things I'm Building.
         </h1>
 
         <p class="projects-intro">
@@ -35,43 +47,84 @@
 
     </header>
 
-    <!--PROJECT COLLECTION-->
 
-    <section
-        class="projects-collection"
-        aria-labelledby="projects-heading"
-    >
+    <!-- LATEST PROJECTS -->
+
+    <section class="projects-collection">
 
         <div class="projects-section-header">
 
-            <h2 id="projects-heading">
-                Explore My Projects
-            </h2>
+            <div>
 
-            <p>
-                {{ projects|length }}
-                project{{ projects|length|pluralize }}
-            </p>
+                <span class="projects-label">
+                    01 / RECENT DEVELOPMENT
+                </span>
 
-        </div>
-    
-        
-        <div class="project-grid">
+                <h2>
+                    Latest Projects
+                </h2>
 
-            {% for project in projects %}
-
-                {% include "projects/_project_card.html" %}
-            
-            {% empty %}
-
-                <p class="projects-empty">
-                    No projects have been added yet.
-                    Check back soon!
+                <p class="projects-section-description">
+                    {{ latest_projects|length }}
+                    recent project{{ latest_projects|length|pluralize }}
+                    &middot; Scroll to explore &rarr;
                 </p>
 
-            {% endfor %}
+            </div>
+
         </div>
-    
+
+        {% include "projects/_project_carousel.html" with items=latest_projects %}
+
+    </section>
+
+
+    <!-- ARCHIVE NAVIGATION -->
+
+    <section class="projects-collection projects-explore">
+
+        <span class="projects-label">
+            02 / EXPLORE
+        </span>
+
+        <h2>
+            Explore My Work
+        </h2>
+
+        <p class="projects-section-description">
+            Browse everything I've built,
+            from completed applications
+            to ongoing experiments.
+        </p>
+
+
+        <a
+            class="project-archive-link"
+            href="{% url 'project_archive' %}"
+        >
+
+            <span
+                class="project-archive-icon"
+                aria-hidden="true"
+            >
+                &lt; &gt;
+            </span>
+
+            <h3>
+                All Projects
+            </h3>
+
+            <p>
+                The complete collection
+                of my development projects.
+            </p>
+
+            <span class="project-archive-action">
+                Explore Projects &rarr;
+            </span>
+
+        </a>
+
     </section>
 
 </main>

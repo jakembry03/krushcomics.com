@@ -1,0 +1,135 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    All Projects | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'projects/css/projects.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="projects-page">
+
+    <!-- BACK LINK -->
+
+    <a
+        class="project-archive-back"
+        href="{% url 'projects' %}"
+    >
+        &larr; Back to Projects
+    </a>
+
+
+    <!-- ARCHIVE INTRODUCTION -->
+
+    <header class="projects-header">
+
+        <span class="projects-label">
+            PROJECTS / ARCHIVE
+        </span>
+
+        <h1>
+            All Projects
+        </h1>
+
+        <p class="projects-intro">
+            Every application, experiment,
+            and project I've worked on.
+        </p>
+
+    </header>
+
+
+    <!-- PROJECT GRID -->
+
+    <section class="projects-collection">
+
+        <div class="projects-section-header">
+
+            <h2>
+                Explore My Projects
+            </h2>
+
+            <p>
+                {{ page_obj.paginator.count }}
+                project{{ page_obj.paginator.count|pluralize }}
+            </p>
+
+        </div>
+
+
+        <div class="project-grid">
+
+            {% for project in page_obj %}
+
+                {% include "projects/_project_card.html" %}
+
+            {% empty %}
+
+                <p class="projects-empty">
+                    No projects have been added yet.
+                    Check back soon!
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+            <nav
+                class="project-pagination"
+                aria-label="Project archive pages"
+            >
+
+                {% if page_obj.has_previous %}
+
+                    <a
+                        href="?page={{ page_obj.previous_page_number }}"
+                    >
+                        &larr; Previous
+                    </a>
+
+                {% endif %}
+
+
+                <span>
+                    Page {{ page_obj.number }}
+                    of {{ page_obj.paginator.num_pages }}
+                </span>
+
+
+                {% if page_obj.has_next %}
+
+                    <a
+                        href="?page={{ page_obj.next_page_number }}"
+                    >
+                        Next &rarr;
+                    </a>
+
+                {% endif %}
+
+            </nav>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}

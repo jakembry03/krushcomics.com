@@ -9,6 +9,12 @@ urlpatterns = [
     ),
 
     path(
+        "archive/",
+        views.project_archive,
+        name="project_archive"
+    ),
+
+    path(
         "<int:pk>/",
         views.project_detail,
         name="project_detail"
