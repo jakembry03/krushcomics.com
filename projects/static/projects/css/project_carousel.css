@@ -1,0 +1,56 @@
+
+/* ---------------------------------
+   Project Carousel
+--------------------------------- */
+
+.project-carousel {
+    display: flex;
+
+    gap: 18px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 8px 2px 22px;
+
+    scroll-snap-type: x proximity;
+
+    overscroll-behavior-x: contain;
+
+    scrollbar-color: var(--brand) var(--border);
+}
+
+
+/* ---------------------------------
+   Carousel Card Width
+--------------------------------- */
+
+.project-carousel > .project-card {
+    flex: 0 0 clamp(245px, 30vw, 310px);
+
+    min-width: 0;
+
+    scroll-snap-align: start;
+}
+
+
+/* ---------------------------------
+   Equal Height Cards
+--------------------------------- */
+
+.project-carousel .project-card-link {
+    height: 100%;
+}
+
+
+/* ---------------------------------
+   Mobile
+--------------------------------- */
+
+@media (max-width: 600px) {
+
+    .project-carousel > .project-card {
+        flex-basis: min(85vw, 300px);
+    }
+
+}

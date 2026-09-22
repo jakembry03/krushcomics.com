@@ -24,6 +24,11 @@
         href="{% static 'thoughts/carousel.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'projects/css/project_carousel.css' %}"
+    >
+
 {% endblock %}
 
 
@@ -79,6 +84,13 @@
                         class="hero-button hero-button-secondary"
                     >
                         Explore Thoughts &rarr;
+                    </a>
+
+                    <a
+                        href="{% url 'projects' %}"
+                        class="hero-button hero-button-secondary"
+                    >
+                        View Projects &rarr;
                     </a>
             
                 </div>
@@ -140,6 +152,43 @@
             </div>
 
             {% include "thoughts/_thought_carousel.html" with items=latest_thoughts %}
+        </section>
+
+        <!--LATEST PROJECTS SECTION-->
+
+        <section class="latest-section">
+
+            <div class="latest-section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        03 / DEVELOPMENT
+                    </span>
+
+                    <h2>
+                        Latest Projects
+                    </h2>
+
+                    <p class="section-description">
+                        {{ latest_projects|length }}
+                        recent project{{ latest_projects|length|pluralize }}
+                        &middot; Scroll to explore &rarr;
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'projects' %}"
+                    class="section-link"
+                >
+                    View All &rarr;
+                </a>
+
+            </div>
+
+            {% include "projects/_project_carousel.html" with items=latest_projects %}
+
         </section>
         
     </main>
