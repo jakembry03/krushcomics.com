@@ -1,0 +1,211 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ archive_title }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'thoughts/thoughts.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'thoughts/archive.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container thoughts-archive">
+
+    <!-- BACK LINK -->
+
+    <a
+        href="{% url 'thoughts' %}"
+        class="archive-back"
+    >
+        &larr; Back to Thoughts
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="page-header">
+
+        <span class="thoughts-eyebrow">
+            THOUGHTS / ARCHIVE
+        </span>
+
+        <h1>
+            {{ archive_title }}
+        </h1>
+
+        <p class="page-description">
+            {{ archive_description }}
+        </p>
+
+    </header>
+
+
+    <!-- ARCHIVE NAVIGATION -->
+
+    <nav
+        class="archive-switcher"
+        aria-label="Choose archive"
+    >
+
+        <a
+            href="{% url 'thought_archive' 'posts' %}"
+            class="{% if archive_kind == 'posts' %}active{% endif %}"
+            {% if archive_kind == 'posts' %}
+                aria-current="page"
+            {% endif %}
+        >
+            Posts
+        </a>
+
+        <a
+            href="{% url 'thought_archive' 'reviews' %}"
+            class="{% if archive_kind == 'reviews' %}active{% endif %}"
+            {% if archive_kind == 'reviews' %}
+                aria-current="page"
+            {% endif %}
+        >
+            Reviews
+        </a>
+
+        <a
+            href="{% url 'thought_archive' 'all' %}"
+            class="{% if archive_kind == 'all' %}active{% endif %}"
+            {% if archive_kind == 'all' %}
+                aria-current="page"
+            {% endif %}
+        >
+            All Thoughts
+        </a>
+
+    </nav>
+
+
+    <!-- SEARCH -->
+
+    <form
+        class="search-form"
+        method="get"
+        role="search"
+    >
+
+        <input
+            type="search"
+            name="q"
+            value="{{ query }}"
+            aria-label="Search this archive"
+            placeholder="Search {{ archive_title|lower }}..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    <!-- ARCHIVE CONTENT -->
+
+    <section class="archive-collection">
+
+        <div class="archive-collection-header">
+
+            <h2>
+                {{ archive_title }}
+            </h2>
+
+            <span>
+                {{ page_obj.paginator.count }}
+                entr{{ page_obj.paginator.count|pluralize:"y,ies" }}
+            </span>
+
+        </div>
+
+
+        <div class="thought-grid">
+
+            {% for thought in thoughts %}
+
+                {% include "thoughts/_thought_card.html" with excerpt_words=22 %}
+
+            {% empty %}
+
+                <p class="no-thoughts">
+
+                    {% if query %}
+
+                        No entries found for "{{ query }}".
+
+                    {% else %}
+
+                        Nothing has been published here yet.
+
+                    {% endif %}
+
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+            <nav
+                class="archive-pagination"
+                aria-label="Archive pages"
+            >
+
+                {% if page_obj.has_previous %}
+
+                    <a
+                        href="?page={{ page_obj.previous_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
+                    >
+                        &larr; Previous
+                    </a>
+
+                {% endif %}
+
+
+                <span>
+                    Page {{ page_obj.number }}
+                    of {{ page_obj.paginator.num_pages }}
+                </span>
+
+
+                {% if page_obj.has_next %}
+
+                    <a
+                        href="?page={{ page_obj.next_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
+                    >
+                        Next &rarr;
+                    </a>
+
+                {% endif %}
+
+            </nav>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}

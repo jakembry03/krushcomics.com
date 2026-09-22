@@ -1,3 +1,4 @@
+
 {% extends "core/base.html" %}
 {% load static %}
 
@@ -8,45 +9,63 @@
 
 
 {% block extra_css %}
-    <link
-        rel="stylesheet"
-        href="{% static 'thoughts/thoughts.css' %}"
-    >
 
-    <link
-        rel="stylesheet"
-        href="{% static 'thoughts/carousel.css' %}"
-    >
+<link
+    rel="stylesheet"
+    href="{% static 'thoughts/thoughts.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'thoughts/carousel.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'thoughts/archive.css' %}"
+>
+
 {% endblock %}
 
 
 {% block content %}
 
-<main class="container">
+<main class="container thoughts-hub">
 
-    <section class="page-header">
+    <!-- PAGE INTRODUCTION -->
 
-        <h1>Thoughts</h1>
+    <header class="page-header">
+
+        <span class="thoughts-eyebrow">
+            WRITING / THOUGHTS
+        </span>
+
+        <h1>
+            Thoughts &amp; Ideas.
+        </h1>
 
         <p class="page-description">
-            Reviews and posts on movies, comics, anime, games,
-            and anything else I want to write about.
+            Reviews, opinions, and everything
+            else I feel like writing about.
         </p>
 
-    </section>
+    </header>
 
+
+    <!-- SEARCH -->
 
     <form
         class="search-form"
-        method="GET"
-        action="{% url 'thoughts' %}"
+        method="get"
+        action="{% url 'thought_archive' 'all' %}"
+        role="search"
     >
 
         <input
-            type="text"
+            type="search"
             name="q"
-            value="{{ query|default:'' }}"
-            placeholder="Search thoughts..."
+            aria-label="Search all thoughts"
+            placeholder="Search all thoughts..."
         >
 
         <button type="submit">
@@ -56,54 +75,133 @@
     </form>
 
 
-    {% if query %}
+    <!-- LATEST THOUGHTS -->
 
-        <h2 class="section-title">
-            Search Results
+    <section class="thoughts-feature">
+
+        <span class="thoughts-eyebrow">
+            01 / RECENT WRITING
+        </span>
+
+        <h2 class="thoughts-feature-title">
+            Latest Thoughts
         </h2>
 
-        <div class="thought-list">
-
-            {% for thought in search_results %}
-
-                {% include "thoughts/_thought_card.html" %}
-
-            {% empty %}
-
-                <p class="no-thoughts">
-                    No thoughts found for "{{ query }}".
-                </p>
-
-            {% endfor %}
-
-        </div>
-
-
-    {% else %}
-
-        <h2 class="section-title">
-            Latest Thoughts ({{ latest_thoughts|length }})
-        </h2>
+        <p class="thoughts-feature-description">
+            {{ latest_thoughts|length }}
+            recent entr{{ latest_thoughts|length|pluralize:"y,ies" }}
+            &middot; Scroll to explore &rarr;
+        </p>
 
         {% include "thoughts/_thought_carousel.html" with items=latest_thoughts %}
 
-        <div class="thought-list">
+    </section>
 
-            {% for thought in latest_thoughts %}
 
-                {% include "thoughts/_thought_card.html" %}
+    <!-- ARCHIVE NAVIGATION -->
 
-            {% empty %}
+    <section class="thoughts-archives">
 
-                <p class="no-thoughts">
-                    Nothing has been posted yet.
+        <span class="thoughts-eyebrow">
+            02 / EXPLORE
+        </span>
+
+        <h2 class="thoughts-feature-title">
+            Browse My Writing
+        </h2>
+
+        <p class="thoughts-feature-description">
+            Explore the entire collection
+            by the type of writing you're
+            interested in.
+        </p>
+
+
+        <nav
+            class="archive-choices"
+            aria-label="Browse writing archives"
+        >
+
+            <!-- ALL POSTS -->
+
+            <a
+                class="archive-choice"
+                href="{% url 'thought_archive' 'posts' %}"
+            >
+
+                <span class="archive-choice-icon">
+                    &#9998;
+                </span>
+
+                <h3>
+                    All Posts
+                </h3>
+
+                <p>
+                    Ideas, opinions, and reflections.
                 </p>
 
-            {% endfor %}
+                <span class="archive-choice-arrow">
+                    Explore &rarr;
+                </span>
 
-        </div>
+            </a>
 
-    {% endif %}
+
+            <!-- ALL REVIEWS -->
+
+            <a
+                class="archive-choice"
+                href="{% url 'thought_archive' 'reviews' %}"
+            >
+
+                <span class="archive-choice-icon">
+                    &#9733;
+                </span>
+
+                <h3>
+                    All Reviews
+                </h3>
+
+                <p>
+                    My thoughts on stories and media.
+                </p>
+
+                <span class="archive-choice-arrow">
+                    Explore &rarr;
+                </span>
+
+            </a>
+
+
+            <!-- ALL THOUGHTS -->
+
+            <a
+                class="archive-choice"
+                href="{% url 'thought_archive' 'all' %}"
+            >
+
+                <span class="archive-choice-icon">
+                    &#9776;
+                </span>
+
+                <h3>
+                    All Thoughts
+                </h3>
+
+                <p>
+                    Every post and review together.
+                </p>
+
+                <span class="archive-choice-arrow">
+                    Explore &rarr;
+                </span>
+
+            </a>
+
+        </nav>
+
+    </section>
 
 </main>
 
