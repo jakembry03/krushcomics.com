@@ -95,10 +95,17 @@ WSGI_APPLICATION = 'krushcomics.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
+DATABASE_PATH = Path(
+    os.environ.get(
+        "DJANGO_DATABASE_PATH",
+        str(BASE_DIR / "db.sqlite3")
+    )
+)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / DATABASE_PATH,
     }
 }
 
@@ -155,7 +162,12 @@ else:
     MAILERS = {}
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(
+    os.environ.get(
+        "DJANGO_MEDIA_ROOT",
+        str(BASE_DIR / "media")
+    )
+)
 
 STORAGES = {
     "default": {
