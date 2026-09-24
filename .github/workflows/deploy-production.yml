@@ -1,0 +1,70 @@
+name: KrushComics Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: krushcomics-production
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: Django CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      DJANGO_SECRET_KEY: ci-only-secret-key-not-for-production
+      DJANGO_DEBUG: "True"
+      DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+      DJANGO_DATABASE_PATH: ci.sqlite3
+      DJANGO_MEDIA_ROOT: media
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Django system checks
+        run: python manage.py check
+
+      - name: Check for missing migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Apply migrations to CI database
+        run: python manage.py migrate --noinput
+
+      - name: Run Django tests
+        run: python manage.py test
+
+  deploy:
+    name: Deploy to Oracle Production
+    needs: ci
+
+    runs-on:
+      - self-hosted
+      - production
+      - krushcomics
+
+    timeout-minutes: 15
+
+    steps:
+      - name: Deploy KrushComics
+        run: sudo -n /usr/local/sbin/deploy-krushcomics
