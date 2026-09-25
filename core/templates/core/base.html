@@ -30,5 +30,29 @@
 
         {% block content %}
         {% endblock %}
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+
+                <div class="footer-about">
+                    <h3>KrushComics</h3>
+                    <p>
+                        Built, hosted, and maintained as a personal project.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <a href="{% url 'about_site' %}">About This Site</a>
+                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'thoughts' %}">Thoughts</a>
+                    <a href="{% url 'projects' %}">Projects</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Jake Embry · KrushComics</p>
+            </div>
+        </footer>
     </body>
 </html>

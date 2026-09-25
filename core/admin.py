@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SiteProfile
+from .models import SiteProfile, AboutSitePage
 
 # Register your models here.
 admin.site.register(SiteProfile)
@@ -7,4 +7,6 @@ admin.site.register(SiteProfile)
 admin.site.site_header = "Administration"
 admin.site.site_title = "KrushComics Admin"
 admin.site.index_title = "KrushComics Content Management"
+admin.site.register(AboutSitePage)
+
 

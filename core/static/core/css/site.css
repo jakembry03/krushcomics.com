@@ -87,6 +87,315 @@ body {
     color: var(--brand-hover);
 }
 
+.site-footer {
+    margin-top: 4rem;
+    padding: 2.5rem 2rem 1rem;
+    background-color: #181818;
+    color: white;
+}
+
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.footer-about {
+    max-width: 400px;
+}
+
+.footer-about h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.footer-about p {
+    margin: 0;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.7;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* =========================================================
+   ABOUT THIS SITE
+   ========================================================= */
+
+.about-site-container {
+    width: min(1100px, 90%);
+    margin: 0 auto;
+}
+
+
+/* ---------- Hero ---------- */
+
+.about-site-hero {
+    padding: 5rem 0 4rem;
+    text-align: center;
+}
+
+.about-site-eyebrow {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.about-site-hero h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.about-site-lead {
+    max-width: 750px;
+    margin: 0 auto;
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+
+/* Django's |linebreaks filter creates <p> tags */
+.about-site-lead p {
+    margin-top: 0;
+}
+
+
+/* ---------- General Sections ---------- */
+
+.about-site-section {
+    padding: 4rem 0;
+}
+
+.about-site-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.about-site-section p {
+    line-height: 1.8;
+}
+
+.about-site-alt {
+    background-color: #f5f5f5;
+}
+
+
+/* ---------- Tech Stack ---------- */
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.tech-card {
+    padding: 1.75rem;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 18px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.tech-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.tech-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.tech-card ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.tech-card li {
+    margin-bottom: 0.45rem;
+}
+
+
+/* ---------- Architecture ---------- */
+
+.architecture-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2.5rem 0;
+}
+
+.architecture-item {
+    min-width: 170px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 16px;
+}
+
+.architecture-item strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
+}
+
+.architecture-item span {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.architecture-arrow {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.architecture-description {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+/* ---------- Deployment Pipeline ---------- */
+
+.deployment-flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 2rem 0;
+    font-weight: 600;
+}
+
+.deployment-flow span:nth-child(odd) {
+    padding: 0.7rem 1rem;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 999px;
+}
+
+.deployment-flow span:nth-child(even) {
+    font-size: 1.25rem;
+}
+
+
+/* ---------- Current Features ---------- */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-card {
+    padding: 1.75rem;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 18px;
+}
+
+.feature-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+    margin-bottom: 0;
+}
+
+
+/* ---------- Planned Improvements ---------- */
+
+.future-list {
+    columns: 2;
+    column-gap: 3rem;
+    line-height: 2;
+}
+
+
+/* ---------- Final Section ---------- */
+
+.about-site-purpose {
+    padding-bottom: 5rem;
+}
+
+
+/* =========================================================
+   ABOUT THIS SITE - MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .about-site-hero {
+        padding: 3.5rem 0 3rem;
+    }
+
+    .about-site-section {
+        padding: 3rem 0;
+    }
+
+    .tech-grid,
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .architecture-flow {
+        flex-direction: column;
+    }
+
+    .architecture-arrow {
+        transform: rotate(90deg);
+    }
+
+    .deployment-flow {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .deployment-flow span:nth-child(even) {
+        transform: rotate(90deg);
+        margin-left: 1.5rem;
+    }
+
+    .future-list {
+        columns: 1;
+    }
+}
+
 
 /* ---------------------------------
    Responsive Navigation
@@ -104,5 +413,13 @@ body {
     .nav-links {
         flex-wrap: wrap;
         gap: 10px 16px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-links {
+        margin-top: 1rem;
     }
 }

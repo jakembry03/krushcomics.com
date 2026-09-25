@@ -1,0 +1,255 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<section class="about-site-hero">
+    <div class="about-site-container">
+        <p class="about-site-eyebrow">Behind KrushComics</p>
+
+        <h1>
+            {% if about_site %}
+                {{ about_site.title }}
+            {% else %}
+                About This Site
+            {% endif %}
+        </h1>
+
+        {% if about_site and about_site.intro %}
+            <div class="about-site-lead">
+                {{ about_site.intro|linebreaks }}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<section class="about-site-section">
+    <div class="about-site-container">
+
+        <h2>What is KrushComics?</h2>
+
+        {% if about_site and about_site.what_is_krushcomics %}
+            {{ about_site.what_is_krushcomics|linebreaks }}
+        {% else %}
+            <p>
+                Content for this section has not been added yet.
+            </p>
+        {% endif %}
+
+    </div>
+</section>
+
+
+<section class="about-site-section about-site-alt">
+    <div class="about-site-container">
+
+        <h2>Technology Stack</h2>
+
+        <div class="tech-grid">
+
+            <article class="tech-card">
+                <h3>Application</h3>
+                <ul>
+                    <li>Python</li>
+                    <li>Django</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>SQLite</li>
+                    <li>WhiteNoise</li>
+                </ul>
+            </article>
+
+            <article class="tech-card">
+                <h3>Hosting</h3>
+                <ul>
+                    <li>Oracle Cloud</li>
+                    <li>Ubuntu Linux</li>
+                    <li>Gunicorn</li>
+                    <li>Caddy</li>
+                    <li>Cloudflare DNS</li>
+                </ul>
+            </article>
+
+            <article class="tech-card">
+                <h3>Development & Deployment</h3>
+                <ul>
+                    <li>Git</li>
+                    <li>GitHub</li>
+                    <li>GitHub Actions</li>
+                    <li>Self-hosted deployment runner</li>
+                    <li>Automated production deployments</li>
+                </ul>
+            </article>
+
+            <article class="tech-card">
+                <h3>Security</h3>
+                <ul>
+                    <li>HTTPS / TLS</li>
+                    <li>SSH key authentication</li>
+                    <li>Restricted firewall rules</li>
+                    <li>Environment-based secrets</li>
+                    <li>Least-privilege service accounts</li>
+                    <li>Pre-deployment database backups</li>
+                </ul>
+            </article>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="about-site-section">
+    <div class="about-site-container">
+
+        <h2>How the Site Works</h2>
+
+        <div class="architecture-flow">
+
+            <div class="architecture-item">
+                <strong>krushcomics.com</strong>
+                <span>Domain & DNS</span>
+            </div>
+
+            <span class="architecture-arrow">→</span>
+
+            <div class="architecture-item">
+                <strong>Caddy</strong>
+                <span>HTTPS & Reverse Proxy</span>
+            </div>
+
+            <span class="architecture-arrow">→</span>
+
+            <div class="architecture-item">
+                <strong>Gunicorn</strong>
+                <span>Application Server</span>
+            </div>
+
+            <span class="architecture-arrow">→</span>
+
+            <div class="architecture-item">
+                <strong>Django</strong>
+                <span>Web Application</span>
+            </div>
+
+        </div>
+
+        <p class="architecture-description">
+            Requests to KrushComics first reach the web server, which handles
+            HTTPS and forwards application requests to Gunicorn. Gunicorn runs
+            the Django application, while uploaded media and application data
+            are stored separately from the application source code.
+        </p>
+
+    </div>
+</section>
+
+
+<section class="about-site-section about-site-alt">
+    <div class="about-site-container">
+
+        <h2>Deployment</h2>
+
+        {% if about_site and about_site.deployment_description %}
+            {{ about_site.deployment_description|linebreaks }}
+        {% else %}
+            <p>
+                Deployment information has not been added yet.
+            </p>
+        {% endif %}
+
+        <div class="deployment-flow">
+            <span>Code Change</span>
+            <span>→</span>
+            <span>Pull Request</span>
+            <span>→</span>
+            <span>Automated Tests</span>
+            <span>→</span>
+            <span>Production Deployment</span>
+            <span>→</span>
+            <span>Health Check</span>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="about-site-section">
+    <div class="about-site-container">
+
+        <h2>Current Features</h2>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <h3>Thoughts</h3>
+                <p>
+                    Reviews, posts, and other writing organized into
+                    browsable archives.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Projects</h3>
+                <p>
+                    A place to document software and technology projects
+                    that I am building and learning from.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Admin</h3>
+                <p>
+                    Django's administration system allows site content
+                    to be managed without directly editing application data.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Responsive Design</h3>
+                <p>
+                    Layouts and navigation are designed to work across
+                    desktop and mobile screen sizes.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="about-site-section about-site-alt">
+    <div class="about-site-container">
+
+        <h2>Planned Improvements</h2>
+
+        {% if about_site and about_site.planned_improvements %}
+            {{ about_site.planned_improvements|linebreaks }}
+        {% else %}
+            <p>
+                Planned improvements have not been added yet.
+            </p>
+        {% endif %}
+
+    </div>
+</section>
+
+
+<section class="about-site-section about-site-purpose">
+    <div class="about-site-container">
+
+        <h2>Why I Built It</h2>
+
+        {% if about_site and about_site.why_i_built_it %}
+            {{ about_site.why_i_built_it|linebreaks }}
+        {% else %}
+            <p>
+                This section has not been written yet.
+            </p>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
