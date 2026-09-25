@@ -89,7 +89,7 @@
     border-radius: 10px;
 
     background-color: var(--brand);
-    color: white;
+    color: var(--on-brand);
 
     cursor: pointer;
 
@@ -99,7 +99,7 @@
 }
 
 .search-form button:hover {
-    background-color: var(--accent);
+    background-color: var(--brand-active);
 
     transform: translateY(-1px);
 }
@@ -157,7 +157,7 @@
 
     border-color: var(--brand);
 
-    box-shadow: 0 6px 18px rgba(178, 58, 72, 0.12);
+    box-shadow: 0 6px 18px var(--brand-glow);
 }
 
 .thought-link {
@@ -260,7 +260,7 @@
 
     text-transform: uppercase;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     background-color: var(--brand-hover);
 
@@ -343,7 +343,7 @@
 }
 
 .back-link:hover {
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 
@@ -372,7 +372,7 @@
 
     border: 1px solid var(--border);
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px var(--shadow);
 }
 
 .thought-detail-header {
@@ -391,7 +391,7 @@
 
     text-transform: uppercase;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 .thought-detail h1 {
@@ -420,7 +420,7 @@
 .thought-detail-rating {
     font-weight: 700;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 

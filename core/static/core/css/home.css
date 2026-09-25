@@ -52,7 +52,7 @@
 
     letter-spacing: 0.15em;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 .hero-content h1 {
@@ -125,17 +125,17 @@
 .hero-button-primary {
     background-color: var(--brand);
 
-    color: white;
+    color: var(--on-brand);
 }
 
 .hero-button-primary:hover {
-    background-color: var(--accent);
+    background-color: var(--brand-active);
 }
 
 .hero-button-secondary {
     background-color: transparent;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     border: 1px solid var(--brand);
 }
@@ -168,7 +168,7 @@
 
     border: 3px solid var(--brand);
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px var(--shadow);
 }
 
 
@@ -275,7 +275,7 @@
     border: 1px solid var(--brand);
     border-radius: 999px;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     font-size: 0.9rem;
     font-weight: 600;
@@ -290,7 +290,7 @@
 .section-link:hover {
     background-color: var(--brand);
 
-    color: white;
+    color: var(--on-brand);
 }
 
 

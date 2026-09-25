@@ -16,108 +16,86 @@
 /* ---------------------------------
    Palette
 
-   The selector list covers all three states Django's theme switcher can
-   produce: no data-theme attribute (auto), data-theme="light", and
-   data-theme="dark".
-
-   This file is loaded from the {% extrastyle %} block, which comes AFTER
-   admin/css/dark_mode.css. So for the auto case, this plain :root block
-   wins over dark_mode.css's @media :root block on source order, and for the
-   explicit case the html[data-theme="dark"] selector matches Django's own
-   specificity and wins on source order too.
-
-   Net effect: the admin stays light and red in every case, which is what
-   removes the dark background and yellow lettering. Nothing is hidden and
-   the theme toggle still works -- it simply no longer has a dark palette
-   to switch to.
+   Match the public site's charcoal and crimson palette in every saved
+   Django theme state. This stylesheet follows Django's theme styles.
 --------------------------------- */
 
 :root,
 html[data-theme="light"],
 html[data-theme="dark"] {
+    /* Public palette from core/css/site.css, without its layout reset. */
+    --krush-background: #111318;
+    --krush-surface: #1a1e26;
+    --krush-surface-raised: #222834;
+    --krush-brand: #b8203e;
+    --krush-brand-text: #f0788d;
+    --krush-accent: #f49aab;
+    --krush-brand-dark: #9d1b35;
+    --krush-brand-tint: #3b202a;
+    --krush-on-brand: #fff1f4;
+    --krush-text: #edf2fa;
+    --krush-muted: #a8b3c7;
+    --krush-border: #343e50;
 
-    /* KrushComics colours, mirroring core/css/site.css */
-    --krush-brand: #b23a48;
-    --krush-accent: #c1121f;
-    --krush-brand-dark: #7a1f28;
-    --krush-brand-deep: #5c161d;
-    --krush-brand-tint: #f3d7da;
-    --krush-text: #111111;
-    --krush-muted: #555555;
-    --krush-border: #eeeeee;
-
-    /* Base */
     --primary: var(--krush-brand);
     --secondary: var(--krush-brand);
-    --primary-fg: #ffffff;
+    --primary-fg: var(--krush-on-brand);
+    --accent: var(--krush-brand-text);
 
-    /* Django uses --accent for the header site name, so it must read as
-       white on the red header. The one place it is used as a background
-       (the calendar caption) is re-pointed at the brand tint further down. */
-    --accent: #ffffff;
-
-    /* Page body: light background, dark text */
     --body-fg: var(--krush-text);
-    --body-bg: #ffffff;
+    --body-bg: var(--krush-background);
     --body-quiet-color: var(--krush-muted);
-    --body-medium-color: #333333;
-    --body-loud-color: #000000;
+    --body-medium-color: var(--krush-text);
+    --body-loud-color: var(--krush-text);
 
-    /* Admin header + module headings: brand red with white text.
-       .module h2 / .module caption / .inline-group h2 all read
-       --header-bg and --header-link-color, so module headers follow. */
-    --header-color: #ffffff;
-    --header-branding-color: #ffffff;
-    --header-bg: var(--krush-brand);
-    --header-link-color: #ffffff;
+    --header-color: var(--krush-text);
+    --header-branding-color: var(--krush-brand-text);
+    --header-bg: var(--krush-surface);
+    --header-link-color: var(--krush-on-brand);
 
-    /* Breadcrumbs: light background, red/dark-red text */
-    --breadcrumbs-bg: var(--krush-brand-tint);
-    --breadcrumbs-fg: var(--krush-brand-dark);
-    --breadcrumbs-link-fg: var(--krush-brand);
+    --breadcrumbs-bg: var(--krush-surface-raised);
+    --breadcrumbs-fg: var(--krush-text);
+    --breadcrumbs-link-fg: var(--krush-brand-text);
 
-    /* Links */
-    --link-fg: var(--krush-brand);
+    --link-fg: var(--krush-brand-text);
     --link-hover-color: var(--krush-accent);
-    --link-selected-fg: var(--krush-brand-dark);
+    --link-selected-fg: var(--krush-accent);
 
-    /* Rules and borders: subtle and neutral */
     --hairline-color: var(--krush-border);
-    --border-color: #cccccc;
+    --border-color: var(--krush-border);
+    --darkened-bg: var(--krush-surface);
+    --selected-bg: var(--krush-surface-raised);
+    --selected-row: var(--krush-brand-tint);
 
-    --error-fg: var(--krush-accent);
-
-    /* Surfaces. --selected-row was Django's yellow (#ffc); it is now a very
-       light red tint, used for sorted columns and the active sidebar item. */
-    --darkened-bg: #fafafa;
-    --selected-bg: var(--krush-brand-tint);
-    --selected-row: #fbeef0;
-
-    /* Buttons: red background, white text.
-       Save and Delete are deliberately separated by lightness rather than
-       hue, since the whole palette is red -- Save is the bright accent,
-       Delete is a much deeper maroon. */
-    --button-fg: #ffffff;
+    --button-fg: var(--krush-on-brand);
     --button-bg: var(--krush-brand);
-    --button-hover-bg: var(--krush-accent);
-    --default-button-bg: var(--krush-accent);
-    --default-button-hover-bg: var(--krush-brand);
-    --close-button-bg: var(--krush-muted);
-    --close-button-hover-bg: var(--krush-text);
-    --delete-button-bg: var(--krush-brand-deep);
-    --delete-button-hover-bg: #3f0f14;
+    --button-hover-bg: var(--krush-brand-dark);
+    --default-button-bg: var(--krush-brand);
+    --default-button-hover-bg: var(--krush-brand-dark);
+    --close-button-bg: var(--krush-border);
+    --close-button-hover-bg: var(--krush-surface-raised);
+    --delete-button-bg: #b8203e;
+    --delete-button-hover-bg: #9d1b35;
 
-    /* Object tools ("Add", "History") */
+    --object-tools-fg: var(--krush-on-brand);
     --object-tools-bg: var(--krush-brand);
-    --object-tools-hover-bg: var(--krush-accent);
+    --object-tools-hover-bg: var(--krush-brand-dark);
 
-    color-scheme: light;
+    /* Status colours retain their meaning on dark surfaces in every theme. */
+    --error-fg: #ff8997;
+    --message-debug-bg: var(--krush-surface-raised);
+    --message-info-bg: var(--krush-surface-raised);
+    --message-success-bg: #183b2a;
+    --message-warning-bg: var(--krush-brand-tint);
+    --message-error-bg: #48232b;
+    --message-debug-icon: url("../../admin/img/icon-debug-dark.svg");
+    --message-info-icon: url("../../admin/img/icon-info-dark.svg");
+    --message-success-icon: url("../../admin/img/icon-yes-dark.svg");
+    --message-warning-icon: url("../../admin/img/icon-alert-dark.svg");
+    --message-error-icon: url("../../admin/img/icon-no-dark.svg");
+
+    color-scheme: dark;
 }
-
-/* Message colours are intentionally left at Django's defaults: green for
-   success and red for error carry meaning, and flattening them to brand red
-   would cost more in readability than it gains in consistency. */
-
 
 /* ---------------------------------
    Site-wide navbar
@@ -140,14 +118,14 @@ html[data-theme="dark"] {
 
     border-bottom: 1px solid var(--krush-border);
 
-    background-color: #343232;
+    background-color: var(--krush-surface);
 }
 
 #krush-admin-nav .navbar .nav-brand {
     font-size: 22px;
     font-weight: bold;
 
-    color: #ffffff;
+    color: var(--krush-brand-text);
 }
 
 #krush-admin-nav .navbar .nav-links {
@@ -157,7 +135,7 @@ html[data-theme="dark"] {
 }
 
 #krush-admin-nav .navbar .nav-links a {
-    color: #ffffff;
+    color: var(--krush-text);
 
     font-weight: 500;
 
@@ -166,7 +144,7 @@ html[data-theme="dark"] {
 
 #krush-admin-nav .navbar .nav-links a:hover,
 #krush-admin-nav .navbar .nav-links a:focus {
-    color: #cccccc;
+    color: var(--krush-brand-text);
 }
 
 /* Django underlines links via
@@ -182,7 +160,7 @@ html[data-theme="dark"] {
 /* Keyboard focus stays visible. */
 #krush-admin-nav .navbar a.nav-brand:focus-visible,
 #krush-admin-nav .navbar .nav-links a:focus-visible {
-    outline: 2px solid #ffffff;
+    outline: 2px solid var(--krush-brand-text);
     outline-offset: 3px;
 }
 
@@ -213,20 +191,16 @@ html[data-theme="dark"] {
    above would otherwise leave with poor contrast.
 --------------------------------- */
 
-/* The "Remove all" control in the many-to-many selector is painted with
-   --breadcrumbs-fg on a --primary background. Breadcrumbs are now light with
-   dark red text, so that pairing would be dark red on red. */
+/* Keep the many-to-many clear control readable on the crimson heading. */
 .selector-chosen .list-footer-display__clear {
-    color: #ffffff;
+    color: var(--krush-on-brand);
 }
 
-/* The calendar caption uses --accent as a background behind hard-coded #333
-   text. --accent is white now (it also paints the header site name), so the
-   caption is given the brand tint directly instead. */
-.calendarbox h2,
-.calendar caption {
+/* Override the calendar caption's hard-coded dark text for this palette. */
+body .calendarbox h2,
+body .calendar caption {
     background: var(--krush-brand-tint);
-    color: var(--krush-brand-dark);
+    color: var(--krush-brand-text);
 }
 
 
@@ -234,7 +208,7 @@ html[data-theme="dark"] {
    Form fields
 
    Django already paints inputs with --body-bg, --body-fg and --border-color,
-   so they are white with dark text and neutral borders from the palette
+   so they use charcoal backgrounds, pale text and neutral borders from the palette
    alone. Only the focus state is adjusted, to match the brand-coloured
    focus used by the search box on the public site.
 --------------------------------- */
@@ -249,7 +223,7 @@ html[data-theme="dark"] {
 #content textarea:focus,
 #content select:focus,
 #content .vTextField:focus {
-    border-color: var(--krush-brand);
+    border-color: var(--krush-brand-text);
 }
 
 
@@ -278,8 +252,8 @@ html[data-theme="dark"] {
 
    The site navbar is omitted here (see templates/admin/base_site.html):
    Django narrows #container to a 480px card on this page. The colours still
-   come from the palette above, so the form is already light with a red
-   header and a red submit button. Only the card shape is adjusted.
+   come from the palette above, with dark surfaces and an crimson submit
+   button. Only the card shape and shadow are adjusted.
 
    Nothing here touches authentication behaviour.
 --------------------------------- */
@@ -289,7 +263,7 @@ html[data-theme="dark"] {
 
     overflow: hidden;
 
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .login #header {
