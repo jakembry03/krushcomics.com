@@ -40,3 +40,28 @@ class SiteProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+class AboutSitePage(models.Model):
+    title = models.CharField(
+        max_length=100,
+        default="About This Site"
+    )
+
+    intro = models.TextField()
+
+    what_is_krushcomics = models.TextField()
+
+    deployment_description = models.TextField()
+
+    why_i_built_it = models.TextField()
+
+    planned_improvements = models.TextField(
+        blank=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.title

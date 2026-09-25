@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import SiteProfile
+from .models import SiteProfile, AboutSitePage
 from thoughts.services import get_latest_thoughts
 from projects.models import Project
 
@@ -37,3 +37,13 @@ def about(request):
         context
     )
 
+def about_site(request):
+    about_site = AboutSitePage.objects.first()
+
+    return render(
+        request,
+        "core/about_site.html",
+        {
+            "about_site": about_site,
+        },
+    )
