@@ -13,7 +13,7 @@
 
     letter-spacing: 0.15em;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 
@@ -95,7 +95,7 @@
 
     border-color: var(--brand);
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px var(--shadow);
 }
 
 .archive-choice-icon {
@@ -103,7 +103,7 @@
 
     font-size: 2rem;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 .archive-choice h3 {
@@ -128,7 +128,7 @@
     font-size: 0.9rem;
     font-weight: 600;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 
@@ -145,7 +145,7 @@
 
     margin-bottom: 40px;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     text-decoration: none;
 }
@@ -177,7 +177,7 @@
     border: 1px solid var(--brand);
     border-radius: 999px;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     font-weight: 600;
     text-decoration: none;
@@ -191,7 +191,7 @@
 .archive-switcher a.active {
     background-color: var(--brand);
 
-    color: white;
+    color: var(--on-brand);
 }
 
 
@@ -352,7 +352,7 @@
     border: 1px solid var(--brand);
     border-radius: 999px;
 
-    color: var(--brand);
+    color: var(--brand-text);
 
     text-decoration: none;
     font-weight: 600;
@@ -361,7 +361,7 @@
 .archive-pagination a:hover {
     background-color: var(--brand);
 
-    color: white;
+    color: var(--on-brand);
 }
 
 .archive-pagination span {

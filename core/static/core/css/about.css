@@ -46,7 +46,7 @@
 
     box-shadow:
         0 8px 24px
-        rgba(0, 0, 0, 0.14);
+        var(--shadow);
 }
 
 
@@ -132,7 +132,7 @@
 
         border: 3px solid var(--brand);
 
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 6px 18px var(--shadow);
     }
 
 }
@@ -143,7 +143,7 @@
     font-size: 1.2rem;
     font-weight: 600;
 
-    color: var(--brand);
+    color: var(--brand-text);
 }
 
 
@@ -173,7 +173,7 @@
 
     background-color: var(--brand);
 
-    color: white;
+    color: var(--on-brand);
 
     text-decoration: none;
 
@@ -184,5 +184,5 @@
 
 
 .about-links a:hover {
-    background-color: var(--accent);
+    background-color: var(--brand-active);
 }

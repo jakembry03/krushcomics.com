@@ -1,16 +1,23 @@
 :root {
-    --background: #ffffff;
-    --surface: #ffffff;
+    color-scheme: dark;
 
-    --text: #111111;
-    --muted-text: #555555;
+    --background: #111318;
+    --surface: #1a1e26;
+    --surface-raised: #222834;
 
-    --brand: #b11b1b;
-    --accent: #6b0000;
+    --text: #edf2fa;
+    --muted-text: #a8b3c7;
 
-    --brand-hover: #f3d7da;
+    --brand: #b8203e;
+    --brand-text: #f0788d;
+    --brand-active: #9d1b35;
+    --accent: #f49aab;
+    --on-brand: #fff1f4;
+    --brand-hover: #3b202a;
 
-    --border: #eeeeee;
+    --border: #343e50;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --brand-glow: rgba(184, 32, 62, 0.18);
 }
 
 
@@ -40,6 +47,24 @@ body {
     line-height: 1.6;
 }
 
+a {
+    color: var(--brand-text);
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+:focus-visible {
+    outline: 2px solid var(--brand-text);
+    outline-offset: 4px;
+}
+
+::selection {
+    background-color: var(--brand);
+    color: var(--on-brand);
+}
+
 
 /* ---------------------------------
    Navigation
@@ -55,14 +80,14 @@ body {
 
     border-bottom: 1px solid var(--border);
 
-    background-color: var(--brand);
+    background-color: var(--surface);
 }
 
 .nav-brand {
     font-size: 22px;
     font-weight: bold;
 
-    color: white;
+    color: var(--brand-text);
 
     text-decoration: none;
 }
@@ -74,7 +99,7 @@ body {
 }
 
 .nav-links a {
-    color: white;
+    color: var(--text);
 
     text-decoration: none;
 
@@ -84,14 +109,15 @@ body {
 }
 
 .nav-links a:hover {
-    color: var(--brand-hover);
+    color: var(--brand-text);
 }
 
 .site-footer {
     margin-top: 4rem;
     padding: 2.5rem 2rem 1rem;
-    background-color: #181818;
-    color: white;
+    background-color: var(--surface);
+    border-top: 1px solid var(--border);
+    color: var(--text);
 }
 
 .footer-inner {
@@ -124,20 +150,20 @@ body {
 }
 
 .footer-links a {
-    color: white;
+    color: var(--text);
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
-    opacity: 0.7;
+    color: var(--brand-text);
 }
 
 .footer-bottom {
     max-width: 1200px;
     margin: 2rem auto 0;
     padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid var(--border);
     font-size: 0.85rem;
     opacity: 0.7;
 }
@@ -204,7 +230,7 @@ body {
 }
 
 .about-site-alt {
-    background-color: #f5f5f5;
+    background-color: var(--surface);
 }
 
 
@@ -218,8 +244,8 @@ body {
 
 .tech-card {
     padding: 1.75rem;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
     border-radius: 18px;
     transition:
         transform 0.2s ease,
@@ -228,7 +254,7 @@ body {
 
 .tech-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px var(--shadow);
 }
 
 .tech-card h3 {
@@ -261,8 +287,8 @@ body {
     min-width: 170px;
     padding: 1.25rem 1rem;
     text-align: center;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
     border-radius: 16px;
 }
 
@@ -303,8 +329,8 @@ body {
 
 .deployment-flow span:nth-child(odd) {
     padding: 0.7rem 1rem;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
     border-radius: 999px;
 }
 
@@ -323,8 +349,8 @@ body {
 
 .feature-card {
     padding: 1.75rem;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
     border-radius: 18px;
 }
 
