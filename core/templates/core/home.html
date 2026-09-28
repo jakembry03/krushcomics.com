@@ -41,9 +41,6 @@
 
     <!--
         Full-width KrushComics artwork.
-
-        This intentionally sits OUTSIDE .home-page so that it can
-        stretch from one edge of the browser window to the other.
     -->
     <section class="home-banner">
 
@@ -58,89 +55,6 @@
 
     <main class="home-page">
 
-        <!--
-            Compact introduction.
-
-            The artwork above is now the visual hero, so this section
-            is intentionally smaller and simpler than the previous
-            two-column profile card.
-        -->
-        <section class="home-intro">
-
-            <div class="home-intro-copy">
-
-                <span class="section-label">
-                    01 / INTRODUCTION
-                </span>
-
-                <h1>
-                    Hey, I'm {{ profile.name|default:"Jake" }}.
-                </h1>
-
-                <p class="home-intro-tagline">
-
-                    {% if profile and profile.tagline %}
-
-                        {{ profile.tagline }}
-
-                    {% else %}
-
-                        IT Professional, Writer, Programmer, Nerd
-
-                    {% endif %}
-
-                </p>
-
-                <p class="home-intro-description">
-
-                    {% if profile and profile.intro %}
-
-                        {{ profile.intro|truncatewords:30 }}
-
-                    {% else %}
-
-                        Welcome to my corner of the internet — a place
-                        for the stories I love, the things I'm building,
-                        and whatever I happen to be learning along the way.
-
-                    {% endif %}
-
-                </p>
-
-            </div>
-
-
-            <!--
-                Main paths into the site.
-
-                These are deliberately simple text links rather than
-                large CTA buttons so the section stays quiet beneath
-                the artwork.
-            -->
-            <nav
-                class="home-intro-links"
-                aria-label="Homepage sections"
-            >
-
-                <a href="{% url 'about' %}">
-                    About Me
-                    <span aria-hidden="true">&rarr;</span>
-                </a>
-
-                <a href="{% url 'thoughts' %}">
-                    Thoughts
-                    <span aria-hidden="true">&rarr;</span>
-                </a>
-
-                <a href="{% url 'projects' %}">
-                    Projects
-                    <span aria-hidden="true">&rarr;</span>
-                </a>
-
-            </nav>
-
-        </section>
-
 
         <!-- LATEST THOUGHTS SECTION -->
 
@@ -151,7 +65,7 @@
                 <div>
 
                     <span class="section-label">
-                        02 / WRITING
+                        01 / WRITING
                     </span>
 
                     <h2>
@@ -188,7 +102,7 @@
                 <div>
 
                     <span class="section-label">
-                        03 / DEVELOPMENT
+                        02 / DEVELOPMENT
                     </span>
 
                     <h2>
