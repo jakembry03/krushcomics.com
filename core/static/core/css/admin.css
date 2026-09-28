@@ -16,7 +16,7 @@
 /* ---------------------------------
    Palette
 
-   Match the public site's charcoal and crimson palette in every saved
+   Match the public site's charcoal and orange palette in every saved
    Django theme state. This stylesheet follows Django's theme styles.
 --------------------------------- */
 
@@ -27,12 +27,12 @@ html[data-theme="dark"] {
     --krush-background: #111318;
     --krush-surface: #1a1e26;
     --krush-surface-raised: #222834;
-    --krush-brand: #b8203e;
-    --krush-brand-text: #f0788d;
-    --krush-accent: #f49aab;
-    --krush-brand-dark: #9d1b35;
-    --krush-brand-tint: #3b202a;
-    --krush-on-brand: #fff1f4;
+    --krush-brand: #b94d16;
+    --krush-brand-text: #ff9a52;
+    --krush-accent: #ffb780;
+    --krush-brand-dark: #9d3e10;
+    --krush-brand-tint: #3b291e;
+    --krush-on-brand: #fff5ed;
     --krush-text: #edf2fa;
     --krush-muted: #a8b3c7;
     --krush-border: #343e50;
@@ -191,7 +191,7 @@ html[data-theme="dark"] {
    above would otherwise leave with poor contrast.
 --------------------------------- */
 
-/* Keep the many-to-many clear control readable on the crimson heading. */
+/* Keep the many-to-many clear control readable on the orange heading. */
 .selector-chosen .list-footer-display__clear {
     color: var(--krush-on-brand);
 }
@@ -252,7 +252,7 @@ body .calendar caption {
 
    The site navbar is omitted here (see templates/admin/base_site.html):
    Django narrows #container to a 480px card on this page. The colours still
-   come from the palette above, with dark surfaces and an crimson submit
+   come from the palette above, with dark surfaces and an orange submit
    button. Only the card shape and shadow are adjusted.
 
    Nothing here touches authentication behaviour.
