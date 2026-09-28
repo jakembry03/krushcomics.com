@@ -39,13 +39,35 @@
 
 {% block content %}
 
+    <!--
+        Full-width KrushComics artwork.
+
+        This intentionally sits OUTSIDE .home-page so that it can
+        stretch from one edge of the browser window to the other.
+    -->
+    <section class="home-banner">
+
+        <img
+            src="{% static 'core/images/krushcomics-banner.png' %}"
+            alt="Illustrated KrushComics creative workspace"
+            class="home-banner-image"
+        >
+
+    </section>
+
+
     <main class="home-page">
 
-        <!--INTRODUCTION SECTION-->
-        <section class="home-hero">
+        <!--
+            Compact introduction.
 
-            <!--Left Column: Introduction-->
-            <div class="hero-content">
+            The artwork above is now the visual hero, so this section
+            is intentionally smaller and simpler than the previous
+            two-column profile card.
+        -->
+        <section class="home-intro">
+
+            <div class="home-intro-copy">
 
                 <span class="section-label">
                     01 / INTRODUCTION
@@ -55,76 +77,72 @@
                     Hey, I'm {{ profile.name|default:"Jake" }}.
                 </h1>
 
-                <p class="hero-tagline">
+                <p class="home-intro-tagline">
+
                     {% if profile and profile.tagline %}
+
                         {{ profile.tagline }}
+
                     {% else %}
-                        Comics. Technology. Writing. Reviews.
+
+                        IT Professional, Writer, Programmer, Nerd
+
                     {% endif %}
+
                 </p>
 
-                <p class="hero-description">
+                <p class="home-intro-description">
+
                     {% if profile and profile.intro %}
-                        {{ profile.intro|truncatewords:35 }}
+
+                        {{ profile.intro|truncatewords:30 }}
+
                     {% else %}
-                        Welcome to my corner of the internet.
-                        A place for the things I create,
-                        the stories I love, and everything
-                        I'm learning along the way.
+
+                        Welcome to my corner of the internet — a place
+                        for the stories I love, the things I'm building,
+                        and whatever I happen to be learning along the way.
+
                     {% endif %}
+
                 </p>
 
-                <!--Navigation buttons-->
-                <div class="hero-actions">
-
-                    <a
-                        href="{% url 'about' %}"
-                        class="hero-button hero-button-primary"
-                    >
-                        About Me &rarr;
-                    </a>
-
-                    <a
-                        href="{% url 'thoughts' %}"
-                        class="hero-button hero-button-secondary"
-                    >
-                        Explore Thoughts &rarr;
-                    </a>
-
-                    <a
-                        href="{% url 'projects' %}"
-                        class="hero-button hero-button-secondary"
-                    >
-                        View Projects &rarr;
-                    </a>
-            
-                </div>
-
             </div>
 
-            <!--Right Column: Profile Photo-->
-            <div class="hero-image">
 
-                {% if profile and profile.profile_picture %}
+            <!--
+                Main paths into the site.
 
-                    <img
-                        src="{{ profile.profile_picture.url }}"
-                        alt="Photo of {{ profile.name }}"
-                    >
-                
-                {% else %}
+                These are deliberately simple text links rather than
+                large CTA buttons so the section stays quiet beneath
+                the artwork.
+            -->
+            <nav
+                class="home-intro-links"
+                aria-label="Homepage sections"
+            >
 
-                    <img
-                        src="{% static 'core/images/profile.jpg' %}"
-                        alt="Photo of Jake"
-                    >
-                
-                {% endif %}
-            </div>
+                <a href="{% url 'about' %}">
+                    About Me
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+
+                <a href="{% url 'thoughts' %}">
+                    Thoughts
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+
+                <a href="{% url 'projects' %}">
+                    Projects
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+
+            </nav>
 
         </section>
 
-        <!--LATEST THOUGHTS SECTION-->
+
+        <!-- LATEST THOUGHTS SECTION -->
 
         <section class="latest-section">
 
@@ -133,7 +151,7 @@
                 <div>
 
                     <span class="section-label">
-                        02 / Writing
+                        02 / WRITING
                     </span>
 
                     <h2>
@@ -157,9 +175,11 @@
             </div>
 
             {% include "thoughts/_thought_carousel.html" with items=latest_thoughts %}
+
         </section>
 
-        <!--LATEST PROJECTS SECTION-->
+
+        <!-- LATEST PROJECTS SECTION -->
 
         <section class="latest-section">
 
@@ -195,7 +215,7 @@
             {% include "projects/_project_carousel.html" with items=latest_projects %}
 
         </section>
-        
+
     </main>
 
 {% endblock %}
