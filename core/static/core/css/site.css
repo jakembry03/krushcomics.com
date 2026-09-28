@@ -8,16 +8,16 @@
     --text: #edf2fa;
     --muted-text: #a8b3c7;
 
-    --brand: #b8203e;
-    --brand-text: #f0788d;
-    --brand-active: #9d1b35;
-    --accent: #f49aab;
-    --on-brand: #fff1f4;
-    --brand-hover: #3b202a;
+    --brand: #b94d16;
+    --brand-text: #ff9a52;
+    --brand-active: #9d3e10;
+    --accent: #ffb780;
+    --on-brand: #fff5ed;
+    --brand-hover: #3b291e;
 
     --border: #343e50;
     --shadow: rgba(0, 0, 0, 0.3);
-    --brand-glow: rgba(184, 32, 62, 0.18);
+    --brand-glow: rgba(255, 154, 82, 0.18);
 }
 
 
