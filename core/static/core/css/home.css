@@ -1,219 +1,211 @@
+/* =========================================================
+   KRUSHCOMICS HOME PAGE
+   ========================================================= */
 
-/* ---------------------------------
-   Home Page Layout
---------------------------------- */
+
+/* ---------------------------------------------------------
+   Full-Width Banner
+   --------------------------------------------------------- */
+
+.home-banner {
+    width: 100%;
+
+    overflow: hidden;
+
+    background-color: #0b0d11;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.home-banner-image {
+    display: block;
+
+    width: 100%;
+
+    /*
+        The artwork is intentionally cropped slightly on very wide
+        screens rather than becoming excessively tall.
+    */
+    height: clamp(280px, 31vw, 520px);
+
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* ---------------------------------------------------------
+   Main Homepage Container
+   --------------------------------------------------------- */
 
 .home-page {
     width: min(100% - 48px, 1200px);
 
     margin: 0 auto;
 
-    padding: 60px 0 100px;
+    padding: 32px 0 100px;
 }
 
 
-/* ---------------------------------
-   Introduction Section
---------------------------------- */
-
-.home-hero {
-    display: grid;
-
-    grid-template-columns: 1.3fr 0.7fr;
-
-    align-items: center;
-
-    gap: 60px;
-
-    padding: 60px;
-
-    background-color: var(--surface);
-
-    border: 1px solid var(--border);
-    border-radius: 20px;
-}
-
-
-/* ---------------------------------
-   Introduction Text
---------------------------------- */
-
-.hero-content {
-    min-width: 0;
-}
+/* ---------------------------------------------------------
+   Shared Section Label
+   --------------------------------------------------------- */
 
 .section-label {
     display: inline-block;
 
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     font-weight: 700;
 
     letter-spacing: 0.15em;
 
+    text-transform: uppercase;
+
     color: var(--brand-text);
 }
 
-.hero-content h1 {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
 
-    line-height: 1.1;
+/* =========================================================
+   INTRODUCTION STRIP
+   ========================================================= */
 
-    letter-spacing: -0.04em;
+.home-intro {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 48px;
+
+    padding: 28px 32px;
+
+    background-color: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   Introduction Copy
+   --------------------------------------------------------- */
+
+.home-intro-copy {
+    min-width: 0;
+}
+
+
+.home-intro h1 {
+    margin: 0;
+
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+
+    line-height: 1.15;
+
+    letter-spacing: -0.03em;
 
     color: var(--text);
 }
 
-.hero-tagline {
-    margin-top: 24px;
 
-    font-size: 1.25rem;
+.home-intro-tagline {
+    margin-top: 8px;
+
+    font-size: 1rem;
     font-weight: 600;
 
     color: var(--accent);
 }
 
-.hero-description {
-    max-width: 550px;
 
-    margin-top: 18px;
+.home-intro-description {
+    max-width: 680px;
 
-    font-size: 1rem;
+    margin-top: 10px;
 
-    line-height: 1.8;
+    font-size: 0.95rem;
+
+    line-height: 1.7;
 
     color: var(--muted-text);
 }
 
 
-/* ---------------------------------
-   Introduction Buttons
---------------------------------- */
+/* ---------------------------------------------------------
+   Introduction Navigation
+   --------------------------------------------------------- */
 
-.hero-actions {
+.home-intro-links {
     display: flex;
 
-    flex-wrap: wrap;
+    flex-direction: column;
 
-    gap: 14px;
+    align-items: flex-start;
 
-    margin-top: 32px;
+    min-width: 145px;
 }
 
-.hero-button {
-    display: inline-block;
 
-    padding: 12px 22px;
+.home-intro-links a {
+    display: flex;
 
-    border-radius: 8px;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 22px;
+
+    width: 100%;
+
+    padding: 9px 0;
+
+    color: var(--text);
 
     font-size: 0.95rem;
     font-weight: 600;
 
     text-decoration: none;
 
+    border-bottom: 1px solid var(--border);
+
     transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.hero-button:hover {
-    transform: translateY(-2px);
+
+.home-intro-links a:first-child {
+    border-top: 1px solid var(--border);
 }
 
-.hero-button-primary {
-    background-color: var(--brand);
 
-    color: var(--on-brand);
-}
-
-.hero-button-primary:hover {
-    background-color: var(--brand-active);
-}
-
-.hero-button-secondary {
-    background-color: transparent;
-
+.home-intro-links a span {
     color: var(--brand-text);
 
-    border: 1px solid var(--brand);
-}
-
-.hero-button-secondary:hover {
-    background-color: var(--brand-hover);
+    transition: transform 0.2s ease;
 }
 
 
-/* ---------------------------------
-   Profile Image
---------------------------------- */
+.home-intro-links a:hover {
+    color: var(--brand-text);
 
-.hero-image {
-    width: 100%;
-    max-width: 320px;
-
-    justify-self: center;
-}
-
-.hero-image img {
-    display: block;
-
-    width: 100%;
-    aspect-ratio: 4 / 5;
-
-    object-fit: cover;
-
-    border-radius: 16px;
-
-    border: 3px solid var(--brand);
-
-    box-shadow: 0 8px 24px var(--shadow);
+    border-color: var(--brand);
 }
 
 
-/* ---------------------------------
-   Responsive Layout
---------------------------------- */
-
-@media (max-width: 800px) {
-
-    .home-page {
-        width: min(100% - 32px, 1200px);
-
-        padding-top: 32px;
-    }
-
-    .home-hero {
-        grid-template-columns: 1fr;
-
-        gap: 40px;
-
-        padding: 32px 24px;
-    }
-
-    .hero-image {
-        max-width: 280px;
-    }
-
-}
-
-@media (max-width: 450px) {
-
-    .hero-actions {
-        flex-direction: column;
-    }
-
-    .hero-button {
-        text-align: center;
-    }
-
+.home-intro-links a:hover span {
+    transform: translateX(4px);
 }
 
 
-/* ---------------------------------
-   Homepage Content Sections
---------------------------------- */
+/* =========================================================
+   HOMEPAGE CONTENT SECTIONS
+   ========================================================= */
 
 .latest-section {
     margin-top: 32px;
@@ -223,13 +215,14 @@
     background-color: var(--surface);
 
     border: 1px solid var(--border);
+
     border-radius: 20px;
 }
 
 
-/* ---------------------------------
+/* ---------------------------------------------------------
    Section Header
---------------------------------- */
+   --------------------------------------------------------- */
 
 .latest-section-header {
     display: flex;
@@ -242,9 +235,11 @@
     margin-bottom: 24px;
 }
 
+
 .latest-section-header .section-label {
     margin-bottom: 8px;
 }
+
 
 .latest-section-header h2 {
     font-size: clamp(1.7rem, 4vw, 2.3rem);
@@ -253,6 +248,7 @@
 
     color: var(--text);
 }
+
 
 .section-description {
     margin-top: 8px;
@@ -263,9 +259,9 @@
 }
 
 
-/* ---------------------------------
+/* ---------------------------------------------------------
    View All Link
---------------------------------- */
+   --------------------------------------------------------- */
 
 .section-link {
     flex-shrink: 0;
@@ -284,28 +280,156 @@
 
     transition:
         background-color 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .section-link:hover {
     background-color: var(--brand);
 
     color: var(--on-brand);
+
+    transform: translateY(-1px);
 }
 
 
-/* ---------------------------------
-   Mobile Section Layout
---------------------------------- */
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .home-banner-image {
+        height: clamp(230px, 42vw, 360px);
+    }
+
+
+    .home-page {
+        width: min(100% - 32px, 1200px);
+
+        padding-top: 24px;
+    }
+
+
+    .home-intro {
+        grid-template-columns: 1fr;
+
+        gap: 24px;
+
+        padding: 26px 24px;
+    }
+
+
+    .home-intro-links {
+        width: 100%;
+
+        flex-direction: row;
+
+        flex-wrap: wrap;
+
+        gap: 18px;
+    }
+
+
+    .home-intro-links a {
+        width: auto;
+
+        gap: 8px;
+
+        border: 0;
+
+        padding: 4px 0;
+    }
+
+
+    .home-intro-links a:first-child {
+        border-top: 0;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 600px) {
 
-    .latest-section {
-        padding: 24px 16px;
+    .home-banner-image {
+        height: 220px;
+
+        /*
+            Keep the most important central part of the artwork visible
+            when the viewport becomes narrow.
+        */
+        object-position: center;
     }
+
+
+    .home-page {
+        width: min(100% - 24px, 1200px);
+
+        padding-bottom: 64px;
+    }
+
+
+    .home-intro {
+        padding: 22px 18px;
+
+        border-radius: 12px;
+    }
+
+
+    .home-intro h1 {
+        font-size: 1.8rem;
+    }
+
+
+    .home-intro-description {
+        font-size: 0.9rem;
+    }
+
+
+    .home-intro-links {
+        flex-direction: column;
+
+        gap: 0;
+
+        align-items: stretch;
+    }
+
+
+    .home-intro-links a {
+        display: flex;
+
+        justify-content: space-between;
+
+        width: 100%;
+
+        padding: 9px 0;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+
+    .home-intro-links a:first-child {
+        border-top: 1px solid var(--border);
+    }
+
+
+    .latest-section {
+        margin-top: 24px;
+
+        padding: 24px 16px;
+
+        border-radius: 16px;
+    }
+
 
     .latest-section-header {
         align-items: flex-start;
+
         flex-direction: column;
     }
 
