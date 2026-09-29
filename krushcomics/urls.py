@@ -24,6 +24,12 @@ urlpatterns = [
     path('', include('core.urls')),
     path('thoughts/', include('thoughts.urls')),
     path('projects/', include('projects.urls')),
+
+    # Version 1 of the KrushComics API.
+    path(
+        'api/v1/',
+        include('thoughts.api_urls'),
+    ),
 ]
 
 if settings.DEBUG:
