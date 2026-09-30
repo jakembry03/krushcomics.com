@@ -28,7 +28,7 @@ urlpatterns = [
     # Version 1 of the KrushComics API.
     path(
         'api/v1/',
-        include('thoughts.api_urls'),
+        include('krushcomics.api_urls'),
     ),
 ]
 

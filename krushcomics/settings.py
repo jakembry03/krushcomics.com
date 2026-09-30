@@ -54,6 +54,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Django REST Framework
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    # KrushComics apps
     'core',
     'thoughts',
     'projects',
