@@ -1,0 +1,70 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ section_title }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'security/css/security.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="security-page">
+
+    <!-- BACK LINK -->
+
+    <a
+        href="{% url 'security' %}"
+        class="security-back"
+    >
+        &larr; Back to Security
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="security-header">
+
+        <span class="security-eyebrow">
+            SECURITY / {{ section_title|upper }}
+        </span>
+
+        <h1>
+            {{ section_title }}
+        </h1>
+
+        <p class="security-description">
+            {{ section_description }}
+        </p>
+
+    </header>
+
+
+    <section class="security-panel">
+
+        <h2 class="security-panel-title">
+            Coming Soon
+        </h2>
+
+        <p class="security-panel-description">
+            Nothing has been posted in this section yet.
+            In the meantime, check out the
+            <a href="{% url 'writeup_list' %}">CTF write-ups</a>.
+        </p>
+
+    </section>
+
+</main>
+
+{% endblock %}

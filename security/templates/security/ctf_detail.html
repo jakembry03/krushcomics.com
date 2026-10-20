@@ -1,0 +1,109 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ ctf }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'security/css/security.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="security-page">
+
+    <!-- BACK LINK -->
+
+    <a
+        href="{% url 'writeup_list' %}"
+        class="security-back"
+    >
+        &larr; Back to CTF Write-Ups
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="security-header">
+
+        <span class="security-eyebrow">
+            SECURITY / CTF WRITE-UPS / {{ ctf.year }}
+        </span>
+
+        <h1>
+            {{ ctf.name }}
+        </h1>
+
+        {% if ctf.description %}
+
+            <p class="security-description">
+                {{ ctf.description }}
+            </p>
+
+        {% endif %}
+
+        {% if ctf.website %}
+
+            <a
+                class="security-external-link"
+                href="{{ ctf.website }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Event website &nearr;
+            </a>
+
+        {% endif %}
+
+    </header>
+
+
+    <!-- CHALLENGES -->
+
+    <section class="security-panel">
+
+        <div class="security-collection-header">
+
+            <h2>
+                Challenges
+            </h2>
+
+            <span>
+                {{ writeups|length }}
+                write-up{{ writeups|length|pluralize }}
+            </span>
+
+        </div>
+
+
+        <div class="security-grid">
+
+            {% for item in writeups %}
+
+                {% include "security/_security_card.html" with excerpt_words=22 %}
+
+            {% empty %}
+
+                <p class="security-empty">
+                    No write-ups have been published for this CTF yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% comment %}
+    One card in the Security carousel and lists.
+
+    Expects `item` to be a Security entry. `item.kind` is the plain class
+    attribute set on each model (only "writeup" exists for now), which
+    picks the type label and the details line. Labs and Research add
+    their own branches here when those models exist.
+{% endcomment %}
+
+<article class="security-card">
+
+    <a
+        class="security-card-link"
+        href="{{ item.get_absolute_url }}"
+    >
+
+        {% if item.thumbnail %}
+
+            <div class="security-card-image">
+
+                <img
+                    src="{{ item.thumbnail.url }}"
+                    alt="Thumbnail for {{ item.title }}"
+                    loading="lazy"
+                >
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="security-card-info">
+
+            <span class="security-kind">
+                {% if item.kind == 'writeup' %}
+                    CTF Write-Up
+                {% endif %}
+            </span>
+
+            <h3 class="security-card-title">
+                {{ item.title }}
+            </h3>
+
+            {% if item.kind == 'writeup' %}
+
+                <p class="security-card-meta">
+                    {{ item.ctf }}
+                    &middot; {{ item.get_category_display }}
+                    &middot; {{ item.get_difficulty_display }}
+                </p>
+
+            {% endif %}
+
+            <p class="security-card-summary">
+                {% with words=excerpt_words|default:30 %}
+                    {{ item.summary|truncatewords:words }}
+                {% endwith %}
+            </p>
+
+            <p class="security-card-date">
+                {{ item.published_at|date:"F j, Y" }}
+            </p>
+
+        </div>
+
+    </a>
+
+</article>

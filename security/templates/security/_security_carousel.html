@@ -1,0 +1,23 @@
+{% if items %}
+
+    <div
+        class="security-carousel"
+        role="region"
+        aria-label="Latest Security entries"
+        tabindex="0"
+    >
+
+        {% for item in items %}
+
+            {% include "security/_security_card.html" with excerpt_words=18 %}
+        {% endfor %}
+    </div>
+
+{% else %}
+
+    <p class="security-empty">
+        Nothing has been posted yet.
+        Check back soon!
+    </p>
+
+{% endif %}

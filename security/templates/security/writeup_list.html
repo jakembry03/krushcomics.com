@@ -1,0 +1,188 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    CTF Write-Ups | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'security/css/security.css' %}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main class="security-page">
+
+    <!-- BACK LINK -->
+
+    <a
+        href="{% url 'security' %}"
+        class="security-back"
+    >
+        &larr; Back to Security
+    </a>
+
+
+    <!-- HEADER -->
+
+    <header class="security-header">
+
+        <span class="security-eyebrow">
+            SECURITY / CTF WRITE-UPS
+        </span>
+
+        <h1>
+            CTF Write-Ups
+        </h1>
+
+        <p class="security-description">
+            Walkthroughs of the CTF challenges I've solved.
+        </p>
+
+    </header>
+
+
+    <!-- BROWSE BY CTF -->
+
+    {% if ctfs %}
+
+        <nav
+            class="security-switcher"
+            aria-label="Browse by CTF"
+        >
+
+            {% for ctf in ctfs %}
+
+                <a href="{{ ctf.get_absolute_url }}">
+                    {{ ctf }}
+                </a>
+
+            {% endfor %}
+
+        </nav>
+
+    {% endif %}
+
+
+    <!-- SEARCH -->
+
+    <form
+        class="security-search"
+        method="get"
+        role="search"
+    >
+
+        <input
+            type="search"
+            name="q"
+            value="{{ query }}"
+            aria-label="Search write-ups"
+            placeholder="Search write-ups, tools, or CTFs..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+
+    <!-- WRITE-UPS -->
+
+    <section class="security-panel">
+
+        <div class="security-collection-header">
+
+            <h2>
+                All Write-Ups
+            </h2>
+
+            <span>
+                {{ page_obj.paginator.count }}
+                write-up{{ page_obj.paginator.count|pluralize }}
+            </span>
+
+        </div>
+
+
+        <div class="security-grid">
+
+            {% for item in writeups %}
+
+                {% include "security/_security_card.html" with excerpt_words=22 %}
+
+            {% empty %}
+
+                <p class="security-empty">
+
+                    {% if query %}
+
+                        No write-ups found for "{{ query }}".
+
+                    {% else %}
+
+                        No write-ups have been published yet.
+
+                    {% endif %}
+
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- PAGINATION -->
+
+        {% if page_obj.has_other_pages %}
+
+            <nav
+                class="security-pagination"
+                aria-label="Write-up pages"
+            >
+
+                {% if page_obj.has_previous %}
+
+                    <a
+                        href="?page={{ page_obj.previous_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
+                    >
+                        &larr; Previous
+                    </a>
+
+                {% endif %}
+
+
+                <span>
+                    Page {{ page_obj.number }}
+                    of {{ page_obj.paginator.num_pages }}
+                </span>
+
+
+                {% if page_obj.has_next %}
+
+                    <a
+                        href="?page={{ page_obj.next_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
+                    >
+                        Next &rarr;
+                    </a>
+
+                {% endif %}
+
+            </nav>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}
