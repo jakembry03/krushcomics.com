@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'core',
     'thoughts',
     'projects',
+    'security',
 ]
 
 MIDDLEWARE = [

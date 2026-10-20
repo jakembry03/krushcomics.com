@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('thoughts/', include('thoughts.urls')),
     path('projects/', include('projects.urls')),
+    path('security/', include('security.urls')),
 
     # Version 1 of the KrushComics API.
     path(

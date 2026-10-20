@@ -1,0 +1,171 @@
+{% extends "core/base.html" %}
+{% load static security_markdown %}
+
+
+{% block title %}
+    {{ writeup.title }} | {{ writeup.ctf }} | KrushComics
+{% endblock %}
+
+
+{% block extra_css %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'security/css/security.css' %}"
+    >
+
+{% endblock %}
+
+
+{% block content %}
+
+    <main>
+
+        <article class="writeup-detail">
+
+            <a
+                class="security-back"
+                href="{{ writeup.ctf.get_absolute_url }}"
+            >
+                &larr; Back to {{ writeup.ctf }}
+            </a>
+
+
+            {% if not writeup.is_published %}
+
+                <p class="writeup-draft-notice">
+                    Draft preview &mdash; only staff can see this page
+                    until it is published.
+                </p>
+
+            {% endif %}
+
+
+            <!-- HEADER -->
+
+            <header class="writeup-header">
+
+                <p class="security-eyebrow">
+                    CTF WRITE-UP / {{ writeup.ctf }}
+                </p>
+
+                <h1>
+                    {{ writeup.title }}
+                </h1>
+
+                {% if writeup.published_at %}
+
+                    <p class="writeup-date">
+                        {{ writeup.published_at|date:"F j, Y" }}
+                    </p>
+
+                {% endif %}
+
+            </header>
+
+
+            <!-- CHALLENGE DETAILS -->
+
+            <dl class="writeup-facts">
+
+                <div>
+                    <dt>CTF</dt>
+                    <dd>
+                        <a href="{{ writeup.ctf.get_absolute_url }}">
+                            {{ writeup.ctf }}
+                        </a>
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Category</dt>
+                    <dd>{{ writeup.get_category_display }}</dd>
+                </div>
+
+                <div>
+                    <dt>Difficulty</dt>
+                    <dd>{{ writeup.get_difficulty_display }}</dd>
+                </div>
+
+                {% if writeup.tool_list %}
+
+                    <div>
+                        <dt>Tools</dt>
+                        <dd>
+                            <ul class="writeup-tools">
+                                {% for tool in writeup.tool_list %}
+                                    <li>{{ tool }}</li>
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </div>
+
+                {% endif %}
+
+            </dl>
+
+
+            {% if writeup.thumbnail %}
+
+                <img
+                    class="writeup-image"
+                    src="{{ writeup.thumbnail.url }}"
+                    alt="Image for {{ writeup.title }}"
+                >
+
+            {% endif %}
+
+
+            <!-- SUMMARY -->
+
+            <section class="writeup-section">
+
+                <h2>
+                    Summary
+                </h2>
+
+                <div class="writeup-summary">
+                    {{ writeup.summary|linebreaks }}
+                </div>
+
+            </section>
+
+
+            <!-- WRITE-UP -->
+
+            <section class="writeup-section">
+
+                <h2>
+                    Write-Up
+                </h2>
+
+                <div class="writeup-prose">
+                    {{ writeup.body|render_markdown }}
+                </div>
+
+            </section>
+
+
+            <!-- LESSONS LEARNED -->
+
+            {% if writeup.lessons_learned %}
+
+                <section class="writeup-section">
+
+                    <h2>
+                        Lessons Learned
+                    </h2>
+
+                    <div class="writeup-prose">
+                        {{ writeup.lessons_learned|render_markdown }}
+                    </div>
+
+                </section>
+
+            {% endif %}
+
+        </article>
+
+    </main>
+
+{% endblock %}
