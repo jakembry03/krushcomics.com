@@ -1,9 +1,9 @@
 from decimal import Decimal
-
 from django.test import TestCase
 from django.urls import reverse
-
 from .models import Review, Post
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 
 
 class ThoughtApiTests(TestCase):
@@ -196,3 +196,89 @@ class ThoughtApiTests(TestCase):
                 "error": "Thought type not found.",
             },
         )
+
+class PostCreateApiTests(TestCase):
+    def setUp(self):
+        """
+        Create a staff user with a token, and a regular user with a token.
+        """
+
+        User = get_user_model()
+        self.staff_user = User.objects.create_user(
+            username="staff",
+            password="test-password-123",
+            is_staff=True,
+        )
+        self.staff_token = Token.objects.create(user=self.staff_user)
+        self.regular_user = User.objects.create_user(
+            username="regular",
+            password="test-password-123",
+        )
+        self.regular_token = Token.objects.create(user=self.regular_user)
+        self.url = reverse("api_post_create")
+
+    def test_valid_post_is_created(self):
+        """
+        A staff token with valid data should create a Post and return 201."
+        """
+        # Act
+        response = self.client.post(
+            self.url,
+            {"title": "Test Title", "body": "Test body."},
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.staff_token.key}",
+        )
+
+        # Assert: the response
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["title"], "Test Title")
+
+        # Assert: the database actually changed
+        self.assertEqual(Post.objects.count(), 1)
+
+    def test_missing_token_is_rejected(self):
+        """
+        No token should return 401 and create nothing.
+        """
+
+        response = self.client.post(
+            self.url,
+            {"title": "Test Title", "body": "Test body."},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(Post.objects.count(), 0)
+
+    def test_non_staff_user_is_rejected(self):
+        """
+        A valid token for a non-staff user should return 403.
+        """
+
+        response = self.client.post(
+            self.url,
+            {"title": "Test title", "body": "Test body."},
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.regular_token.key}",
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Post.objects.count(), 0)
+
+    def test_missing_title_returns_400(self):
+        """
+        A missing title should return 400 with an error for that field
+        """
+
+        response = self.client.post(
+            self.url,
+            {"body": "Test body"},
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Token {self.staff_token.key}",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("title", response.json()["errors"])
+        self.assertEqual(Post.objects.count(), 0)
+
+    
