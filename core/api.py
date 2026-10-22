@@ -25,3 +25,4 @@ def auth_check(request):
             "is_superuser": request.user.is_superuser,
         }
     )
+

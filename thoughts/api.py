@@ -9,7 +9,7 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from decimal import Decimal, InvalidOperation
 
@@ -32,11 +32,12 @@ def serialize_thought(thought):
 
     return data
 
-@require_GET
+@api_view(["GET"])
+@permission_classes([AllowAny])
 def thought_list(request):
     """
-    Return all Thoughts as JSON, newest first.
-    A thought can be either a Review or a Post.
+    Return all Thoughts as JSON, newest first. 
+    A thought can be either a post or a review.
     """
 
     reviews = Review.objects.all()
@@ -52,18 +53,18 @@ def thought_list(request):
         for thought in thoughts
     ]
 
-    data = {
-        "count": len(results),
-        "results": results,
-    }
+    return Response(
+        {
+            "count": len(results),
+            "results": results,
+        }
+    )
 
-    return JsonResponse(data)
-
-@require_GET
+@api_view(["GET"])
+@permission_classes([AllowAny])
 def thought_detail(request, kind, pk):
     """
-    Return one Thought as JSON.
-    
+    Returns a specific thought as JSOn.
     The kind identifies whether the requested resource is a Review or a post.
     """
 
@@ -75,27 +76,20 @@ def thought_detail(request, kind, pk):
     model = models.get(kind)
 
     if model is None:
-        return JsonResponse(
-            {
-                "error": "Thought type not found.",
-            },
-            status=404,
+        return Response(
+            {"error": "Thought type not found."},
+            status=status.HTTP_404_NOT_FOUND,
         )
-
+    
     try:
         thought = model.objects.get(pk=pk)
-
     except model.DoesNotExist:
-        return JsonResponse(
-            {
-                "error": "Thought not found.",
-            },
-            status=404,
+        return Response(
+            {"error": "Thought not found."},
+            status=status.HTTP_404_NOT_FOUND,
         )
-
-    return JsonResponse(
-        serialize_thought(thought)
-    )
+    
+    return Response(serialize_thought(thought))
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
