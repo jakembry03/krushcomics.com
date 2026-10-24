@@ -7,4 +7,10 @@ urlpatterns = [
         api.project_list,
         name="api_project_list",
     ),
+    path(
+        "projects/<int:pk>/",
+        api.individual_project,
+        name="api_individual_project",
+    ),
+    
 ]

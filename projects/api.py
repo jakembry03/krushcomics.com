@@ -45,3 +45,21 @@ def project_list(request):
             "results": results
         }
     )
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def individual_project(request, pk):
+    """
+    Returns a specific project as JSON.
+    The pk identifies the specific project that is returned.
+    """
+    try:
+        project = Project.objects.get(pk=pk)
+    except project.DoesNotExist:
+        return Response(
+            {"error": "Thought not found."},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    return Response(serialize_project(project))
+
