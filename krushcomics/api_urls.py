@@ -10,4 +10,8 @@ urlpatterns = [
         "",
         include("thoughts.api_urls"),
     ),
+    path(
+        "",
+        include("projects.api_urls"),
+    )
 ]
