@@ -1,5 +1,3 @@
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
 from .models import Review, Post
 from .services import newest_first
 from rest_framework import status
