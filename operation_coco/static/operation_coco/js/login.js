@@ -45,8 +45,8 @@
   }
 
   function setPose(pose) {
-    if (window.cocoAgent) {
-      window.cocoAgent.setPose(agent, pose);
+    if (window.cocoSprite) {
+      window.cocoSprite.setPose(agent, pose);
     }
   }
 

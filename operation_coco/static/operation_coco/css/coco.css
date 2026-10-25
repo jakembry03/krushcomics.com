@@ -76,38 +76,20 @@
   --dialogue-bg: color-mix(in srgb, var(--night) 82%, transparent);
 
   /*
-   * Agent colors. Each part has an icy and a warm value; .agent mixes
-   * them by --agent-warmth, from 0 (frozen, icy blue) to 1 (fully warm
-   * orange). Phase 1 stays at 0. The chest heart stays --heart always.
+   * Agent Orange's suit is black; only his glowing lines change color.
+   * Those use --agent-glow (declared on body.coco from --thaw).
    */
-  --agent-warmth: 0;
-  --agent-suit-ice: #2D5A96;
-  --agent-suit-warm: #A4471C;
-  --agent-suit-shade-ice: #1F4275;
-  --agent-suit-shade-warm: #7C3212;
-  --agent-trace-ice: var(--ice);
-  --agent-trace-warm: #FFC98A;
-  --agent-cape-ice: #C9DDFA;
-  --agent-cape-warm: #FFA163;
-  --agent-cape-shade-ice: #A3BEEA;
-  --agent-cape-shade-warm: #E37E3F;
-  --agent-trim-ice: #18305A;
-  --agent-trim-warm: #5E240C;
-  --agent-glove-ice: #E4F5FF;
-  --agent-glove-warm: #FFE3C7;
-  --agent-frost-ice: var(--frost-white);
-  --agent-frost-warm: #FFF1E2;
-
-  /* [PLACEHOLDER: Jake's features] Neutral defaults until Jake fills them in. */
-  --agent-skin: #F0C8A4;
-  --agent-skin-shade: #DCA982;
-  --agent-hair: #5A4232;
-  --agent-hair-shade: #43301F;
-  --agent-iris: #4F7FA8;
-
-  --agent-mouth: #5A2140;
-  --agent-blush: color-mix(in srgb, var(--heart) 40%, transparent);
-  --agent-outline: var(--ink);
+  --agent-suit: #2A2836;
+  --agent-suit-shade: #1B1A24;
+  --agent-hood: #24222F;
+  --agent-hood-shade: #17161F;
+  --agent-mask: #0F0E16;
+  --agent-trim: #121119;
+  --agent-glove: #4A4659;
+  --agent-boot: #423E52;
+  --agent-rim: color-mix(in srgb, var(--lavender) 45%, transparent);
+  --sprite-outline: var(--ink);
+  --sprite-highlight: color-mix(in srgb, var(--frost-white) 30%, transparent);
 
   /* Type */
   --font-display: "Cinzel", Georgia, "Times New Roman", serif;
@@ -152,9 +134,11 @@ body.coco {
   /*
    * The agent's glow, from --glow-cold at --thaw 0 to --glow-warm at 1.
    * Declared here, not on :root, because --thaw is set on <body>.
+   * "longer hue" travels blue -> violet -> pink -> orange; a straight
+   * oklab mix turns gray in the middle.
    */
   --thaw: 0;
-  --agent-glow: color-mix(in oklab, var(--glow-warm) calc(var(--thaw) * 100%), var(--glow-cold));
+  --agent-glow: color-mix(in oklch longer hue, var(--glow-warm) calc(var(--thaw) * 100%), var(--glow-cold));
 
   margin: 0;
   min-height: 100vh;
@@ -743,159 +727,83 @@ body.coco {
   }
 }
 
-/* ---------- Agent sprite ---------- */
+/* ---------- Character sprites (shared) ---------- */
 
-.agent {
-  --agent-suit: color-mix(in oklab, var(--agent-suit-ice), var(--agent-suit-warm) calc(var(--agent-warmth) * 100%));
-  --agent-suit-shade: color-mix(in oklab, var(--agent-suit-shade-ice), var(--agent-suit-shade-warm) calc(var(--agent-warmth) * 100%));
-  --agent-trace: color-mix(in oklab, var(--agent-trace-ice), var(--agent-trace-warm) calc(var(--agent-warmth) * 100%));
-  --agent-cape: color-mix(in oklab, var(--agent-cape-ice), var(--agent-cape-warm) calc(var(--agent-warmth) * 100%));
-  --agent-cape-shade: color-mix(in oklab, var(--agent-cape-shade-ice), var(--agent-cape-shade-warm) calc(var(--agent-warmth) * 100%));
-  --agent-trim: color-mix(in oklab, var(--agent-trim-ice), var(--agent-trim-warm) calc(var(--agent-warmth) * 100%));
-  --agent-glove: color-mix(in oklab, var(--agent-glove-ice), var(--agent-glove-warm) calc(var(--agent-warmth) * 100%));
-  --agent-frost: color-mix(in oklab, var(--agent-frost-ice), var(--agent-frost-warm) calc(var(--agent-warmth) * 100%));
-  --agent-width: 10rem;
-
+.sprite {
+  --sprite-width: 10rem;
   position: relative;
-  width: var(--agent-width);
+  width: var(--sprite-width);
   aspect-ratio: 2 / 3;
 }
 
-.agent__sprite {
+.sprite__body {
   width: 100%;
   height: 100%;
 }
 
-.agent__pose {
+.sprite__pose {
   display: none;
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
-.agent--idle .agent__pose--idle,
-.agent--talk .agent__pose--talk,
-.agent--point .agent__pose--point,
-.agent--happy .agent__pose--happy,
-.agent--worried .agent__pose--worried {
+.pose-idle .sprite__pose--idle,
+.pose-talk .sprite__pose--talk,
+.pose-point .sprite__pose--point,
+.pose-happy .sprite__pose--happy,
+.pose-worried .sprite__pose--worried,
+.pose-cast .sprite__pose--cast,
+.pose-cackle .sprite__pose--cackle,
+.pose-smug .sprite__pose--smug,
+.pose-angry .sprite__pose--angry {
   display: block;
 }
 
-/* Outlines and fills */
-
-.agent .ol,
-.agent .ol-thin,
-.agent .arm-ol,
-.agent .c-line,
-.agent .c-brow {
-  stroke: var(--agent-outline);
+.sprite .ol,
+.sprite .ol-thin,
+.sprite .arm-ol,
+.sprite .c-line {
+  stroke: var(--sprite-outline);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.agent .ol {
+.sprite .ol {
   stroke-width: 4;
 }
 
-.agent .ol-thin {
+.sprite .ol-thin {
   stroke-width: 3;
 }
 
-.agent .arm-ol {
+.sprite .arm-ol {
   fill: none;
   stroke-width: 21;
 }
 
-.agent .arm-fill {
+.sprite .arm-fill {
   fill: none;
   stroke-width: 13;
   stroke-linecap: round;
 }
 
-.agent .c-line {
+.sprite .c-line {
   fill: none;
   stroke-width: 4.5;
 }
 
-.agent .c-brow {
-  fill: none;
-  stroke-width: 5;
+.sprite .c-highlight {
+  fill: var(--sprite-highlight);
+  stroke: var(--sprite-highlight);
 }
 
-.agent .c-suit { fill: var(--agent-suit); }
-.agent .c-suit-stroke { stroke: var(--agent-suit); }
-.agent .c-suit-shade { fill: var(--agent-suit-shade); }
-.agent .c-trim { fill: var(--agent-trim); }
-.agent .c-cape { fill: var(--agent-cape); }
-.agent .c-cape-shade { fill: var(--agent-cape-shade); }
-.agent .c-cape-frost { fill: var(--agent-frost); opacity: 0.85; }
-.agent .c-boot,
-.agent .c-glove { fill: var(--agent-glove); }
-.agent .c-skin { fill: var(--agent-skin); }
-.agent .c-skin-shade { fill: var(--agent-skin-shade); }
-.agent .c-hair { fill: var(--agent-hair); }
-.agent .c-hair-shade { fill: var(--agent-hair-shade); }
-.agent .c-eye-white { fill: var(--frost-white); }
-.agent .c-iris { fill: var(--agent-iris); }
-.agent .c-pupil { fill: var(--agent-outline); }
-.agent .c-eye-shine { fill: var(--frost-white); }
-.agent .c-highlight { fill: var(--frost-white); opacity: 0.55; }
-.agent .c-blush { fill: var(--agent-blush); }
-.agent .c-mouth { fill: var(--agent-mouth); }
-.agent .c-tongue { fill: var(--heart); }
-.agent .c-heart { fill: var(--heart); }
-.agent .c-sweat { fill: var(--ice); }
-.agent .c-trace-fill { fill: var(--agent-trace); }
-
-.agent .c-trace {
-  fill: none;
-  stroke: var(--agent-trace);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.pose-idle .sprite__body,
+.pose-talk .sprite__body {
+  animation: sprite-bob 2.4s var(--ease-soft) infinite alternate;
 }
 
-.agent .agent-traces {
-  filter: drop-shadow(0 0 2px var(--agent-trace));
-}
-
-/* Talking: open the mouth within the current pose. */
-
-.agent .agent-mouth-open {
-  display: none;
-}
-
-.agent.is-mouth-open .agent-mouth-closed {
-  display: none;
-}
-
-.agent.is-mouth-open .agent-mouth-open {
-  display: inline;
-}
-
-/* Life: blink, idle bob, cape flutter, glowing heart */
-
-.agent .agent-eyes {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: agent-blink 4.6s var(--ease-soft) infinite;
-}
-
-@keyframes agent-blink {
-  0%, 92%, 100% {
-    transform: scaleY(1);
-  }
-  95% {
-    transform: scaleY(0.1);
-  }
-}
-
-.agent--idle .agent__sprite,
-.agent--talk .agent__sprite {
-  animation: agent-bob 2.4s var(--ease-soft) infinite alternate;
-}
-
-@keyframes agent-bob {
+@keyframes sprite-bob {
   from {
     transform: translateY(0);
   }
@@ -904,44 +812,125 @@ body.coco {
   }
 }
 
-.agent .agent-cape {
-  transform-box: fill-box;
-  transform-origin: 50% 0;
-  animation: agent-cape 3.2s var(--ease-soft) infinite alternate;
+/* ---------- Agent Orange ---------- */
+
+/* A soft rim light so the black suit reads against the night sky. */
+.agent .sprite__pose {
+  filter: drop-shadow(0 0 4px var(--agent-rim));
 }
 
-@keyframes agent-cape {
-  from {
-    transform: skewX(-2deg) scaleX(1);
+.agent .c-suit { fill: var(--agent-suit); }
+.agent .c-suit-stroke { stroke: var(--agent-suit); }
+.agent .c-suit-shade { fill: var(--agent-suit-shade); }
+.agent .c-trim { fill: var(--agent-trim); }
+.agent .c-hood { fill: var(--agent-hood); }
+.agent .c-hood-shade { fill: var(--agent-hood-shade); }
+.agent .c-mask { fill: var(--agent-mask); }
+.agent .c-glove { fill: var(--agent-glove); }
+.agent .c-boot { fill: var(--agent-boot); }
+.agent .c-sweat { fill: var(--ice); }
+.agent .c-glow { fill: var(--agent-glow); }
+
+.agent .c-glow-soft {
+  fill: var(--agent-glow);
+  opacity: 0.35;
+}
+
+.agent .c-glow-line {
+  fill: none;
+  stroke: var(--agent-glow);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.agent .c-visor {
+  fill: none;
+  stroke: var(--agent-glow);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.agent .c-visor-core {
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+  transition: stroke-width var(--t-fast) var(--ease-soft);
+}
+
+.agent .c-visor-bars {
+  fill: none;
+  stroke: var(--agent-mask);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+/* Hidden until the finale reveal. */
+.agent .agent-face {
+  display: none;
+}
+
+/* Talking: the visor flickers brighter. */
+.agent.is-mouth-open .c-visor-core {
+  stroke-width: 5;
+}
+
+/* Blinking: the visor narrows for a moment. */
+.agent .agent-visor {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visor-blink 4.6s var(--ease-soft) infinite;
+}
+
+@keyframes visor-blink {
+  0%, 92%, 100% {
+    transform: scaleY(1);
   }
-  to {
-    transform: skewX(3deg) scaleX(1.03);
+  95% {
+    transform: scaleY(0.25);
   }
 }
 
 .agent .agent-emblem {
-  animation: agent-heart-glow 2.6s var(--ease-soft) infinite alternate;
+  animation: heart-pulse 2.6s var(--ease-soft) infinite alternate;
 }
 
-@keyframes agent-heart-glow {
+@keyframes heart-pulse {
   from {
-    filter: drop-shadow(0 0 2px var(--heart));
+    opacity: 0.8;
   }
   to {
-    filter: drop-shadow(0 0 7px var(--heart));
+    opacity: 1;
+  }
+}
+
+.agent .agent-flare {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flare-pulse 1.2s var(--ease-soft) infinite alternate;
+}
+
+@keyframes flare-pulse {
+  from {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agent--idle .agent__sprite,
-  .agent--talk .agent__sprite,
-  .agent .agent-cape,
-  .agent .agent-emblem {
+  .pose-idle .sprite__body,
+  .pose-talk .sprite__body,
+  .agent .agent-emblem,
+  .agent .agent-flare {
     animation: none;
-  }
-
-  .agent .agent-emblem {
-    filter: drop-shadow(0 0 4px var(--heart));
   }
 }
 
@@ -1360,7 +1349,7 @@ body.coco {
   }
 
   .rift-zone .agent {
-    --agent-width: 7rem;
+    --sprite-width: 7rem;
   }
 
   .rift {
@@ -1414,7 +1403,7 @@ body.coco {
 }
 
 .next-card .agent {
-  --agent-width: 9rem;
+  --sprite-width: 9rem;
 }
 
 .next-card__text {

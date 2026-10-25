@@ -1,76 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300">
   <!--
-    Operation Coco agent, "worried" pose. Draft art.
+    Agent Orange, "worried" pose. Draft art.
     Same 200x300 canvas and anchor (feet at bottom center, 100,292) in every pose.
-    No colors here: coco.css colors the c-* classes and outlines the .ol shapes.
-    Jake's features use neutral defaults until he fills them in:
-    [PLACEHOLDER: hair color and style, beard yes/no, glasses yes/no, skin tone, eye color]
+    No colors here: coco.css colors the c-* classes. Every glowing part
+    uses --agent-glow, which shifts from icy blue to orange with --thaw.
+    #face is hidden under #hood and #mask until the finale reveal.
   -->
-  <g id="cape" class="agent-cape">
-    <path class="ol c-cape" d="M66 140Q100 132 134 140L152 258Q100 274 48 258Z"/>
-    <path class="c-cape-shade" d="M116 137Q126 138 134 140L152 258Q140 262 128 264Z"/>
-    <path class="c-cape-frost" d="M50 246L58 253L66 247L74 255L82 249L90 256L100 250L110 256L118 249L126 255L134 247L142 253L150 246L152 258Q100 274 48 258Z"/>
-  </g>
+  <defs>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="-40" y="-20" width="280" height="340">
+      <feGaussianBlur stdDeviation="2.4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
   <g id="legs">
     <path class="ol c-suit" d="M74 214H96V262H74Z"/>
     <path class="ol c-suit" d="M104 214H126V262H104Z"/>
     <path class="c-suit-shade" d="M118 216H124V260H118Z"/>
+    <path class="c-glow-line" filter="url(#glow)" d="M85 226V252M115 226V252"/>
     <path class="ol c-boot" d="M70 254H98V286Q98 292 92 292H72Q66 292 66 286V262Q66 254 70 254Z"/>
     <path class="ol c-boot" d="M102 254H130Q134 254 134 262V286Q134 292 128 292H108Q102 292 102 286Z"/>
   </g>
   <g id="torso">
     <path class="ol c-suit" d="M64 150Q64 136 80 134H120Q136 136 136 150L132 222Q100 230 68 222Z"/>
     <path class="c-suit-shade" d="M118 135H120Q134 137 134 150L130 220Q124 223 116 224Z"/>
-    <path class="ol c-skin" d="M90 124H110V136L100 144L90 136Z"/>
     <path class="ol c-trim" d="M66 208Q100 214 134 208L133 220Q100 228 67 220Z"/>
-    <rect class="ol c-trace-fill" x="93" y="209" width="14" height="12" rx="3"/>
-    <g class="agent-traces">
-      <path class="c-trace" d="M74 150V170H84M126 150V166H116M80 198H90V206M120 198H110V206M85 228V248M115 228V248"/>
-      <circle class="c-trace-fill" cx="84" cy="170" r="2.2"/>
-      <circle class="c-trace-fill" cx="116" cy="166" r="2.2"/>
-      <circle class="c-trace-fill" cx="80" cy="198" r="2.2"/>
-      <circle class="c-trace-fill" cx="120" cy="198" r="2.2"/>
-      <circle class="c-trace-fill" cx="85" cy="248" r="2.2"/>
-      <circle class="c-trace-fill" cx="115" cy="248" r="2.2"/>
-    </g>
-    <g id="emblem" class="agent-emblem">
-      <path class="ol-thin c-heart" d="M100 188L98 186.2C90 179 85 174.5 85 169C85 164.6 88.4 161.2 92.8 161.2C95.7 161.2 98.4 162.6 100 164.8C101.6 162.6 104.3 161.2 107.2 161.2C111.6 161.2 115 164.6 115 169C115 174.5 110 179 102 186.2Z"/>
-      <ellipse class="c-highlight" cx="91.5" cy="167" rx="2.6" ry="1.8"/>
+    <rect class="c-glow" filter="url(#glow)" x="94" y="211" width="12" height="7" rx="2"/>
+    <path class="c-glow-line" filter="url(#glow)" d="M76 148V168H86M124 148V164H114M80 196H90V204M120 196H110V204"/>
+    <g id="emblem" class="agent-emblem" filter="url(#glow)">
+      <path class="c-glow" d="M100 188L98 186.2C90 179 85 174.5 85 169C85 164.6 88.4 161.2 92.8 161.2C95.7 161.2 98.4 162.6 100 164.8C101.6 162.6 104.3 161.2 107.2 161.2C111.6 161.2 115 164.6 115 169C115 174.5 110 179 102 186.2Z"/>
     </g>
   </g>
   <g id="arms" class="agent-arms">
     <path class="arm-ol" d="M68 148Q56 180 86 192"/>
     <path class="arm-fill c-suit-stroke" d="M68 148Q56 180 86 192"/>
+    <path class="c-glow-line" filter="url(#glow)" d="M68 148Q56 180 86 192"/>
     <circle class="ol c-glove" cx="90" cy="192" r="10"/>
     <path class="arm-ol" d="M132 148Q144 180 114 192"/>
     <path class="arm-fill c-suit-stroke" d="M132 148Q144 180 114 192"/>
+    <path class="c-glow-line" filter="url(#glow)" d="M132 148Q144 180 114 192"/>
     <circle class="ol c-glove" cx="110" cy="192" r="10"/>
   </g>
   <g id="head" class="agent-head">
-    <circle class="ol c-skin" cx="50" cy="88" r="9"/>
-    <circle class="ol c-skin" cx="150" cy="88" r="9"/>
-    <circle class="ol c-skin" cx="100" cy="80" r="50"/>
-    <path class="c-skin-shade" d="M146 92A50 50 0 0 1 100 130A50 50 0 0 0 140 76Z"/>
-    <path class="ol c-hair" d="M52 78C48 42 72 26 100 26C130 26 154 42 148 80C142 64 130 57 118 55C112 64 98 67 84 62C76 60 62 66 52 78Z"/>
-    <path class="c-hair-shade" d="M126 34C140 42 148 56 148 74C142 63 134 58 124 56Z"/>
-    <ellipse class="c-highlight" cx="82" cy="38" rx="9" ry="4" transform="rotate(-18 82 38)"/>
-    <ellipse class="c-blush" cx="70" cy="106" rx="7" ry="4"/>
-    <ellipse class="c-blush" cx="130" cy="106" rx="7" ry="4"/>
-    <g id="eyes" class="agent-eyes">
-      <ellipse class="ol-thin c-eye-white" cx="80" cy="88" rx="12" ry="15"/>
-      <circle class="c-iris" cx="82" cy="87" r="8"/>
-      <circle class="c-pupil" cx="82" cy="87" r="4"/>
-      <circle class="c-eye-shine" cx="85" cy="82" r="2.6"/>
-      <ellipse class="ol-thin c-eye-white" cx="120" cy="88" rx="12" ry="15"/>
-      <circle class="c-iris" cx="118" cy="87" r="8"/>
-      <circle class="c-pupil" cx="118" cy="87" r="4"/>
-      <circle class="c-eye-shine" cx="118" cy="82" r="2.6"/>
+    <g id="hood" class="agent-hood">
+    <path class="ol c-hood" d="M100 14C112 22 150 36 154 84C156 116 136 138 100 140C64 138 44 116 46 84C50 36 88 22 100 14Z"/>
+    <path class="c-hood-shade" d="M128 32C146 48 154 66 154 86C155 112 140 132 112 138C134 124 146 104 144 80C142 60 136 44 128 32Z"/>
+    <path class="c-highlight" d="M70 40Q80 28 94 24Q84 34 76 46Z"/>
     </g>
-    <path class="c-brow" d="M68 70Q80 66 92 59M108 59Q120 66 132 70"/>
-    <g id="mouth" class="agent-mouth">
-      <g class="agent-mouth-closed"><path class="c-line" d="M88 114Q94 108 100 112Q106 116 112 110"/></g>
-      <g class="agent-mouth-open"><ellipse class="ol-thin c-mouth" cx="100" cy="113" rx="5.5" ry="7"/></g>
+    <g id="face" class="agent-face"><!-- [PLACEHOLDER: Jake's face for the finale reveal] --></g>
+    <g id="mask" class="agent-mask">
+      <ellipse class="ol-thin c-mask" cx="100" cy="90" rx="36" ry="38"/>
+      <path class="c-highlight" d="M74 70Q82 59 96 56" fill="none" stroke-width="3"/>
+      <ellipse class="c-glow-line" filter="url(#glow)" cx="100" cy="90" rx="40" ry="42"/>
+      <path class="c-glow-line" filter="url(#glow)" d="M100 22V46"/>
     </g>
-    <path class="ol-thin c-sweat" d="M146 52Q152 62 150 66Q147 70 143 67Q140 63 146 52Z"/>
+    <g id="eyes" class="agent-visor" filter="url(#glow)">
+      <path class="c-visor" d="M72 91L95 84M105 84L128 91"/>
+      <path class="c-visor-core" d="M72 91L95 84M105 84L128 91"/>
+    </g>
+    <path class="ol-thin c-sweat" d="M150 56Q156 66 154 70Q151 74 147 71Q144 67 150 56Z"/>
   </g>
 </svg>

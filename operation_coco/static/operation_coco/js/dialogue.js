@@ -50,27 +50,27 @@
   /* ---------- Agent ---------- */
 
   function setPose(pose) {
-    if (agent && pose && window.cocoAgent) {
-      window.cocoAgent.setPose(agent, pose);
+    if (agent && pose && window.cocoSprite) {
+      window.cocoSprite.setPose(agent, pose);
     }
   }
 
   function startMouth() {
-    if (!agent || !window.cocoAgent) {
+    if (!agent || !window.cocoSprite) {
       return;
     }
     var open = false;
     mouthTimer = window.setInterval(function () {
       open = !open;
-      window.cocoAgent.setMouthOpen(agent, open);
+      window.cocoSprite.setMouthOpen(agent, open);
     }, cssNumber("--t-mouth", 160));
   }
 
   function stopMouth() {
     window.clearInterval(mouthTimer);
     mouthTimer = null;
-    if (agent && window.cocoAgent) {
-      window.cocoAgent.setMouthOpen(agent, false);
+    if (agent && window.cocoSprite) {
+      window.cocoSprite.setMouthOpen(agent, false);
     }
   }
 

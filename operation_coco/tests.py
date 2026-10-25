@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from .dialogue import PHASE1_INTRO, prepare
 from .progress import THAW_KEY
-from .templatetags.coco_agent import POSES
+from .templatetags.coco_sprites import POSES
 
 PAGES = {
     "operation_coco:gate": "operation_coco/gate.html",
@@ -222,7 +222,7 @@ class DialogueTests(SimpleTestCase):
     def test_lines_use_known_poses(self):
         for line in PHASE1_INTRO["lines"]:
             with self.subTest(text=line["text"]):
-                self.assertIn(line["pose"], POSES)
+                self.assertIn(line["pose"], POSES["agent"])
 
     def test_lines_are_placeholders(self):
         """
@@ -242,22 +242,35 @@ class AgentSpriteTests(SimpleTestCase):
 
     def test_partial_inlines_every_pose(self):
         """
-        All five poses are inlined so the page can swap them by class.
+        All six poses are inlined so the page can swap them by class.
         """
         html = self.render_agent("worried")
-        self.assertIn('class="agent agent--worried"', html)
-        for pose in POSES:
+        self.assertIn('class="sprite agent pose-worried"', html)
+        for pose in POSES["agent"]:
             with self.subTest(pose=pose):
-                self.assertIn(f"agent__pose--{pose}", html)
-                self.assertIn(f'id="agent-{pose}-head"', html)
+                self.assertIn(f"sprite__pose--{pose}", html)
+                for group in ("head", "hood", "mask", "face", "eyes"):
+                    self.assertIn(f'id="agent-{pose}-{group}"', html)
 
-    def test_named_group_ids_are_unique(self):
+    def test_ids_and_references_are_unique(self):
         """
-        Prefixing keeps ids like #head unique with every pose on the page.
+        Prefixing keeps ids like #glow unique with every pose on the page,
+        and references follow their ids.
         """
-        ids = re.findall(r'\bid="([^"]+)"', self.render_agent())
+        html = self.render_agent()
+        ids = re.findall(r'\bid="([^"]+)"', html)
         self.assertEqual(len(ids), len(set(ids)))
+        for ref in set(re.findall(r"url\(#([^)]+)\)", html)):
+            self.assertIn(ref, ids)
+
+    def test_svgs_hold_no_colors(self):
+        """
+        Colors come from coco.css so the glow can follow the thaw level.
+        """
+        html = self.render_agent()
+        self.assertNotRegex(html, r"#[0-9A-Fa-f]{3,6}\b(?![^<]*-->)")
+        self.assertNotRegex(html, r'(fill|stroke)="(?!none)')
 
     def test_unknown_pose_is_an_error(self):
         with self.assertRaises(TemplateSyntaxError):
-            Template('{% load coco_agent %}{% agent_pose "dab" %}').render(Context())
+            Template('{% load coco_sprites %}{% sprite_pose "agent" "dab" %}').render(Context())
