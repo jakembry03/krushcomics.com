@@ -4,4 +4,8 @@ from . import views
 
 app_name = "operation_coco"
 
-urlpatterns = []
+urlpatterns = [
+    path("", views.gate, name="gate"),
+    path("login/", views.login, name="login"),
+    path("next/", views.next_page, name="next"),
+]
