@@ -1,0 +1,21 @@
+{% extends "operation_coco/base.html" %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'operation_coco/js/frost-transition.js' %}" defer></script>
+{% endblock %}
+
+{% block body_class %}page-stage{% endblock %}
+
+{% block content %}
+  {# Placeholder: the memory puzzle for this stage starts here in Phase 3. #}
+  <section class="panel placeholder-card">
+    {% include "operation_coco/partials/agent.html" with pose="idle" %}
+    <p class="placeholder-card__text">[PLACEHOLDER: to be continued]</p>
+    <a class="btn btn--glow" href="{% url 'operation_coco:desktop' %}" data-frost-transition>Back to the desktop</a>
+  </section>
+{% endblock %}
+
+{% block overlays %}
+  <div class="frost-flash frost-flash--arrive" aria-hidden="true"></div>
+{% endblock %}

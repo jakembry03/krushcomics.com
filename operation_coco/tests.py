@@ -14,7 +14,9 @@ from .answers import check_answer, hash_answer, normalize_answer
 from .desktop import DESKTOP_APPS
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .models import SecurityQuestion
-from .progress import INTRO_SEEN_KEY, THAW_KEY, THAWED_KEY, UNLOCKED_KEY
+from .progress import (
+    INTRO_SEEN_KEY, QUESTIONS_SOLVED_KEY, THAW_KEY, THAWED_KEY, UNLOCKED_KEY,
+)
 from .templatetags.coco_sprites import POSES
 
 PAGES = {
@@ -650,3 +652,65 @@ class VillainSpriteTests(SimpleTestCase):
         ids = re.findall(r'\bid="([^"]+)"', html)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertNotRegex(html, r'(fill|stroke)="(?!none)')
+
+
+@plain_static_storage
+class StageAndResetTests(TestCase):
+
+    def set_session(self, **values):
+        session = self.client.session
+        session.update(values)
+        session.save()
+
+    def test_stage_needs_unlocking(self):
+        response = self.client.get(reverse("operation_coco:stage", args=[1]))
+        self.assertRedirects(response, reverse("operation_coco:unlock"))
+
+    def test_stage_needs_its_app_thawed(self):
+        self.set_session(**{UNLOCKED_KEY: True})
+        response = self.client.get(reverse("operation_coco:stage", args=[1]))
+        self.assertRedirects(response, reverse("operation_coco:desktop"))
+
+    def test_thawed_stage_shows_the_placeholder(self):
+        self.set_session(**{UNLOCKED_KEY: True, THAWED_KEY: [1]})
+        response = self.client.get(reverse("operation_coco:stage", args=[1]))
+        self.assertTemplateUsed(response, "operation_coco/stage.html")
+        self.assertContains(response, "[PLACEHOLDER: to be continued]")
+        self.assertTemplateUsed(response, "operation_coco/partials/agent.html")
+
+    def test_later_stages_stay_locked(self):
+        self.set_session(**{UNLOCKED_KEY: True, THAWED_KEY: [1]})
+        response = self.client.get(reverse("operation_coco:stage", args=[2]))
+        self.assertRedirects(response, reverse("operation_coco:desktop"), fetch_redirect_response=False)
+
+    def test_unknown_stage_is_not_found(self):
+        self.set_session(**{UNLOCKED_KEY: True})
+        self.assertEqual(self.client.get(reverse("operation_coco:stage", args=[99])).status_code, 404)
+
+    @override_settings(DEBUG=True)
+    def test_reset_clears_only_this_apps_keys(self):
+        self.set_session(**{
+            UNLOCKED_KEY: True, THAWED_KEY: [1], INTRO_SEEN_KEY: True,
+            QUESTIONS_SOLVED_KEY: 3, "someone_elses_key": "keep me",
+        })
+        response = self.client.get(reverse("operation_coco:reset"))
+        self.assertRedirects(response, reverse("operation_coco:gate"))
+        session = self.client.session
+        self.assertEqual([key for key in session.keys() if key.startswith("coco_")], [])
+        self.assertEqual(session["someone_elses_key"], "keep me")
+        self.assertRedirects(self.client.get(reverse("operation_coco:desktop")), reverse("operation_coco:unlock"))
+
+    @override_settings(DEBUG=False)
+    def test_reset_is_hidden_in_production(self):
+        self.set_session(**{UNLOCKED_KEY: True})
+        self.assertEqual(self.client.get(reverse("operation_coco:reset")).status_code, 404)
+        self.assertIs(self.client.session[UNLOCKED_KEY], True)
+
+    @override_settings(DEBUG=False)
+    def test_reset_works_for_staff_in_production(self):
+        from django.contrib.auth import get_user_model
+        staff = get_user_model().objects.create_user("jake-test", password="x", is_staff=True)
+        self.client.force_login(staff)
+        self.set_session(**{UNLOCKED_KEY: True})
+        self.assertRedirects(self.client.get(reverse("operation_coco:reset")), reverse("operation_coco:gate"))
+        self.assertNotIn(UNLOCKED_KEY, self.client.session)

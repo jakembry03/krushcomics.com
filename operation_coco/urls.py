@@ -12,4 +12,5 @@ urlpatterns = [
     path("desktop/", views.desktop, name="desktop"),
     path("desktop/intro-done/", views.desktop_intro_done, name="desktop_intro_done"),
     path("stage/<int:number>/", views.stage, name="stage"),
+    path("reset/", views.reset, name="reset"),
 ]

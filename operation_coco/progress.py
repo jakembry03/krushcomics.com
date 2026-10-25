@@ -54,6 +54,15 @@ def finish_desktop_intro(request):
     thaw_stage(request, 1)
 
 
+def reset_progress(request):
+    """
+    Forget everything this app keeps in the session (keys starting with
+    "coco_"), leaving the rest of the site's session alone.
+    """
+    for key in [key for key in request.session.keys() if key.startswith("coco_")]:
+        del request.session[key]
+
+
 def requires_unlock(view):
     """
     Gate a view behind the security questions. Anyone who hasn't

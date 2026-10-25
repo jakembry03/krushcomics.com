@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
@@ -209,6 +209,23 @@ def desktop_intro_done(request):
 @requires_unlock
 def stage(request, number):
     """
-    A memory puzzle. Stub until the stage placeholder is built.
+    A memory puzzle, opened from its desktop app. Only thawed stages can
+    be opened; anything else goes back to the desktop.
     """
-    return render_page(request, "operation_coco/desktop.html", {"apps": desktop_apps(request)})
+    if number not in {app["stage"] for app in DESKTOP_APPS}:
+        raise Http404("No such stage.")
+    if number not in progress.thawed_stages(request):
+        return redirect("operation_coco:desktop")
+    return render_page(request, "operation_coco/stage.html", {"stage": number})
+
+
+@require_http_methods(["GET", "POST"])
+def reset(request):
+    """
+    For Jake's testing: forget Coco's progress and start over at the
+    gate. Only works with DEBUG on or for a logged-in staff user.
+    """
+    if not (settings.DEBUG or request.user.is_staff):
+        raise Http404
+    progress.reset_progress(request)
+    return redirect("operation_coco:gate")

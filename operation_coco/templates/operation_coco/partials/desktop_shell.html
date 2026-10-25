@@ -10,7 +10,7 @@
     {% for app in apps %}
       <li class="app app--{{ app.slug }} {% if app.thawed %}is-thawed{% else %}is-frozen{% endif %}" data-stage="{{ app.stage }}" data-url="{{ app.url }}">
         {% if app.thawed %}
-          <a class="app__button" href="{{ app.url }}" data-app-link>
+          <a class="app__button" href="{{ app.url }}" data-app-link data-frost-transition>
         {% else %}
           <button class="app__button" type="button" aria-disabled="true" aria-describedby="frozen-tip-{{ app.slug }}">
         {% endif %}

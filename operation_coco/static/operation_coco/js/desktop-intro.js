@@ -340,6 +340,7 @@
     link.className = "app__button";
     link.href = app.dataset.url;
     link.setAttribute("data-app-link", "");
+    link.setAttribute("data-frost-transition", "");
     while (button.firstChild) {
       link.appendChild(button.firstChild);
     }
