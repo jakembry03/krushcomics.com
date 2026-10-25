@@ -7,6 +7,7 @@ from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
+from .answers import check_answer, hash_answer, normalize_answer
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .models import SecurityQuestion
 from .progress import THAW_KEY
@@ -50,6 +51,12 @@ plain_static_storage = override_settings(
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     },
+)
+
+
+# Real hashers are deliberately slow; tests don't need that.
+fast_hashing = override_settings(
+    PASSWORD_HASHERS=["django.contrib.auth.hashers.MD5PasswordHasher"],
 )
 
 
@@ -310,3 +317,63 @@ class SecurityQuestionModelTests(TestCase):
         question = SecurityQuestion(order=1, prompt="Favorite snack?", hints=["a", "b", "c", "d"])
         with self.assertRaises(ValidationError):
             question.full_clean()
+
+
+class NormalizeAnswerTests(SimpleTestCase):
+
+    def test_examples_match(self):
+        cases = [
+            ("The Cat & the Hat", "cat hat"),
+            ("A Red Balloon", "red balloon"),
+            ("  RED   balloon!!  ", "red balloon"),
+            ("Café Paris", "cafe paris"),
+            ("rock-and-roll", "rock & roll"),
+            ("An Ocean's Song", "oceans song"),
+            ("Ｆｕｌｌｗｉｄｔｈ", "fullwidth"),
+            ("Room 12B", "room 12 b"),
+        ]
+        for first, second in cases:
+            with self.subTest(first=first, second=second):
+                self.assertEqual(normalize_answer(first), normalize_answer(second))
+
+    def test_expected_forms(self):
+        self.assertEqual(normalize_answer("The Cat & the Hat"), "cathat")
+        self.assertEqual(normalize_answer("A Red Balloon"), "redballoon")
+
+    def test_different_answers_differ(self):
+        self.assertNotEqual(normalize_answer("red balloon"), normalize_answer("blue balloon"))
+        self.assertNotEqual(normalize_answer("theater"), normalize_answer("ater"))
+
+    def test_only_stop_words_is_empty(self):
+        self.assertEqual(normalize_answer("The & a"), "")
+        self.assertEqual(normalize_answer(""), "")
+        self.assertEqual(normalize_answer(None), "")
+
+
+@fast_hashing
+class CheckAnswerTests(SimpleTestCase):
+
+    def setUp(self):
+        self.question = SecurityQuestion(
+            order=1,
+            prompt="What did the cat wear?",
+            answer_hashes=[hash_answer("The Cat in the Hat"), hash_answer("striped hat")],
+        )
+
+    def test_accepts_any_variant_loosely_typed(self):
+        for answer in ("cat in hat", "THE CAT IN THE HAT!", "Striped Hat", "a striped hat"):
+            with self.subTest(answer=answer):
+                self.assertTrue(check_answer(self.question, answer))
+
+    def test_rejects_wrong_and_empty(self):
+        for answer in ("dog in hat", "", "   ", "the"):
+            with self.subTest(answer=answer):
+                self.assertFalse(check_answer(self.question, answer))
+
+    def test_hashes_do_not_contain_the_answer(self):
+        for stored in self.question.answer_hashes:
+            self.assertNotIn("cat", stored)
+
+    def test_empty_answer_cannot_be_hashed(self):
+        with self.assertRaises(ValueError):
+            hash_answer("The")
