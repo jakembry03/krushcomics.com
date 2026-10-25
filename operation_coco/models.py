@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+QUESTION_COUNT = 3
 MAX_HINTS = 3
 
 

@@ -1,8 +1,11 @@
 import json
 import re
 from html.parser import HTMLParser
+from io import StringIO
+from unittest.mock import patch
 
 from django.core.exceptions import ValidationError
+from django.core.management import call_command
 from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
@@ -377,3 +380,72 @@ class CheckAnswerTests(SimpleTestCase):
     def test_empty_answer_cannot_be_hashed(self):
         with self.assertRaises(ValueError):
             hash_answer("The")
+
+
+@fast_hashing
+class SetCocoQuestionsCommandTests(TestCase):
+
+    COMMAND = "operation_coco.management.commands.set_coco_questions"
+
+    def run_command(self, inputs, secrets):
+        out = StringIO()
+        with patch("builtins.input", side_effect=inputs), \
+                patch(f"{self.COMMAND}.getpass", side_effect=secrets):
+            call_command("set_coco_questions", stdout=out)
+        return out.getvalue()
+
+    def three_questions(self):
+        inputs = [
+            "What did the cat wear?", "Striped.", "Tall.", "",
+            "Favorite fruit?", "",
+            "Favorite color?", "Sky.", "Ocean.", "Not green.",
+        ]
+        secrets = [
+            # Question 1: main answer, a mistyped confirmation, then a variant.
+            "The Cat in the Hat", "The Cat in the Hat", "striped hat", "striped hta",
+            "striped hat", "striped hat", "",
+            # Question 2: a blank and a stop-word-only answer are re-asked.
+            "", "The", "Banana", "Banana", "",
+            # Question 3
+            "blue", "blue", "",
+        ]
+        return inputs, secrets
+
+    def test_saves_three_hashed_questions(self):
+        out = self.run_command(*self.three_questions())
+
+        self.assertIn("Saved 3 questions", out)
+        questions = list(SecurityQuestion.objects.all())
+        self.assertEqual([q.order for q in questions], [1, 2, 3])
+        self.assertEqual(questions[0].prompt, "What did the cat wear?")
+        self.assertEqual(questions[0].hints, ["Striped.", "Tall."])
+        self.assertEqual(questions[1].hints, [])
+        self.assertEqual(questions[2].hints, ["Sky.", "Ocean.", "Not green."])
+        self.assertEqual([len(q.answer_hashes) for q in questions], [2, 1, 1])
+
+        self.assertTrue(check_answer(questions[0], "cat in hat"))
+        self.assertTrue(check_answer(questions[0], "Striped Hat"))
+        self.assertFalse(check_answer(questions[0], "striped hta"))
+        self.assertTrue(check_answer(questions[1], "banana"))
+        self.assertTrue(check_answer(questions[2], "BLUE"))
+
+    def test_never_outputs_or_stores_answers(self):
+        out = self.run_command(*self.three_questions())
+        stored = repr([(q.prompt, q.answer_hashes, q.hints) for q in SecurityQuestion.objects.all()])
+        for answer in ("Cat in the Hat", "cathat", "striped", "Banana", "banana", "blue"):
+            with self.subTest(answer=answer):
+                self.assertNotIn(answer, out)
+                self.assertNotIn(answer, stored.replace("What did the cat wear?", ""))
+
+    def test_replaces_existing_questions_after_confirming(self):
+        SecurityQuestion.objects.create(order=1, prompt="Old?", answer_hashes=[])
+        inputs, secrets = self.three_questions()
+        self.run_command(["y", *inputs], secrets)
+        self.assertEqual(SecurityQuestion.objects.count(), 3)
+        self.assertFalse(SecurityQuestion.objects.filter(prompt="Old?").exists())
+
+    def test_declining_changes_nothing(self):
+        SecurityQuestion.objects.create(order=1, prompt="Old?", answer_hashes=[])
+        out = self.run_command(["n"], [])
+        self.assertIn("Nothing changed", out)
+        self.assertEqual(list(SecurityQuestion.objects.values_list("prompt", flat=True)), ["Old?"])
