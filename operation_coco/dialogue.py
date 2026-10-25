@@ -46,38 +46,67 @@ PHASE1_INTRO = {
 }
 
 
+# DRAFT DIALOGUE — Jake will rewrite
 # One line is picked at random when she misses a question three times.
 UNLOCK_ENCOURAGE = {
     "draft": True,
     "lines": [
-        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 1]"},
-        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 2]"},
-        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 3]"},
+        {"speaker": "agent", "pose": "happy",
+         "text": "Take your time, Coco. No rush. The answer's already in there somewhere."},
+        {"speaker": "agent", "pose": "happy",
+         "text": "Stuck? Try the hint. Even the best agents need a nudge now and then."},
+        {"speaker": "agent", "pose": "happy",
+         "text": "Think back for a moment. You remember more than you give yourself credit for."},
+        {"speaker": "agent", "pose": "happy",
+         "text": "Don't worry, it won't lock you out. Try saying it a different way."},
     ],
 }
 
-
+# DRAFT DIALOGUE — Jake will rewrite
 # The villain's entrance on the desktop. His last line's cue makes him
 # cackle; he flies off when she moves past it.
 DESKTOP_VILLAIN = {
     "draft": True,
     "lines": [
-        {"speaker": "villain", "pose": "cackle", "text": "[PLACEHOLDER: villain introduces himself]"},
-        {"speaker": "villain", "pose": "point", "text": "[PLACEHOLDER: villain points at the heart meter]"},
-        {"speaker": "villain", "pose": "smug", "text": "[PLACEHOLDER: villain gloats]"},
-        {"speaker": "villain", "pose": "cackle", "text": "[PLACEHOLDER: villain leaves]", "cue": "villain_exit"},
+        {"speaker": "villain", "pose": "cackle",
+         "text": "Well, well, WELL! Look who finally made it in. Allow me to introduce myself..."},
+        {"speaker": "villain", "pose": "smug",
+         "text": f"I am {VILLAIN_NAME}! Master of frost, lord of the blizzard, and the coolest guy you'll ever meet. Literally."},
+        {"speaker": "villain", "pose": "cackle",
+         "text": "And I have frozen Jake's heart. Solid! Like a sad, lonely little ice cube!"},
+        {"speaker": "villain", "pose": "point",
+         "text": "See that little heart up there? Zero percent thawed. ZERO! Doesn't that just give you chills?"},
+        {"speaker": "villain", "pose": "smug",
+         "text": "Oh, and every memory on this computer? Frozen too. Every single one. I've been very busy."},
+        {"speaker": "villain", "pose": "point",
+         "text": "Better hurry, Coco. The longer that ice sets, the colder he gets. Tick tock, tick tock..."},
+        {"speaker": "villain", "pose": "cackle",
+         "text": "Toodle-oo! Try not to catch a cold! Mwa-ha-ha-HAAA!",
+         "cue": "villain_exit"},
     ],
 }
 
+# DRAFT DIALOGUE — Jake will rewrite
 # Agent Orange's rundown. The thaw cue on the second-to-last line thaws
 # the first app.
 DESKTOP_AGENT = {
     "draft": True,
     "lines": [
-        {"speaker": "agent", "pose": "worried", "text": "[PLACEHOLDER: agent rundown]"},
-        {"speaker": "agent", "pose": "point", "text": "[PLACEHOLDER: agent mentions Jake's heart]"},
-        {"speaker": "agent", "pose": "cast", "text": "[PLACEHOLDER: agent thaws the first app]", "cue": "thaw"},
-        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: click the glowing app]"},
+        {"speaker": "agent", "pose": "worried",
+         "text": "Coco, are you alright? Sorry I'm late. Time-travel traffic is murder this time of year."},
+        {"speaker": "agent", "pose": "worried",
+         "text": "It's worse than I feared. Jake's heart has been frozen over, and we'll need to move fast."},
+        {"speaker": "agent", "pose": "point",
+         "text": "That meter up top is his heart. Right now it's a block of ice. We have to get it warm again."},
+        {"speaker": "agent", "pose": "idle",
+         "text": "You're the only one who can save him. I'll help however I can, but the real power here is yours."},
+        {"speaker": "agent", "pose": "idle",
+         "text": "Every app on this desktop holds a memory. Each one you recover will thaw his heart a little more."},
+        {"speaker": "agent", "pose": "cast",
+         "text": "Let me crack the first one open for you. Stand back... this might get a little toasty.",
+         "cue": "thaw"},
+        {"speaker": "agent", "pose": "happy",
+         "text": "There! See it glowing? Click that app to begin. I'll be right here, Coco."},
     ],
 }
 

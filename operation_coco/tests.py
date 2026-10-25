@@ -12,7 +12,10 @@ from django.urls import reverse
 
 from .answers import check_answer, hash_answer, normalize_answer
 from .desktop import DESKTOP_APPS
-from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
+from .dialogue import (
+    AGENT_NAME, DESKTOP_AGENT, DESKTOP_VILLAIN, PHASE1_INTRO, UNLOCK_ENCOURAGE,
+    VILLAIN_NAME, prepare,
+)
 from .models import SecurityQuestion
 from .progress import (
     INTRO_SEEN_KEY, QUESTIONS_SOLVED_KEY, THAW_KEY, THAWED_KEY, UNLOCKED_KEY,
@@ -257,16 +260,38 @@ class DialogueTests(SimpleTestCase):
             with self.subTest(text=line["text"]):
                 self.assertIn(line["pose"], POSES["agent"])
 
+    SCENES = {
+        "phase1_intro": PHASE1_INTRO,
+        "unlock_encourage": UNLOCK_ENCOURAGE,
+        "desktop_villain": DESKTOP_VILLAIN,
+        "desktop_agent": DESKTOP_AGENT,
+    }
+
     def test_scenes_are_marked_draft(self):
         """
         Jake rewrites all dialogue, so every scene is flagged as a draft.
         """
-        self.assertIs(PHASE1_INTRO.get("draft"), True)
+        for name, scene in self.SCENES.items():
+            with self.subTest(scene=name):
+                self.assertIs(scene.get("draft"), True)
 
-    def test_lines_fit_a_phone(self):
-        for line in PHASE1_INTRO["lines"]:
-            with self.subTest(text=line["text"]):
-                self.assertLessEqual(len(line["text"]), 140)
+    def test_scene_lengths(self):
+        self.assertTrue(3 <= len(UNLOCK_ENCOURAGE["lines"]) <= 4)
+        for name in ("phase1_intro", "desktop_villain", "desktop_agent"):
+            with self.subTest(scene=name):
+                self.assertTrue(5 <= len(self.SCENES[name]["lines"]) <= 9)
+
+    def test_lines_fit_a_phone_and_use_known_poses(self):
+        for name, scene in self.SCENES.items():
+            for line in scene["lines"]:
+                with self.subTest(scene=name, text=line["text"]):
+                    self.assertLessEqual(len(line["text"]), 140)
+                    self.assertIn(line["pose"], POSES[line["speaker"]])
+
+    def test_cues_where_the_page_expects_them(self):
+        self.assertEqual(DESKTOP_VILLAIN["lines"][-1].get("cue"), "villain_exit")
+        self.assertEqual(DESKTOP_AGENT["lines"][-2].get("cue"), "thaw")
+        self.assertNotIn("button", DESKTOP_AGENT["lines"][-1])
 
 
 class AgentSpriteTests(SimpleTestCase):
