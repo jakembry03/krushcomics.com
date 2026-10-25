@@ -1387,3 +1387,24 @@ body.coco {
     transition: none;
   }
 }
+
+/* ---------- Next page (temporary end of Phase 1) ---------- */
+
+.next-card {
+  width: min(100%, 26rem);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.next-card .agent {
+  --agent-width: 9rem;
+}
+
+.next-card__text {
+  margin: 0;
+  font: 400 1.125rem/1.6 var(--font-mono);
+}
