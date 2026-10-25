@@ -1,5 +1,23 @@
 {% extends "operation_coco/base.html" %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'operation_coco/js/frost-transition.js' %}" defer></script>
+{% endblock %}
+
+{% block body_class %}page-gate{% endblock %}
 
 {% block content %}
-  <section class="panel" style="padding:2rem"><p>gate (stub)</p></section>
+  <section class="panel gate-card">
+    <h1 class="title gate-card__title">Coco's Wedding Game</h1>
+    <p class="gate-card__line">If you are Coco, please proceed.</p>
+    {# [PLACEHOLDER: button label TBD by Jake. "Proceed" until then.] #}
+    <a class="btn btn--glow btn--large gate-card__button"
+       href="{% url 'operation_coco:login' %}"
+       data-frost-transition>Proceed</a>
+  </section>
+{% endblock %}
+
+{% block overlays %}
+  <div class="frost-flash" aria-hidden="true"></div>
 {% endblock %}

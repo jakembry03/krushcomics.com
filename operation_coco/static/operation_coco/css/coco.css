@@ -280,3 +280,94 @@ body.coco {
     transform: none;
   }
 }
+
+/* ---------- Frost transition between pages ---------- */
+
+.frost-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, var(--frost-white), var(--frost-flash));
+  transition: opacity var(--t-frost-transition) var(--ease-soft);
+}
+
+.frost-flash.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* The next page starts frosted over and clears. */
+.frost-flash--arrive {
+  opacity: 1;
+  animation: frost-clear var(--t-slow) var(--ease-soft) forwards;
+}
+
+@keyframes frost-clear {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- Gate page ---------- */
+
+.gate-card {
+  width: min(100%, 32rem);
+  padding: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.gate-card__title {
+  font-size: clamp(2rem, 7vw, 3rem);
+  text-shadow: 0 0 1.5rem color-mix(in srgb, var(--lavender) 60%, transparent);
+}
+
+.gate-card__line {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+  color: var(--text-soft);
+}
+
+.btn--large {
+  min-height: 56px;
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+}
+
+.gate-card__button {
+  animation: soft-glow 3.2s var(--ease-soft) infinite alternate;
+}
+
+.gate-card__button:hover,
+.gate-card__button:focus-visible {
+  animation: none;
+}
+
+@keyframes soft-glow {
+  from {
+    box-shadow: 0 0 1rem color-mix(in srgb, var(--lavender) 35%, transparent);
+  }
+  to {
+    box-shadow: 0 0 2rem color-mix(in srgb, var(--lavender) 65%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-flash {
+    transition: none;
+  }
+
+  .frost-flash--arrive {
+    animation: none;
+    opacity: 0;
+  }
+
+  .gate-card__button {
+    animation: none;
+  }
+}
