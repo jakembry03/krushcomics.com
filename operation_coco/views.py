@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_safe
 
+from .dialogue import PHASE1_INTRO, prepare
+
 
 @require_safe
 def gate(request):
@@ -16,7 +18,9 @@ def login(request):
     The fake lock screen. Nothing is ever submitted to the server, so
     the view only accepts GET and HEAD.
     """
-    return render(request, "operation_coco/login.html")
+    return render(request, "operation_coco/login.html", {
+        "dialogue": prepare(PHASE1_INTRO),
+    })
 
 
 @require_safe

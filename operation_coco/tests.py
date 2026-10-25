@@ -4,6 +4,7 @@ from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, override_settings
 from django.urls import reverse
 
+from .dialogue import PHASE1_INTRO, prepare
 from .templatetags.coco_agent import POSES
 
 
@@ -45,6 +46,19 @@ class PageTests(SimpleTestCase):
             {"password": "anything"},
         )
         self.assertEqual(response.status_code, 405)
+
+    def test_login_dialogue_button_url_is_resolved(self):
+        """
+        The view swaps url_name for a ready URL before rendering.
+        """
+        response = self.client.get(reverse("operation_coco:login"))
+        last_line = response.context["dialogue"]["lines"][-1]
+        self.assertEqual(last_line["button"]["url"], reverse("operation_coco:next"))
+        self.assertNotIn("url_name", last_line["button"])
+
+    def test_prepare_leaves_the_script_unchanged(self):
+        prepare(PHASE1_INTRO)
+        self.assertIn("url_name", PHASE1_INTRO["lines"][-1]["button"])
 
 
 class AgentSpriteTests(SimpleTestCase):

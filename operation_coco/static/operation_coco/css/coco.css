@@ -67,6 +67,7 @@
   --text-soft: color-mix(in srgb, var(--frost-white) 70%, transparent);
   --focus-ring: 0 0 0 3px var(--night), 0 0 0 6px var(--ice);
   --frost-flash: color-mix(in srgb, var(--frost-white) 88%, var(--ice));
+  --dialogue-bg: color-mix(in srgb, var(--night) 82%, transparent);
 
   /*
    * Agent colors. Each part has an icy and a warm value; .agent mixes
@@ -115,6 +116,9 @@
   --t-base: 300ms;
   --t-slow: 600ms;
   --t-frost-transition: 400ms;
+  --t-dialogue-in: 450ms;
+  --t-mouth: 160ms;
+  --dialogue-cps: 35;
 }
 
 /* ---------- Base ---------- */
@@ -916,5 +920,126 @@ body.coco {
 
   .agent .agent-emblem {
     filter: drop-shadow(0 0 4px var(--heart));
+  }
+}
+
+/* ---------- Dialogue box ---------- */
+
+.dialogue {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  opacity: 0;
+  transform: translateY(110%);
+  pointer-events: none;
+  transition:
+    transform var(--t-dialogue-in) var(--ease-out),
+    opacity var(--t-dialogue-in) var(--ease-soft);
+}
+
+.dialogue.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.dialogue__panel {
+  position: relative;
+  width: min(100%, 720px);
+  padding: 1.75rem 1.5rem 1.5rem;
+  background: var(--dialogue-bg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.dialogue__name {
+  position: absolute;
+  top: 0;
+  left: 1.25rem;
+  transform: translateY(-50%);
+  padding: 0.25rem 0.875rem;
+  border-radius: 999px;
+  background: var(--lavender);
+  color: var(--ink);
+  font: 700 0.875rem/1.4 var(--font-mono);
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--lavender) 50%, transparent);
+}
+
+.dialogue__text {
+  display: grid;
+  margin: 0;
+  color: var(--frost-white);
+  font: 400 1.125rem/1.6 var(--font-mono);
+}
+
+/* The invisible full line reserves space so the box doesn't grow while typing. */
+.dialogue__ghost,
+.dialogue__typed {
+  grid-area: 1 / 1;
+}
+
+.dialogue__ghost {
+  visibility: hidden;
+}
+
+.dialogue__next {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.5rem;
+  color: var(--ice);
+  font-size: 0.875rem;
+  animation: next-blink 1.1s var(--ease-soft) infinite alternate;
+}
+
+@keyframes next-blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.15;
+  }
+}
+
+.dialogue__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .dialogue {
+    padding: 0;
+  }
+
+  .dialogue__panel {
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom: 0;
+    padding: 1.75rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .dialogue__text {
+    font-size: 1rem;
+  }
+
+  .dialogue__actions .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialogue {
+    transform: none;
+    transition: opacity var(--t-base) linear;
+  }
+
+  .dialogue__next {
+    animation-duration: 2s;
   }
 }

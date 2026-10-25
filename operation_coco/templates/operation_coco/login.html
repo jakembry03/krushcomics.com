@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block scripts %}
+  <script src="{% static 'operation_coco/js/agent.js' %}" defer></script>
+  <script src="{% static 'operation_coco/js/dialogue.js' %}" defer></script>
+  <script src="{% static 'operation_coco/js/frost-transition.js' %}" defer></script>
   <script src="{% static 'operation_coco/js/login.js' %}" defer></script>
 {% endblock %}
 
@@ -78,5 +81,7 @@
 {% endblock %}
 
 {% block overlays %}
+  {% include "operation_coco/partials/dialogue_box.html" %}
+  {{ dialogue|json_script:"dialogue-data" }}
   <div class="frost-flash frost-flash--arrive" aria-hidden="true"></div>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% comment %}
+  Reusable dialogue box, driven by dialogue.js. The page also renders its
+  script with {{ dialogue|json_script:"dialogue-data" }}.
+  Pass autostart=True to start on page load; otherwise the page calls
+  window.cocoDialogue.start(script, {agent: element}).
+{% endcomment %}
+<section class="dialogue" id="dialogue" aria-label="Dialogue" hidden{% if autostart %} data-autostart{% endif %}>
+  <div class="panel dialogue__panel" id="dialogue-panel" tabindex="0" aria-describedby="dialogue-help">
+    <span class="dialogue__name" id="dialogue-speaker"></span>
+    <p class="dialogue__text" aria-hidden="true">
+      <span class="dialogue__ghost" id="dialogue-ghost"></span>
+      <span class="dialogue__typed" id="dialogue-typed"></span>
+    </p>
+    <p class="visually-hidden" id="dialogue-live" aria-live="polite"></p>
+    <span class="dialogue__next" id="dialogue-next" aria-hidden="true" hidden>&#9660;</span>
+    <div class="dialogue__actions" id="dialogue-actions" hidden>
+      <a class="btn btn--glow" id="dialogue-action" href="#" data-frost-transition></a>
+    </div>
+  </div>
+  <p class="visually-hidden" id="dialogue-help">Press Enter or Space, or tap, to continue.</p>
+</section>

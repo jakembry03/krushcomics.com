@@ -29,6 +29,7 @@
     }
 
     event.preventDefault();
+    flash.classList.remove("frost-flash--arrive");
     flash.classList.add("is-active");
     window.setTimeout(function () {
       window.location.href = link.href;
