@@ -1,6 +1,12 @@
 {% extends "operation_coco/base.html" %}
 {% load static %}
 
+{# Load the dialogue font up front so no request happens after the password is submitted. #}
+{% block preload %}
+  <link rel="preload" href="{% static 'operation_coco/fonts/JetBrainsMono-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'operation_coco/fonts/JetBrainsMono-Bold.woff2' %}" as="font" type="font/woff2" crossorigin>
+{% endblock %}
+
 {% block scripts %}
   <script src="{% static 'operation_coco/js/agent.js' %}" defer></script>
   <script src="{% static 'operation_coco/js/dialogue.js' %}" defer></script>

@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>{% block title %}Operation Coco{% endblock %}</title>
   <link rel="preload" href="{% static 'operation_coco/fonts/InterVariable.woff2' %}" as="font" type="font/woff2" crossorigin>
+  {% block preload %}{% endblock %}
   <link rel="stylesheet" href="{% static 'operation_coco/css/coco.css' %}">
   <script src="{% static 'operation_coco/js/snow.js' %}" defer></script>
   {% block scripts %}{% endblock %}
