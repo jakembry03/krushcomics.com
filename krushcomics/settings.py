@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'thoughts',
     'projects',
     'security',
+    'operation_coco',
 ]
 
 MIDDLEWARE = [
