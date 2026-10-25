@@ -154,7 +154,7 @@
     card.inert = true;
     document.body.classList.add("is-talking");
     if (window.cocoDialogue && dialogueData) {
-      window.cocoDialogue.start(JSON.parse(dialogueData.textContent), { agent: agent });
+      window.cocoDialogue.start(JSON.parse(dialogueData.textContent), { actors: { agent: agent } });
     }
   }
 

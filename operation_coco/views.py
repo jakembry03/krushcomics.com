@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_safe
 
-from .dialogue import PHASE1_INTRO, prepare
+from .dialogue import AGENT_NAME, PHASE1_INTRO, prepare
 from .progress import get_thaw_level
 
 
 def render_page(request, template, context=None):
     """
-    render() plus what every page needs: the thaw level for --thaw.
+    render() plus what every page needs: the thaw level for --thaw and
+    the agent's name for his sprite's label.
     """
     context = dict(context or {})
     context["thaw_level"] = get_thaw_level(request)
+    context["agent_name"] = AGENT_NAME
     return render(request, template, context)
 
 

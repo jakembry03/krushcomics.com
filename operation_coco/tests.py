@@ -6,7 +6,7 @@ from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
-from .dialogue import PHASE1_INTRO, prepare
+from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .progress import THAW_KEY
 from .templatetags.coco_sprites import POSES
 
@@ -214,6 +214,19 @@ class ThawLevelTests(TestCase):
 
 
 class DialogueTests(SimpleTestCase):
+
+    def test_prepare_adds_speakers(self):
+        """
+        Every line names a speaker with a name tag, defaulting to the agent.
+        """
+        script = prepare({"lines": [
+            {"pose": "idle", "text": "Hello."},
+            {"speaker": "villain", "pose": "cackle", "text": "Mwahaha!", "cue": "villain_exit"},
+        ]})
+        self.assertEqual([line["speaker"] for line in script["lines"]], ["agent", "villain"])
+        self.assertEqual(script["speakers"]["agent"]["name"], AGENT_NAME)
+        self.assertEqual(script["speakers"]["villain"]["name"], VILLAIN_NAME)
+        self.assertEqual(script["lines"][1]["cue"], "villain_exit")
 
     def test_prepare_leaves_the_script_unchanged(self):
         prepare(PHASE1_INTRO)

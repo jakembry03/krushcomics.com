@@ -1,14 +1,21 @@
 /*
  * The reusable dialogue box (partials/dialogue_box.html).
  *
- * window.cocoDialogue.start(script, { agent: element }) opens the box and
- * plays the script: { speaker, lines: [{ pose, text, button? }] }.
+ * window.cocoDialogue.start(script, { actors: { agent: el, villain: el } })
+ * opens the box and plays a script prepared by dialogue.prepare():
+ *   { speakers: { agent: { name }, ... },
+ *     lines: [{ speaker, pose, text, cue?, button? }] }
  *
- * - Lines type out at --dialogue-cps characters per second, with the
- *   agent's mouth flapping in the line's pose while it types.
+ * - Each line shows its speaker's name tag and sets that speaker's pose.
+ * - Lines type out at --dialogue-cps characters per second while the
+ *   speaker's sprite talks.
  * - Click, tap, Enter, or Space shows the whole line, or moves on once it
  *   is finished.
+ * - A line with a cue fires a "dialogue:cue" event on document when it
+ *   starts (detail: { cue, index, line }); the page script handles it.
  * - A line with a button ({ label, url }) shows it when finished.
+ * - Moving on from a last line without a button closes the box and fires
+ *   "dialogue:end".
  * - Each line is announced through an aria-live region.
  * - With reduced motion, lines appear in full.
  */
@@ -31,7 +38,7 @@
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   var script = null;
-  var agent = null;
+  var actors = {};
   var index = -1;
   var typing = false;
   var typeStart = 0;
@@ -47,30 +54,41 @@
     return script.lines[index];
   }
 
-  /* ---------- Agent ---------- */
-
-  function setPose(pose) {
-    if (agent && pose && window.cocoSprite) {
-      window.cocoSprite.setPose(agent, pose);
-    }
+  function emit(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail: detail }));
   }
 
-  function startMouth() {
-    if (!agent || !window.cocoSprite) {
+  /* ---------- Speakers ---------- */
+
+  function actorFor(line) {
+    return actors[line.speaker] || null;
+  }
+
+  function showSpeaker(line) {
+    var speaker = (script.speakers && script.speakers[line.speaker]) || {};
+    speakerEl.textContent = speaker.name || "";
+    speakerEl.hidden = !speaker.name;
+    speakerEl.className = "dialogue__name dialogue__name--" + line.speaker;
+  }
+
+  function startMouth(actor) {
+    if (!actor || !window.cocoSprite) {
       return;
     }
     var open = false;
     mouthTimer = window.setInterval(function () {
       open = !open;
-      window.cocoSprite.setMouthOpen(agent, open);
+      window.cocoSprite.setMouthOpen(actor, open);
     }, cssNumber("--t-mouth", 160));
   }
 
   function stopMouth() {
     window.clearInterval(mouthTimer);
     mouthTimer = null;
-    if (agent && window.cocoSprite) {
-      window.cocoSprite.setMouthOpen(agent, false);
+    if (window.cocoSprite) {
+      Object.keys(actors).forEach(function (name) {
+        window.cocoSprite.setMouthOpen(actors[name], false);
+      });
     }
   }
 
@@ -79,13 +97,21 @@
   function showLine(i) {
     index = i;
     var line = currentLine();
+    var actor = actorFor(line);
 
-    setPose(line.pose);
+    showSpeaker(line);
+    if (actor && line.pose && window.cocoSprite) {
+      window.cocoSprite.setPose(actor, line.pose);
+    }
     ghostEl.textContent = line.text;
     typedEl.textContent = "";
     liveEl.textContent = line.text;
     nextEl.hidden = true;
     actionsEl.hidden = true;
+
+    if (line.cue) {
+      emit("dialogue:cue", { cue: line.cue, index: i, line: line });
+    }
 
     if (reducedMotion.matches) {
       finishLine();
@@ -94,7 +120,7 @@
 
     typing = true;
     typeStart = performance.now();
-    startMouth();
+    startMouth(actor);
     rafId = requestAnimationFrame(type);
   }
 
@@ -122,7 +148,8 @@
       actionEl.href = line.button.url;
       actionsEl.hidden = false;
       actionEl.focus({ preventScroll: true });
-    } else if (index < script.lines.length - 1) {
+    } else {
+      // Also shown on the last line: one more tap closes the box.
       nextEl.hidden = false;
     }
   }
@@ -133,20 +160,31 @@
     }
     if (typing) {
       finishLine();
-    } else if (index < script.lines.length - 1 && !currentLine().button) {
+    } else if (currentLine().button) {
+      return;
+    } else if (index < script.lines.length - 1) {
       showLine(index + 1);
+    } else {
+      close();
+      emit("dialogue:end", {});
     }
   }
 
-  /* ---------- Opening ---------- */
+  /* ---------- Opening and closing ---------- */
 
   function start(data, options) {
     if (!data || !data.lines || !data.lines.length) {
       return;
     }
+    options = options || {};
+    stopMouth();
+    cancelAnimationFrame(rafId);
+
     script = data;
-    agent = (options && options.agent) || null;
-    speakerEl.textContent = data.speaker || "";
+    actors = options.actors || {};
+    if (options.agent && !actors.agent) {
+      actors.agent = options.agent;
+    }
 
     root.hidden = false;
     // Let the hidden -> shown change paint before sliding up.
@@ -157,6 +195,23 @@
     });
     panel.focus({ preventScroll: true });
     showLine(0);
+  }
+
+  function close() {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    typing = false;
+    stopMouth();
+    script = null;
+    root.classList.remove("is-open");
+    if (root.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+    window.setTimeout(function () {
+      if (!script) {
+        root.hidden = true;
+      }
+    }, cssNumber("--t-dialogue-in", 450));
   }
 
   /* ---------- Input ---------- */
@@ -191,13 +246,17 @@
 
   window.cocoDialogue = {
     start: start,
-    advance: advance
+    advance: advance,
+    close: close,
+    isOpen: function () {
+      return Boolean(script);
+    }
   };
 
   if (root.hasAttribute("data-autostart")) {
     var dataEl = document.getElementById("dialogue-data");
     if (dataEl) {
-      start(JSON.parse(dataEl.textContent), { agent: document.querySelector(".agent") });
+      start(JSON.parse(dataEl.textContent), { actors: { agent: document.querySelector(".agent") } });
     }
   }
 })();

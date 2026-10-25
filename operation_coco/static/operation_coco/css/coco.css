@@ -983,6 +983,11 @@ body.coco {
   box-shadow: 0 0 1rem color-mix(in srgb, var(--lavender) 50%, transparent);
 }
 
+.dialogue__name--villain {
+  background: var(--villain);
+  box-shadow: 0 0 1rem color-mix(in srgb, var(--villain) 50%, transparent);
+}
+
 .dialogue__text {
   display: grid;
   margin: 0;
