@@ -590,3 +590,21 @@ class DesktopTests(TestCase):
         session[THAW_KEY] = 0.5
         session.save()
         self.assertContains(self.client.get(self.url), "50%")
+
+
+class VillainSpriteTests(SimpleTestCase):
+
+    def test_ride_inlines_every_pose_and_the_car(self):
+        html = Template(
+            '{% include "operation_coco/partials/villain.html" with pose="cackle" %}'
+        ).render(Context())
+        self.assertIn('class="sprite villain pose-cackle"', html)
+        for pose in POSES["villain"]:
+            with self.subTest(pose=pose):
+                self.assertIn(f"sprite__pose--{pose}", html)
+                for group in ("head", "eyes", "mouth", "coat"):
+                    self.assertIn(f'id="villain-{pose}-{group}"', html)
+        self.assertIn("villain-car__svg", html)
+        ids = re.findall(r'\bid="([^"]+)"', html)
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertNotRegex(html, r'(fill|stroke)="(?!none)')

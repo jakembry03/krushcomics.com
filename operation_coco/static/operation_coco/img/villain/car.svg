@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <!--
+    The villain's flying car: half sled, half jalopy. Draft art.
+    Faces right. The villain sits in the cockpit (around x 120-200).
+    No colors here: coco.css colors the c-* classes.
+  -->
+  <g id="thrusters" class="car-thrusters">
+    <path class="car-flame c-flame" d="M30 70Q4 78 -6 86Q4 94 30 100Z"/>
+    <path class="car-flame c-flame" d="M30 112Q8 120 0 126Q8 132 30 140Z"/>
+    <path class="ol c-thruster" d="M28 64H64V104H28Q20 104 20 96V72Q20 64 28 64Z"/>
+    <path class="ol c-thruster" d="M28 108H64V144H28Q20 144 20 136V116Q20 108 28 108Z"/>
+    <path class="c-car-trim" d="M30 74H58V78H30ZM30 118H58V122H30Z"/>
+  </g>
+  <g id="body" class="car-body">
+    <path class="ol c-car-shade" d="M60 72H228Q262 74 286 96L292 120Q290 140 270 146H70Q52 146 52 128V86Q52 72 60 72Z"/>
+    <path class="ol c-car" d="M60 92H232Q266 94 286 108L290 124Q286 140 268 144H72Q56 144 56 128V104Q56 92 60 92Z"/>
+    <path class="c-car-trim" d="M60 100H250Q266 102 278 108L280 114Q262 108 246 108H60Z"/>
+    <path class="ol c-windshield" d="M202 92L218 58Q222 52 228 56L236 92Z"/>
+    <circle class="ol c-rim" cx="280" cy="118" r="8"/>
+    <circle class="c-lens" cx="280" cy="118" r="5"/>
+    <path class="ol-thin c-car-shade" d="M244 124H276M244 132H272"/>
+    <path class="c-car-patch ol-thin" d="M96 118l14-4 2 12-14 3z"/>
+    <path class="c-line-thin" d="M99 120l10-3M100 124l10-3"/>
+  </g>
+  <g id="runners" class="car-runners">
+    <path class="ol c-runner" d="M78 144V160M160 144V160M236 144V158"/>
+    <path class="ol c-runner-fill" d="M52 158H262Q300 158 304 140Q306 132 298 132Q300 152 262 152H52Q46 152 46 155Q46 158 52 158Z"/>
+  </g>
+  <g id="icicles" class="car-icicles">
+    <path class="c-icicle" d="M88 146l4 16 4-16zM112 146l3 11 3-11zM140 146l4 18 4-18zM176 146l3 10 3-10zM204 146l4 15 4-15zM252 146l3 12 3-12z"/>
+  </g>
+</svg>

@@ -89,6 +89,25 @@
   --agent-boot: #423E52;
   --agent-rim: color-mix(in srgb, var(--lavender) 45%, transparent);
   --sprite-outline: var(--ink);
+
+  /* The villain: icy white, frost blue, and the --villain teal. */
+  --villain-skin: #DCEFF9;
+  --villain-skin-shade: #B4D5EA;
+  --villain-hair: #F4FCFF;
+  --villain-hair-shade: #B9E2F5;
+  --villain-coat: #5E9CC8;
+  --villain-coat-shade: #467FAB;
+  --villain-pants: #2B4466;
+  --villain-boot: #1F3350;
+  --villain-strap: #22344F;
+  --villain-rim: #8FA6BD;
+  --villain-mouth: #1C2B45;
+  --villain-tongue: #2E8C7B;
+  --villain-car: #3F6F9C;
+  --villain-car-shade: #2E567D;
+  --villain-thruster: #56606F;
+  --villain-runner: #C9D6E3;
+  --villain-patch: #8C7A5C;
   --sprite-highlight: color-mix(in srgb, var(--frost-white) 30%, transparent);
 
   /* Type */
@@ -946,6 +965,233 @@ body.coco {
   .pose-talk .sprite__body,
   .agent .agent-emblem,
   .agent .agent-flare {
+    animation: none;
+  }
+}
+
+/* ---------- The villain ---------- */
+
+.villain {
+  --sprite-width: 8rem;
+}
+
+.sprite .arm-ol--thin {
+  stroke-width: 15;
+}
+
+.sprite .arm-fill--thin {
+  stroke-width: 9;
+}
+
+.sprite .finger-ol,
+.sprite .finger-fill {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.sprite .finger-ol {
+  stroke: var(--sprite-outline);
+  stroke-width: 7;
+}
+
+.sprite .finger-fill {
+  stroke-width: 3.5;
+}
+
+.villain .c-skin { fill: var(--villain-skin); }
+.villain .c-skin-stroke { stroke: var(--villain-skin); }
+.villain .c-skin-shade { fill: var(--villain-skin-shade); }
+.villain .c-hair { fill: var(--villain-hair); }
+.villain .c-hair-shade { fill: var(--villain-hair-shade); }
+.villain .c-coat { fill: var(--villain-coat); }
+.villain .c-coat-stroke { stroke: var(--villain-coat); }
+.villain .c-coat-shade { fill: var(--villain-coat-shade); }
+.villain .c-pants-stroke { stroke: var(--villain-pants); }
+.villain .c-boot { fill: var(--villain-boot); }
+.villain .c-accent { fill: var(--villain); }
+.villain .c-iris { fill: var(--villain); }
+.villain .c-pupil { fill: var(--sprite-outline); }
+.villain .c-eye-white,
+.villain .c-eye-shine,
+.villain .c-teeth { fill: var(--frost-white); }
+.villain .c-mouth { fill: var(--villain-mouth); }
+.villain .c-tongue { fill: var(--villain-tongue); }
+.villain .c-icicle { fill: var(--ice-block); opacity: 0.9; }
+.villain .c-strap { fill: var(--villain-strap); }
+.villain .c-rim { fill: var(--villain-rim); }
+.villain .c-lens { fill: var(--villain); }
+
+.villain .c-lens-glint {
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.villain .c-brow {
+  fill: none;
+  stroke: var(--sprite-outline);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.sprite .c-line-thin {
+  fill: none;
+  stroke: var(--sprite-outline);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.villain .mouth-open {
+  display: none;
+}
+
+.villain.is-mouth-open .mouth-closed {
+  display: none;
+}
+
+.villain.is-mouth-open .mouth-open {
+  display: inline;
+}
+
+.villain .villain-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visor-blink 3.8s var(--ease-soft) infinite;
+}
+
+.villain .villain-coat {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: coat-flutter 0.9s var(--ease-soft) infinite alternate;
+}
+
+@keyframes coat-flutter {
+  from {
+    transform: skewX(-3deg);
+  }
+  to {
+    transform: skewX(4deg) scaleY(1.03);
+  }
+}
+
+/* Fidgeting in his seat. */
+.villain.pose-idle .sprite__body {
+  animation: fidget 1.4s var(--ease-soft) infinite alternate;
+}
+
+@keyframes fidget {
+  0% {
+    transform: rotate(-2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-2%);
+  }
+  100% {
+    transform: rotate(3deg) translateY(0);
+  }
+}
+
+/* His ride: the villain sits behind the car's front so only his top half shows. */
+
+.villain-ride {
+  --ride-width: 15rem;
+  position: relative;
+  width: var(--ride-width);
+  aspect-ratio: 320 / 180;
+}
+
+/* Sized so his waist sits at the car's rim and he's behind the windshield. */
+.villain-ride__seat {
+  position: absolute;
+  left: 19%;
+  bottom: 12%;
+  transition: transform var(--t-base) var(--ease-pop);
+}
+
+.villain-ride.is-standing .villain-ride__seat {
+  transform: translateY(-16%);
+}
+
+.villain-ride .villain {
+  --sprite-width: calc(var(--ride-width) * 0.55);
+}
+
+.villain-car {
+  position: absolute;
+  inset: 0;
+}
+
+.villain-car__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.villain-car .c-car { fill: var(--villain-car); }
+.villain-car .c-car-shade { fill: var(--villain-car-shade); }
+.villain-car .c-car-trim { fill: var(--villain); }
+.villain-car .c-windshield { fill: color-mix(in srgb, var(--ice) 45%, transparent); }
+.villain-car .c-thruster { fill: var(--villain-thruster); }
+.villain-car .c-runner { fill: none; stroke: var(--villain-runner); stroke-width: 4; }
+.villain-car .c-runner-fill { fill: var(--villain-runner); }
+.villain-car .c-rim { fill: var(--villain-rim); }
+.villain-car .c-lens { fill: var(--frost-white); }
+.villain-car .c-car-patch { fill: var(--villain-patch); }
+.villain-car .c-icicle { fill: var(--ice-block); opacity: 0.9; }
+.villain-car .c-flame { fill: color-mix(in srgb, var(--rift-glow) 70%, var(--frost-white)); }
+
+.villain-car .ol,
+.villain-car .ol-thin {
+  stroke: var(--sprite-outline);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.villain-car .ol {
+  stroke-width: 4;
+}
+
+.villain-car .ol-thin {
+  stroke-width: 2.5;
+}
+
+.villain-car .car-flame {
+  transform-box: fill-box;
+  transform-origin: 100% 50%;
+  animation: flame-flicker 180ms linear infinite alternate;
+}
+
+@keyframes flame-flicker {
+  from {
+    transform: scaleX(0.75);
+    opacity: 0.75;
+  }
+  to {
+    transform: scaleX(1.15);
+    opacity: 1;
+  }
+}
+
+/* Hovering: the whole ride bobs. */
+.villain-ride.is-hovering {
+  animation: hover-bob 1.6s var(--ease-soft) infinite alternate;
+}
+
+@keyframes hover-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -6%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .villain .villain-coat,
+  .villain.pose-idle .sprite__body,
+  .villain-car .car-flame,
+  .villain-ride.is-hovering {
     animation: none;
   }
 }

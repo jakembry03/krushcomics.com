@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300">
+  <!--
+    The villain ([name TBD]), "smug" pose. Draft art.
+    Same 200x300 canvas and anchor (feet at bottom center, 100,292) in every pose.
+    No colors here: coco.css colors the c-* classes (frost blue, icy white,
+    and the --villain teal accent).
+  -->
+  <g id="coat" class="villain-coat">
+    <path class="ol c-coat" d="M66 168L60 252L68 240L74 262L82 244L90 266L98 246L106 264L114 244L122 262L130 242L138 256L136 168Z"/>
+    <path class="c-icicle" d="M71 262l3 9 3-9zM87 266l3 10 3-10zM103 264l3 9 3-9zM119 262l3 8 3-8z"/>
+  </g>
+  <g id="legs">
+    <path class="arm-ol arm-ol--thin" d="M86 226L82 280M114 226L118 280"/>
+    <path class="arm-fill arm-fill--thin c-pants-stroke" d="M86 226L82 280M114 226L118 280"/>
+    <path class="ol c-boot" d="M60 282Q66 274 88 278L92 290H70Q58 290 54 280Q58 286 60 282Z"/>
+    <path class="ol c-boot" d="M140 282Q134 274 112 278L108 290H130Q142 290 146 280Q142 286 140 282Z"/>
+  </g>
+  <g id="torso">
+    <path class="ol c-coat-shade" d="M62 152L54 122L72 140L78 118L90 144ZM138 152L146 122L128 140L122 118L110 144Z"/>
+    <path class="ol c-coat" d="M70 150Q100 136 130 150L136 222Q100 232 64 222Z"/>
+    <path class="c-coat-shade" d="M118 142Q126 145 130 150L136 222Q128 225 120 226Z"/>
+    <path class="ol-thin c-accent" d="M88 146L100 188L112 146L104 144L100 160L96 144Z"/>
+    <circle class="ol-thin c-accent" cx="100" cy="200" r="3"/>
+    <circle class="ol-thin c-accent" cx="100" cy="212" r="3"/>
+  </g>
+  <g id="arms" class="villain-arms">
+    <path class="arm-ol arm-ol--thin" d="M72 156Q76 184 118 178"/>
+    <path class="arm-fill arm-fill--thin c-coat-stroke" d="M72 156Q76 184 118 178"/>
+    <path class="finger-ol" d="M123.6 172.5L128.6 167.7M124.7 174.3L131.3 171.9M125.0 176.3L132.0 176.8"/><circle class="ol c-skin" cx="120" cy="176" r="7"/><path class="finger-fill c-skin-stroke" d="M123.6 172.5L128.6 167.7M124.7 174.3L131.3 171.9M125.0 176.3L132.0 176.8"/>
+    <path class="arm-ol arm-ol--thin" d="M128 156Q124 190 84 184"/>
+    <path class="arm-fill arm-fill--thin c-coat-stroke" d="M128 156Q124 190 84 184"/>
+    <path class="finger-ol" d="M77.0 182.3L70.0 182.8M77.3 180.3L70.7 177.9M78.4 178.5L73.4 173.7"/><circle class="ol c-skin" cx="82" cy="182" r="7"/><path class="finger-fill c-skin-stroke" d="M77.0 182.3L70.0 182.8M77.3 180.3L70.7 177.9M78.4 178.5L73.4 173.7"/>
+  </g>
+  <g id="head" class="villain-head" transform="rotate(4 100 146)">
+    <path class="ol c-skin" d="M58 92L24 66L52 112Z"/>
+    <path class="ol c-skin" d="M142 92L176 66L148 112Z"/>
+    <path class="c-skin-shade" d="M50 96L34 76L52 104Z"/>
+    <path class="c-skin-shade" d="M150 96L166 76L148 104Z"/>
+    <ellipse class="ol c-skin" cx="100" cy="100" rx="50" ry="47"/>
+    <path class="c-skin-shade" d="M144 112A50 47 0 0 1 100 147A50 47 0 0 0 138 96Z"/>
+    <g id="hair" class="villain-hair">
+      <path class="ol c-hair" d="M52 86L46 52L63 66L64 28L82 56L92 14L103 52L117 20L121 56L139 30L137 66L156 50L148 88Q100 62 52 86Z"/>
+      <path class="c-hair-shade" d="M64 28L72 60L82 56ZM92 14L96 54L103 52ZM117 20L114 56L121 56ZM139 30L130 62L137 66Z"/>
+    </g>
+    <g id="goggles" class="villain-goggles">
+      <path class="ol-thin c-strap" d="M52 74Q100 58 148 74L148 82Q100 66 52 82Z"/>
+      <circle class="ol c-rim" cx="82" cy="68" r="11"/>
+      <circle class="c-lens" cx="82" cy="68" r="7"/>
+      <circle class="ol c-rim" cx="118" cy="68" r="11"/>
+      <circle class="c-lens" cx="118" cy="68" r="7"/>
+      <path class="c-lens-glint" d="M78 65l3-3M114 65l3-3"/>
+    </g>
+    <g id="eyes" class="villain-eyes">
+      <ellipse class="ol-thin c-eye-white" cx="80" cy="101" rx="15" ry="13"/>
+      <circle class="c-iris" cx="86" cy="105" r="7"/>
+      <circle class="c-pupil" cx="86" cy="105" r="3.4"/>
+      <path class="ol-thin c-skin" d="M64 101Q80 84 96 101Q80 96 64 101Z"/>
+      <ellipse class="ol-thin c-eye-white" cx="122" cy="103" rx="9" ry="8"/>
+      <circle class="c-iris" cx="125" cy="105" r="4.4"/>
+      <circle class="c-pupil" cx="125" cy="105" r="2.1"/>
+      <path class="ol-thin c-skin" d="M112 103Q122 92 132 103Q122 99 112 103Z"/>
+    </g>
+    <path class="c-brow" d="M64 86Q78 80 95 86M110 84Q124 76 136 82"/>
+    <g id="mouth" class="villain-mouth">
+      <g class="mouth-closed"><path class="c-line" d="M76 120Q104 132 134 112"/><path class="c-teeth ol-thin" d="M118 122l3 6 3-7z"/></g>
+      <g class="mouth-open"><path class="ol-thin c-mouth" d="M64 113Q100 148 138 111Q100 122 64 113Z"/><path class="c-teeth" d="M70.9 115.1L74.1 122.1L77.3 115.1ZM79.7 116.3L82.9 123.3L86.1 116.3ZM88.4 117.0L91.6 124.0L94.8 117.0ZM97.3 117.0L100.5 124.0L103.7 117.0ZM106.2 116.5L109.4 123.5L112.6 116.5ZM115.2 115.4L118.4 122.4L121.6 115.4ZM124.2 113.7L127.4 120.7L130.6 113.7Z"/><path class="c-teeth" d="M76.7 124.9L79.9 118.9L83.1 124.9ZM90.4 129.6L93.6 123.6L96.8 129.6ZM104.2 129.2L107.4 123.2L110.6 129.2ZM118.2 123.8L121.4 117.8L124.6 123.8Z"/></g>
+    </g>
+  </g>
+</svg>

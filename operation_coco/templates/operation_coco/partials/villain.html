@@ -1,0 +1,21 @@
+{% load coco_sprites %}
+{% comment %}
+  The villain riding his flying car. All poses are inlined; the
+  pose-<name> class on #villain picks one (window.cocoSprite.setPose).
+  The ride moves as one piece; add is-standing to lift him up in his seat.
+{% endcomment %}
+<div class="villain-ride" id="villain-ride">
+  <div class="villain-ride__seat">
+    <div class="sprite villain pose-{{ pose|default:'idle' }}" id="villain" role="img"
+         aria-label="{{ villain_name|default:'The villain' }}">
+      <div class="sprite__body">
+        {% sprite_pose "villain" "idle" %}
+        {% sprite_pose "villain" "cackle" %}
+        {% sprite_pose "villain" "point" %}
+        {% sprite_pose "villain" "smug" %}
+        {% sprite_pose "villain" "angry" %}
+      </div>
+    </div>
+  </div>
+  <div class="villain-car" aria-hidden="true">{% villain_car %}</div>
+</div>

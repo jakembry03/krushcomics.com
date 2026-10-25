@@ -9,6 +9,7 @@ register = template.Library()
 # Characters and their poses, one SVG per pose in img/<character>/.
 POSES = {
     "agent": ("idle", "talk", "point", "happy", "worried", "cast"),
+    "villain": ("idle", "cackle", "point", "smug", "angry"),
 }
 
 
@@ -58,3 +59,14 @@ def sprite_pose(character, pose):
     if path is None:
         return ""
     return _inline_svg(path, f"{character}-{pose}-", f"sprite__pose sprite__pose--{pose}")
+
+
+@register.simple_tag
+def villain_car():
+    """
+    Inline the villain's flying car (img/villain/car.svg).
+    """
+    path = finders.find("operation_coco/img/villain/car.svg")
+    if path is None:
+        return ""
+    return _inline_svg(path, "villain-car-", "villain-car__svg")
