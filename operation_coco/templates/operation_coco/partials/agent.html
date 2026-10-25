@@ -1,0 +1,17 @@
+{% load coco_agent %}
+{% comment %}
+  The agent sprite. All five poses are inlined; the agent--<pose> class
+  picks which one shows. Change it with window.cocoAgent.setPose() in
+  agent.js. Usage:
+    {% include "operation_coco/partials/agent.html" with pose="idle" %}
+{% endcomment %}
+<div class="agent agent--{{ pose|default:'idle' }}" id="{{ agent_id|default:'agent' }}" role="img"
+     aria-label="[PLACEHOLDER: agent codename], the agent from the future">
+  <div class="agent__sprite">
+    {% agent_pose "idle" %}
+    {% agent_pose "talk" %}
+    {% agent_pose "point" %}
+    {% agent_pose "happy" %}
+    {% agent_pose "worried" %}
+  </div>
+</div>
