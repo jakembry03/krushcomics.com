@@ -1,4 +1,6 @@
+import json
 import re
+from html.parser import HTMLParser
 
 from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, override_settings
@@ -6,6 +8,38 @@ from django.urls import reverse
 
 from .dialogue import PHASE1_INTRO, prepare
 from .templatetags.coco_agent import POSES
+
+PAGES = {
+    "operation_coco:gate": "operation_coco/gate.html",
+    "operation_coco:login": "operation_coco/login.html",
+    "operation_coco:next": "operation_coco/next.html",
+}
+
+
+class TagCollector(HTMLParser):
+    """
+    Collects every start tag as (tag, attrs) so tests can check markup
+    without depending on exact formatting.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.tags = []
+
+    def handle_starttag(self, tag, attrs):
+        self.tags.append((tag, dict(attrs)))
+
+    def find(self, tag, **attrs):
+        return [
+            found for name, found in self.tags
+            if name == tag and all(found.get(k) == v for k, v in attrs.items())
+        ]
+
+
+def parse(response):
+    collector = TagCollector()
+    collector.feed(response.content.decode())
+    return collector
 
 
 # The site's CompressedManifestStaticFilesStorage needs `collectstatic` to
@@ -26,16 +60,80 @@ class PageTests(SimpleTestCase):
         """
         Each page returns 200 with its own template.
         """
-        pages = {
-            "operation_coco:gate": "operation_coco/gate.html",
-            "operation_coco:login": "operation_coco/login.html",
-            "operation_coco:next": "operation_coco/next.html",
-        }
-        for url_name, template in pages.items():
+        for url_name, template in PAGES.items():
             with self.subTest(url_name=url_name):
                 response = self.client.get(reverse(url_name))
                 self.assertEqual(response.status_code, 200)
                 self.assertTemplateUsed(response, template)
+
+    def test_every_page_is_noindex(self):
+        """
+        Search engines are asked not to list any page in the app.
+        """
+        for url_name in PAGES:
+            with self.subTest(url_name=url_name):
+                tags = parse(self.client.get(reverse(url_name)))
+                self.assertEqual(
+                    tags.find("meta", name="robots", content="noindex, nofollow"),
+                    [{"name": "robots", "content": "noindex, nofollow"}],
+                )
+
+    def test_pages_do_not_use_the_site_base_template(self):
+        for url_name in PAGES:
+            with self.subTest(url_name=url_name):
+                response = self.client.get(reverse(url_name))
+                self.assertTemplateUsed(response, "operation_coco/base.html")
+                self.assertTemplateNotUsed(response, "core/base.html")
+
+    def test_no_inline_scripts_or_external_assets(self):
+        """
+        Scripts load from files with defer; the only inline script is
+        json_script data. Nothing loads from another host.
+        """
+        for url_name in PAGES:
+            with self.subTest(url_name=url_name):
+                tags = parse(self.client.get(reverse(url_name)))
+                for attrs in tags.find("script"):
+                    if "src" in attrs:
+                        self.assertIn("defer", attrs)
+                        self.assertTrue(attrs["src"].startswith("/static/operation_coco/"))
+                    else:
+                        self.assertEqual(attrs.get("type"), "application/json")
+                for attrs in tags.find("link"):
+                    self.assertTrue(attrs["href"].startswith("/static/operation_coco/"))
+
+    def test_gate_links_to_login(self):
+        tags = parse(self.client.get(reverse("operation_coco:gate")))
+        self.assertTrue(tags.find("a", href=reverse("operation_coco:login")))
+
+    def test_gate_content(self):
+        response = self.client.get(reverse("operation_coco:gate"))
+        self.assertContains(response, "<title>Operation Coco</title>", html=True)
+        self.assertContains(response, "Coco's Wedding Game")
+        self.assertContains(response, "If you are Coco, please proceed.")
+
+    def test_login_form_never_submits(self):
+        """
+        The password form has no method="post" and no action, so nothing
+        Coco types can be sent anywhere.
+        """
+        tags = parse(self.client.get(reverse("operation_coco:login")))
+        forms = tags.find("form")
+        self.assertEqual(len(forms), 1)
+        for attrs in forms:
+            self.assertNotIn("action", attrs)
+            self.assertNotEqual(attrs.get("method", "").lower(), "post")
+
+    def test_password_field_is_not_saved(self):
+        """
+        The password input has no name and autocomplete is off, so the
+        browser has nothing to remember.
+        """
+        tags = parse(self.client.get(reverse("operation_coco:login")))
+        fields = tags.find("input", type="password")
+        self.assertEqual(len(fields), 1)
+        self.assertNotIn("name", fields[0])
+        self.assertEqual(fields[0].get("autocomplete"), "off")
 
     def test_login_rejects_post(self):
         """
@@ -47,6 +145,22 @@ class PageTests(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 405)
 
+    def test_login_has_dialogue_data(self):
+        """
+        The dialogue script reaches the page through json_script, with the
+        last line's button pointing at the next page.
+        """
+        response = self.client.get(reverse("operation_coco:login"))
+        match = re.search(
+            r'<script id="dialogue-data" type="application/json">(.*?)</script>',
+            response.content.decode(),
+            re.S,
+        )
+        self.assertIsNotNone(match)
+        data = json.loads(match.group(1))
+        self.assertEqual(len(data["lines"]), len(PHASE1_INTRO["lines"]))
+        self.assertEqual(data["lines"][-1]["button"]["url"], reverse("operation_coco:next"))
+
     def test_login_dialogue_button_url_is_resolved(self):
         """
         The view swaps url_name for a ready URL before rendering.
@@ -56,9 +170,31 @@ class PageTests(SimpleTestCase):
         self.assertEqual(last_line["button"]["url"], reverse("operation_coco:next"))
         self.assertNotIn("url_name", last_line["button"])
 
+    def test_login_and_next_show_the_agent(self):
+        for url_name in ("operation_coco:login", "operation_coco:next"):
+            with self.subTest(url_name=url_name):
+                response = self.client.get(reverse(url_name))
+                self.assertTemplateUsed(response, "operation_coco/partials/agent.html")
+
+
+class DialogueTests(SimpleTestCase):
+
     def test_prepare_leaves_the_script_unchanged(self):
         prepare(PHASE1_INTRO)
         self.assertIn("url_name", PHASE1_INTRO["lines"][-1]["button"])
+
+    def test_lines_use_known_poses(self):
+        for line in PHASE1_INTRO["lines"]:
+            with self.subTest(text=line["text"]):
+                self.assertIn(line["pose"], POSES)
+
+    def test_lines_are_placeholders(self):
+        """
+        Real dialogue never gets committed; every line stays a placeholder.
+        """
+        for line in PHASE1_INTRO["lines"]:
+            with self.subTest(text=line["text"]):
+                self.assertTrue(line["text"].startswith("[PLACEHOLDER"))
 
 
 class AgentSpriteTests(SimpleTestCase):
