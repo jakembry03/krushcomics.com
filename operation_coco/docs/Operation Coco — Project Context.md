@@ -13,13 +13,17 @@ Operation Coco is a puzzle-hunt website Jake is building as a wedding gift for h
 **The story: Frozen Heart.**
 
 - An ice villain (\[name TBD\]) has frozen Jake's heart, and present-day Jake is trapped in the ice.
-- A superhero agent arrives through a time rift to help. He is Jake from the future.
-- The agent guides Coco through a series of puzzles. Each one is a memory from their relationship, and each solve thaws Jake's heart a little more.
-- The final puzzle thaws it completely and brings Jake back. The ending is a letter from Jake.
+- A masked secret agent arrives through a time rift to help. For now he goes by **Agent Orange** (a working name). Secretly he is Jake from the future, but his face stays hidden under a hood and mask until the finale.
+- The agent guides Coco through puzzles that move through their relationship from the beginning, year by year. Each solve thaws Jake's heart a little more, and the agent's glowing suit lines shift from icy blue toward warm orange as it thaws.
+- In the finale the heart fully thaws, the agent pulls back his hood and mask to reveal he is Jake, and Coco reads Jake's final letter.
 
-**Tone.** Playful and a little silly on the surface (secret-agent banter, a cartoon hero), sincere underneath. Winter, December, snow, frost, and warmth returning.
+**Tone.** Playful and a little silly on the surface (secret-agent banter, a cartoon villain), sincere underneath. Winter, December, snow, frost, and warmth returning. Family-friendly: the villain is theatrical and goofy, never actually scary or cruel.
 
-**Content placeholders.** Jake writes all dialogue, answers, and letters himself. Until he does, use clearly marked placeholders like `[PLACEHOLDER: agent introduces himself]`. Never invent personal details about Jake, Coco, or their relationship.
+**Dialogue and personal content.**
+
+- Claude Code may write **draft dialogue** so the story has life during development. Mark every draft scene with `"draft": True` and a `# DRAFT DIALOGUE — Jake will rewrite` comment so Jake can find and replace it all later.
+- Draft dialogue must not invent personal facts about Jake, Coco, or their relationship (places, dates, names, inside jokes). Speak about the relationship in general terms only.
+- Real answers, hints, and letters come from Jake and never appear in the repo (see Rules).
 
 ## Rules for Claude Code
 
@@ -130,54 +134,51 @@ These are starting values. Jake may tune them, so never hardcode a color outside
 - Animations should feel soft: easing curves, nothing faster than about 150 ms.
 - No sound in Phase 1. Any later audio must start muted with a visible toggle.
 
-## The agent character
+## Characters
 
-The guide is Jake from the future, a small superhero who arrives through a time rift. Codename: \[TBD by Jake\]. He is an original character; Jake's own likeness, not anyone else's design.
+Both characters are original designs. Shared art style: cartoon game sprites with chunky proportions (head about a third of total height), thick dark outlines in `--ink`, flat colors with one soft shade tone, and a small highlight. Jake's reference is the general cartoon feel of TryHackMe's Advent of Cyber art; use it only as a style direction, and never copy any TryHackMe character, logo, mascot, or artwork.
 
-**Art style**
+### Agent Orange (the guide)
 
-- Cartoon game sprite: chunky proportions with a large head (about a third of total height), big expressive eyes, and a confident grin.
-- Thick dark outlines in `--ink`, flat colors with one soft shade tone, and a small highlight.
-- Jake's reference is the general cartoon feel of TryHackMe's Advent of Cyber art. Use that only as a style direction (bold outlines, flat shading, friendly heroic poses). Do not copy any TryHackMe character, logo, mascot, or artwork.
+A futuristic secret agent. Working name only; Jake will rename him later, so keep the name in one constant (`AGENT_NAME` in `dialogue.py`).
 
-**Design**
+- **Hood:** a black hood, drawn up, framing the face with a sharp silhouette.
+- **Mask:** a sleek matte-black mask covering the whole face, with a narrow glowing visor slit for eyes. No facial features visible.
+- **Suit:** fitted black tactical suit with thin glowing circuit-trace lines along the arms, chest, and hood edge. A small glowing heart emblem on the chest.
+- **The glow tells the story.** All glowing lines and the heart emblem use one color, `--agent-glow`, which shifts from icy blue (`--glow-cold`) at the start toward warm orange (`--glow-warm`) as Jake's heart thaws. The color comes from the thaw level (see the Phase 2 spec); never hardcode it in the SVG.
+- **Built for the reveal.** The hood and mask are separate SVG groups (`#hood`, `#mask`) layered over a face group (`#face`) that stays hidden until the finale, when they animate off. The face group can be an empty placeholder for now.
+- **Jake's features (finale only):** \[hair, beard, glasses, skin tone, eye color — Jake to fill in later\].
 
-- Superhero suit in deep indigo with thin glowing `--ice` circuit-trace lines, a nod to Jake's hacker side.
-- Short cape in `--lavender`, frosted at the edges.
-- A heart emblem on the chest in `--heart`, glowing softly. It ties to the story: he carries the warmth that will thaw present-day Jake.
+**Poses** (one SVG per pose in `img/agent/`, same canvas size and anchor point): `idle` (slight bob), `talk`, `point`, `happy`, `worried`, and `cast` (arm raised, glow flaring, used when he thaws something).
 
-**Color progression (warming up)**
+### The villain
 
-- He starts with an icy blue look: cool blue suit, `--ice` circuit traces, and a frosty cape. That gives the hacker/programmer feel and shows that he is frozen too.
-- As Coco moves through the puzzles, his colors shift gradually and slowly toward a warm orange, a little more with each solve, until he is fully warm at the finale.
-- The `--heart` emblem stays pink the whole way. It is the warmth he carries.
-- Build it so a single value drives the shift: the agent's colors are CSS custom properties in `coco.css`, mixed between an icy set and a warm set by one `--agent-warmth` value from 0 (frozen) to 1 (fully warm). Later phases set that value from server-side progress; Phase 1 keeps it at 0.
-- Jake's features: \[hair color and style, beard yes/no, glasses yes/no, skin tone, eye color — Jake to fill in\]. Until filled, use neutral defaults and mark them in a code comment.
+An ice villain who froze Jake's heart. Name: \[TBD by Jake\]; keep it in one constant (`VILLAIN_NAME` in `dialogue.py`).
 
-**Poses** (one SVG file per pose in `img/agent/`, same canvas size and anchor point so they swap cleanly)
+- **Vibe:** a gleeful, chaotic trickster. Jake's inspirations are the energy of the Joker, a gremlin, Junkrat from Overwatch, the Green Goblin, and Jack Frost. Blend that energy into a new character; do not copy any of their costumes, faces, or signature features.
+- **Look:** small, wiry, and hunched, with long fingers and pointed ears. Frost-pale skin with a blue tint, spiky hair made of jagged ice crystals, a huge manic grin with little icicle teeth, and wild mismatched eyes (one bigger than the other). Tattered frost-blue coat with icicle tails, and goggles pushed up on his forehead.
+- **Colors:** icy white, frost blue, and a sickly teal accent (`--villain` token), so he never shares the agent's glow color.
+- **Ride:** a rickety flying car, half sled and half jalopy, with sputtering jet thrusters, icicles hanging off it, and a trail of snow exhaust. Draw the car as its own SVG so the villain can sit in it and the two fly together.
 
-- `idle` — standing, slight bob animation
-- `talk` — mouth open, for alternating while text types
-- `point` — arm out, directing her attention
-- `happy` — big smile, fist pump
-- `worried` — brow furrowed, used when talking about the frozen heart
+**Poses** (in `img/villain/`): `idle` (fidgeting in the car), `cackle`, `point`, `smug`, and `angry` (for later phases).
 
-**Build notes**
+**Build notes for both**
 
-- Draw each pose as a hand-written SVG with named groups (`#head`, `#eyes`, `#mouth`, `#cape`) so CSS can animate blinking and cape flutter.
-- The first SVGs are a working draft. Jake may replace them with commissioned or hand-drawn art later, so keep every page referencing poses by file name only.
+- Hand-written SVGs with named groups (`#head`, `#eyes`, `#mouth`, `#cape`/`#coat`) so CSS can animate blinks, bobbing, and coat flutter.
+- These are working drafts. Jake may swap in commissioned or hand-drawn art later, so pages reference poses by file name only.
 
 ## Roadmap
 
-Only Phase 1 is being built now. The later phases are listed so Phase 1 doesn't paint the project into a corner. Don't build them until Jake hands over their spec.
+Build only the phase Jake has handed over a spec for. Later phases are listed so earlier ones don't paint the project into a corner.
 
-1. **Phase 1 — Gate and frozen login.** Landing page with a button, fake lock screen, the failed password, the time rift, the agent appears and talks.
-2. **Phase 2 — Security questions.** Three questions about the relationship, checked on the server against salted hashes, with tiered hints.
-3. **Phases 3+ — Memory puzzles.** Each one recovers a memory and thaws part of the heart. Rewards (letters, photos, voice memos) are encrypted with keys derived from the answers.
-4. **Finale.** The heart fully thaws, Jake returns, the final letter.
+1. **Phase 1 — Gate and frozen login.** Built. Landing page, fake lock screen, failed password, time rift, agent arrives and talks.
+2. **Phase 2 — Security questions and the frozen desktop.** Three questions about the relationship checked on the server, then the FrostOS desktop with frozen app icons, the villain's arrival, and Agent Orange thawing the first icon.
+3. **Phases 3+ — Memory puzzles.** Each frozen app is one puzzle, in the order the relationship happened. Each solve raises the thaw level, thaws the next app, and unlocks a reward (letter, photo, voice memo), encrypted with a key derived from its answer.
+4. **Finale.** The heart fully thaws, Agent Orange removes his hood and mask to reveal he is Jake, and Coco reads the final letter.
 
-**Design for later phases now**
+**Shared systems every phase uses**
 
-- Keep the dialogue box and agent sprite as reusable partials; every phase uses them.
-- Plan for server-side progress tracking in a session, so later stages can't be reached by typing a URL.
-- A heart-thaw meter will likely appear in later phases; leave room in the layout's top corner.
+- **Thaw level:** a number from 0 to 1 stored in the session. It drives the agent's glow color and the heart meter.
+- **Progress gating:** each page checks session progress on the server, so later stages can't be reached by typing a URL.
+- **Reusable partials:** the dialogue box, agent sprite, villain sprite, and desktop shell.
+- **One desktop icon per stage:** icons stay frozen until their stage unlocks.
