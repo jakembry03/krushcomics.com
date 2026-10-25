@@ -2,11 +2,13 @@ import json
 import re
 from html.parser import HTMLParser
 
+from django.core.exceptions import ValidationError
 from django.template import Context, Template, TemplateSyntaxError
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
+from .models import SecurityQuestion
 from .progress import THAW_KEY
 from .templatetags.coco_sprites import POSES
 
@@ -295,3 +297,16 @@ class AgentSpriteTests(SimpleTestCase):
     def test_unknown_pose_is_an_error(self):
         with self.assertRaises(TemplateSyntaxError):
             Template('{% load coco_sprites %}{% sprite_pose "agent" "dab" %}').render(Context())
+
+
+class SecurityQuestionModelTests(TestCase):
+
+    def test_ordered_by_order(self):
+        SecurityQuestion.objects.create(order=2, prompt="Favorite color?", answer_hashes=[])
+        SecurityQuestion.objects.create(order=1, prompt="Favorite snack?", answer_hashes=[])
+        self.assertEqual([q.order for q in SecurityQuestion.objects.all()], [1, 2])
+
+    def test_at_most_three_hints(self):
+        question = SecurityQuestion(order=1, prompt="Favorite snack?", hints=["a", "b", "c", "d"])
+        with self.assertRaises(ValidationError):
+            question.full_clean()
