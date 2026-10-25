@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Desktop app icon (draft). Colors come from coco.css: ai-fill, ai-accent, ai-line. -->
+  <rect class="ai-fill-soft" x="10" y="11" width="22" height="26" rx="2" transform="rotate(-9 21 24)"/>
+  <rect class="ai-fill" x="15" y="12" width="22" height="26" rx="2"/>
+  <rect class="ai-accent" x="18" y="15" width="16" height="15" rx="1"/>
+  <path class="ai-fill" d="M38 6l1.6 3.6L43 11l-3.4 1.4L38 16l-1.6-3.6L33 11l3.4-1.4z"/>
+</svg>

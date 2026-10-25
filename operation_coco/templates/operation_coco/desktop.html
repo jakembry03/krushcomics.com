@@ -1,8 +1,20 @@
 {% extends "operation_coco/base.html" %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'operation_coco/js/clock.js' %}" defer></script>
+  <script src="{% static 'operation_coco/js/desktop.js' %}" defer></script>
+{% endblock %}
+
+{% block body_class %}page-desktop{% endblock %}
+
+{% block topbar %}
+  {% include "operation_coco/partials/topbar.html" with heart_meter=True %}
+{% endblock %}
+
+{% block page_class %}page--desktop{% endblock %}
 
 {% block content %}
-  {# Stub: the FrostOS desktop replaces this. #}
-  <section class="panel placeholder-card">
-    <p class="placeholder-card__text">Desktop coming soon.</p>
-  </section>
+  <h1 class="visually-hidden">FrostOS desktop</h1>
+  {% include "operation_coco/partials/desktop_shell.html" %}
 {% endblock %}

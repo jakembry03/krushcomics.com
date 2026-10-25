@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods, require_safe
 
 from . import progress
 from .answers import check_answer
+from .desktop import DESKTOP_APPS
 from .dialogue import AGENT_NAME, PHASE1_INTRO, UNLOCK_ENCOURAGE, prepare
 from .models import SecurityQuestion
 from .progress import get_thaw_level, requires_unlock
@@ -18,6 +19,7 @@ def render_page(request, template, context=None):
     """
     context = dict(context or {})
     context["thaw_level"] = get_thaw_level(request)
+    context["thaw_percent"] = round(context["thaw_level"] * 100)
     context["agent_name"] = AGENT_NAME
     return render(request, template, context)
 
@@ -145,10 +147,26 @@ def _handle_unlock_post(request, questions):
     return ("encourage" if count % 3 == 0 else "wrong"), answer
 
 
+def desktop_apps(request):
+    """
+    DESKTOP_APPS with each app's frozen or thawed state for this visitor.
+    """
+    thawed = progress.thawed_stages(request)
+    apps = []
+    for app in DESKTOP_APPS:
+        app = dict(app, thawed=app["stage"] in thawed)
+        if app["thawed"]:
+            app["url"] = reverse("operation_coco:stage", args=[app["stage"]])
+        apps.append(app)
+    return apps
+
+
 @require_safe
 @requires_unlock
 def desktop(request):
     """
-    The FrostOS desktop. Stub until the desktop is built.
+    The FrostOS desktop: the hub for the rest of the game.
     """
-    return render_page(request, "operation_coco/desktop.html")
+    return render_page(request, "operation_coco/desktop.html", {
+        "apps": desktop_apps(request),
+    })

@@ -15,6 +15,8 @@ QUESTIONS_SOLVED_KEY = "coco_questions_solved"
 UNLOCKED_KEY = "coco_unlocked"
 MISSES_KEY = "coco_question_misses"
 HINTS_SHOWN_KEY = "coco_hints_shown"
+THAWED_KEY = "coco_thawed_stages"
+INTRO_SEEN_KEY = "coco_desktop_intro_seen"
 
 
 def is_unlocked(request):
@@ -26,6 +28,17 @@ def is_unlocked(request):
 
 def questions_solved(request):
     return int(request.session.get(QUESTIONS_SOLVED_KEY, 0))
+
+
+def thawed_stages(request):
+    """
+    The stages whose desktop icons are thawed (clickable).
+    """
+    return set(request.session.get(THAWED_KEY, []))
+
+
+def thaw_stage(request, stage):
+    request.session[THAWED_KEY] = sorted(thawed_stages(request) | {stage})
 
 
 def requires_unlock(view):

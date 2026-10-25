@@ -120,6 +120,16 @@
   --t-crack: 700ms;
   --t-unlocking: 2000ms;
   --t-helper: 8000ms;
+
+  /* Desktop */
+  --t-tooltip: 1600ms;
+  --app-memories: #F08DB4;
+  --app-messages: #6CC6F2;
+  --app-photos: #F2B45C;
+  --app-maps: #6FD39B;
+  --app-music: #A98BF5;
+  --app-letters: #F2876A;
+  --app-glyph: var(--frost-white);
   --t-mouth: 160ms;
   --dialogue-cps: 35;
 }
@@ -1877,5 +1887,358 @@ body.coco {
   .helper.is-visible .helper__bubble {
     animation: none;
     opacity: 1;
+  }
+}
+
+/* ---------- Top bar: heart meter ---------- */
+
+.heart-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.heart-meter + .topbar__icons {
+  margin-left: 0.75rem;
+}
+
+.heart-meter__icon {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.heart-meter__heart {
+  fill: var(--heart);
+}
+
+.heart-meter__ice {
+  fill: color-mix(in srgb, var(--ice-block) 45%, transparent);
+  stroke: color-mix(in srgb, var(--frost-white) 75%, transparent);
+  stroke-width: 1;
+}
+
+.heart-meter__crack {
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+.heart-meter.is-shivering {
+  animation: shiver 120ms linear infinite;
+}
+
+@keyframes shiver {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px) rotate(-2deg); }
+  75% { transform: translateX(1px) rotate(2deg); }
+}
+
+@media (max-width: 640px) {
+  .heart-meter__long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Desktop ---------- */
+
+.page-desktop .scene__sky {
+  filter: brightness(0.8) saturate(0.85);
+}
+
+.page-desktop .scene__glow {
+  opacity: 0.5;
+}
+
+.page--desktop {
+  display: block;
+  padding: 0;
+}
+
+.desktop {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding:
+    calc(3.25rem + env(safe-area-inset-top, 0px))
+    max(1.5rem, env(safe-area-inset-right, 0px))
+    calc(5.5rem + env(safe-area-inset-bottom, 0px))
+    max(1.5rem, env(safe-area-inset-left, 0px));
+}
+
+.desktop__apps {
+  display: grid;
+  grid-template-columns: repeat(2, 6.5rem);
+  gap: 1.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.app__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.25rem;
+  border: 0;
+  border-radius: 1rem;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app__button:hover {
+  background: color-mix(in srgb, var(--lilac-mist) 8%, transparent);
+}
+
+.app__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--app-color) 85%, var(--frost-white)), var(--app-color) 55%, color-mix(in srgb, var(--app-color) 70%, var(--ink)));
+  box-shadow: 0 0.375rem 1rem color-mix(in srgb, var(--night) 55%, transparent);
+  transition: filter var(--t-slow) var(--ease-soft), box-shadow var(--t-slow) var(--ease-soft);
+}
+
+.app--memories { --app-color: var(--app-memories); }
+.app--messages { --app-color: var(--app-messages); }
+.app--photos { --app-color: var(--app-photos); }
+.app--maps { --app-color: var(--app-maps); }
+.app--music { --app-color: var(--app-music); }
+.app--letters { --app-color: var(--app-letters); }
+
+.app__glyph {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.app__glyph .ai-fill { fill: var(--app-glyph); }
+.app__glyph .ai-fill-soft { fill: var(--app-glyph); opacity: 0.55; }
+.app__glyph .ai-accent { fill: color-mix(in srgb, var(--app-color) 75%, var(--ink)); }
+
+.app__glyph .ai-line,
+.app__glyph .ai-stroke {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.app__glyph .ai-line {
+  stroke: color-mix(in srgb, var(--app-color) 75%, var(--ink));
+  stroke-width: 1.6;
+}
+
+.app__glyph .ai-stroke {
+  stroke: var(--app-glyph);
+  stroke-width: 3.5;
+}
+
+.app__label {
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-shadow: 0 1px 0.5rem var(--night);
+  transition: color var(--t-slow) var(--ease-soft), text-shadow var(--t-slow) var(--ease-soft);
+}
+
+/* Frozen: an ice slab over a desaturated icon, frost on the label. */
+
+.app__ice {
+  position: absolute;
+  inset: -5px;
+  border-radius: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--frost-white) 55%, transparent);
+  background:
+    linear-gradient(118deg, transparent 37%, color-mix(in srgb, var(--frost-white) 70%, transparent) 38% 39.5%, transparent 40.5%),
+    linear-gradient(205deg, transparent 58%, color-mix(in srgb, var(--frost-white) 55%, transparent) 59% 60%, transparent 61%),
+    linear-gradient(160deg, transparent 72%, color-mix(in srgb, var(--frost-white) 45%, transparent) 72.5% 73.5%, transparent 74%),
+    conic-gradient(from 40deg at 35% 30%,
+      color-mix(in srgb, var(--ice-block) 70%, transparent),
+      color-mix(in srgb, var(--ice-block) 35%, transparent),
+      color-mix(in srgb, var(--ice-block) 60%, transparent),
+      color-mix(in srgb, var(--ice-block) 30%, transparent),
+      color-mix(in srgb, var(--ice-block) 70%, transparent));
+  box-shadow:
+    inset 0 0 0.75rem color-mix(in srgb, var(--frost-white) 55%, transparent),
+    0 0 0.75rem color-mix(in srgb, var(--ice) 35%, transparent);
+  pointer-events: none;
+}
+
+.app.is-thawed .app__ice {
+  display: none;
+}
+
+.app.is-frozen .app__tile {
+  filter: saturate(0.2) brightness(0.85);
+}
+
+.app.is-frozen .app__label {
+  color: var(--ice);
+  text-shadow:
+    0 0 0.375rem color-mix(in srgb, var(--frost-white) 70%, transparent),
+    0 1px 0.5rem var(--night);
+  background: color-mix(in srgb, var(--ice-block) 14%, transparent);
+}
+
+.app.is-frozen .app__button {
+  cursor: not-allowed;
+}
+
+.app.is-shaking .app__tile {
+  animation: app-shake 400ms var(--ease-soft);
+}
+
+@keyframes app-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px) rotate(-2deg); }
+  40% { transform: translateX(4px) rotate(2deg); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+.app__tooltip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 0.25rem);
+  z-index: 5;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 0.625rem;
+  background: var(--dialogue-bg);
+  color: var(--ice);
+  font: 600 0.8125rem/1.3 var(--font-mono);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -0.25rem);
+  transition: opacity var(--t-fast) var(--ease-soft), transform var(--t-fast) var(--ease-soft);
+  pointer-events: none;
+}
+
+.app.is-tipped .app__tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Thawed: full color, a warm halo, and a gentle pulse. */
+
+.app.is-thawed .app__tile {
+  box-shadow:
+    0 0 1.5rem color-mix(in srgb, var(--glow-warm) 75%, transparent),
+    0 0.375rem 1rem color-mix(in srgb, var(--night) 55%, transparent);
+  animation: app-pulse 2.2s var(--ease-soft) infinite alternate;
+}
+
+@keyframes app-pulse {
+  from {
+    transform: scale(1);
+    box-shadow:
+      0 0 1rem color-mix(in srgb, var(--glow-warm) 55%, transparent),
+      0 0.375rem 1rem color-mix(in srgb, var(--night) 55%, transparent);
+  }
+  to {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 2.25rem color-mix(in srgb, var(--glow-warm) 90%, transparent),
+      0 0.375rem 1rem color-mix(in srgb, var(--night) 55%, transparent);
+  }
+}
+
+/* ---------- Taskbar ---------- */
+
+.taskbar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.5rem 0.75rem;
+  transform: translateX(-50%);
+  border: 1px solid var(--panel-border);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--lilac-mist) 12%, transparent);
+  box-shadow: var(--panel-shadow);
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  backdrop-filter: blur(var(--panel-blur));
+}
+
+.taskbar__pins {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.taskbar__pin {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--night) 35%, transparent);
+}
+
+.taskbar__pin--start {
+  background: color-mix(in srgb, var(--lavender) 35%, transparent);
+}
+
+.taskbar__pin svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.taskbar__extra {
+  display: flex;
+  align-items: center;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--panel-border);
+}
+
+/* ---------- Desktop: phone layout ---------- */
+
+@media (max-width: 640px) {
+  .desktop__apps {
+    grid-template-columns: repeat(3, minmax(0, 6.5rem));
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app.is-thawed .app__tile {
+    animation: none;
+  }
+
+  .heart-meter.is-shivering {
+    animation: none;
   }
 }

@@ -1,7 +1,20 @@
-{# The FrostOS top bar, shared by the lock screens and the desktop. #}
+{% comment %}
+  The FrostOS top bar, shared by the lock screens and the desktop.
+  Pass heart_meter=True to show how far Jake's heart has thawed.
+{% endcomment %}
 <header class="topbar">
   <span class="topbar__brand">FrostOS</span>
   <time class="topbar__clock" data-clock="time"></time>
+  {% if heart_meter %}
+    <span class="heart-meter" id="heart-meter">
+      <svg class="heart-meter__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path class="heart-meter__heart" d="M12 20.5l-1.2-1.1C6 15.1 3 12.3 3 8.9 3 6.2 5.1 4 7.8 4c1.6 0 3.1.8 4.2 2 1.1-1.2 2.6-2 4.2-2C18.9 4 21 6.2 21 8.9c0 3.4-3 6.2-7.8 10.5L12 20.5z"/>
+        <rect class="heart-meter__ice" x="1.5" y="2" width="21" height="20" rx="4"/>
+        <path class="heart-meter__crack" d="M6 5l3 4-2 3M18 18l-3-3 1-3"/>
+      </svg>
+      <span class="heart-meter__text"><span class="heart-meter__long">Jake's heart: </span>{{ thaw_percent }}%<span class="heart-meter__long"> thawed.</span></span>
+    </span>
+  {% endif %}
   {# Decoration only: these icons do nothing. #}
   <span class="topbar__icons" aria-hidden="true">
     <svg class="topbar__icon" viewBox="0 0 24 24" focusable="false">

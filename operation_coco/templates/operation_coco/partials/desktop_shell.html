@@ -1,0 +1,49 @@
+{% load coco_sprites %}
+{% comment %}
+  The FrostOS desktop: app icons and the taskbar. Every later stage
+  starts from one of these icons. Pass `apps` (from the desktop view):
+  each has slug, label, icon, stage, thawed, and url when thawed.
+{% endcomment %}
+<div class="desktop">
+  <ul class="desktop__apps" id="desktop-apps" aria-label="Apps">
+    {% for app in apps %}
+      <li class="app app--{{ app.slug }} {% if app.thawed %}is-thawed{% else %}is-frozen{% endif %}" data-stage="{{ app.stage }}">
+        {% if app.thawed %}
+          <a class="app__button" href="{{ app.url }}" data-app-link>
+        {% else %}
+          <button class="app__button" type="button" aria-disabled="true" aria-describedby="frozen-tip-{{ app.slug }}">
+        {% endif %}
+            <span class="app__tile">
+              {% app_icon app.icon %}
+              <span class="app__ice" aria-hidden="true"></span>
+            </span>
+            <span class="app__label">{{ app.label }}</span>
+        {% if app.thawed %}
+          </a>
+        {% else %}
+          </button>
+          <span class="app__tooltip" id="frozen-tip-{{ app.slug }}" role="status">Frozen solid.</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {# Decoration only, apart from anything passed in as taskbar_extra. #}
+  <nav class="taskbar" aria-label="Taskbar">
+    <span class="taskbar__pins" aria-hidden="true">
+      <span class="taskbar__pin taskbar__pin--start">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/></svg>
+      </span>
+      <span class="taskbar__pin">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6H10l2 2h7.5A1.5 1.5 0 0 1 21 9.5v8A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"/></svg>
+      </span>
+      <span class="taskbar__pin">
+        <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.5 5.4 3.5 8.5s-1 5.9-3.5 8.5c-2.5-2.6-3.5-5.4-3.5-8.5s1-5.9 3.5-8.5z"/></svg>
+      </span>
+      <span class="taskbar__pin">
+        <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>
+      </span>
+    </span>
+    {% if taskbar_extra %}<span class="taskbar__extra">{{ taskbar_extra }}</span>{% endif %}
+  </nav>
+</div>

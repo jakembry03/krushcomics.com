@@ -11,6 +11,7 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from .answers import check_answer, hash_answer, normalize_answer
+from .desktop import DESKTOP_APPS
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .models import SecurityQuestion
 from .progress import THAW_KEY, UNLOCKED_KEY
@@ -558,3 +559,34 @@ class UnlockTests(TestCase):
         SecurityQuestion.objects.all().delete()
         response = self.client.get(self.url)
         self.assertContains(response, "haven't been set up yet")
+
+
+@plain_static_storage
+class DesktopTests(TestCase):
+
+    def setUp(self):
+        session = self.client.session
+        session[UNLOCKED_KEY] = True
+        session.save()
+        self.url = reverse("operation_coco:desktop")
+
+    def test_six_frozen_apps_and_the_heart_meter(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "operation_coco/partials/desktop_shell.html")
+        tags = parse(response)
+        frozen = [a for _, a in tags.tags if "is-frozen" in a.get("class", "").split()]
+        self.assertEqual(len(frozen), len(DESKTOP_APPS))
+        self.assertEqual(len(DESKTOP_APPS), 6)
+        self.assertContains(response, "Jake's heart: </span>0%")
+        for app in DESKTOP_APPS:
+            self.assertContains(response, app["label"])
+
+    def test_frozen_apps_are_not_links(self):
+        tags = parse(self.client.get(self.url))
+        self.assertEqual(tags.find("a", **{"data-app-link": None}), [])
+
+    def test_heart_meter_follows_thaw_level(self):
+        session = self.client.session
+        session[THAW_KEY] = 0.5
+        session.save()
+        self.assertContains(self.client.get(self.url), "50%")
