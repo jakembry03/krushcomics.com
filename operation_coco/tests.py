@@ -13,7 +13,7 @@ from django.urls import reverse
 from .answers import check_answer, hash_answer, normalize_answer
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .models import SecurityQuestion
-from .progress import THAW_KEY
+from .progress import THAW_KEY, UNLOCKED_KEY
 from .templatetags.coco_sprites import POSES
 
 PAGES = {
@@ -449,3 +449,112 @@ class SetCocoQuestionsCommandTests(TestCase):
         out = self.run_command(["n"], [])
         self.assertIn("Nothing changed", out)
         self.assertEqual(list(SecurityQuestion.objects.values_list("prompt", flat=True)), ["Old?"])
+
+
+@fast_hashing
+@plain_static_storage
+class UnlockTests(TestCase):
+
+    def setUp(self):
+        # Made-up questions and answers only.
+        SecurityQuestion.objects.create(
+            order=1, prompt="What did the cat wear?",
+            answer_hashes=[hash_answer("The Cat in the Hat")], hints=["Striped.", "Tall."],
+        )
+        SecurityQuestion.objects.create(
+            order=2, prompt="Favorite fruit?", answer_hashes=[hash_answer("banana")], hints=[],
+        )
+        SecurityQuestion.objects.create(
+            order=3, prompt="Favorite color?", answer_hashes=[hash_answer("blue")], hints=["Sky."],
+        )
+        self.url = reverse("operation_coco:unlock")
+
+    def post(self, answer="", question=1, action="answer"):
+        return self.client.post(
+            self.url,
+            {"answer": answer, "question": question, "action": action},
+            HTTP_ACCEPT="application/json",
+        ).json()
+
+    def test_shows_the_first_question(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Account locked")
+        self.assertContains(response, "What did the cat wear?")
+        self.assertNotContains(response, "Favorite fruit?")
+        self.assertContains(response, "Need a hint?")  # in the page, but hidden
+        self.assertNotContains(response, "Striped.")
+
+    def test_correct_answers_advance_one_at_a_time(self):
+        state = self.post("cat in the hat", question=1)
+        self.assertEqual(state["result"], "correct")
+        self.assertEqual(state["solved"], 1)
+        self.assertEqual(state["question"]["prompt"], "Favorite fruit?")
+
+        state = self.post("BANANA", question=2)
+        self.assertEqual((state["result"], state["solved"]), ("correct", 2))
+
+        state = self.post("Blue!", question=3)
+        self.assertEqual(state["result"], "unlocked")
+        self.assertEqual(state["redirect"], reverse("operation_coco:desktop"))
+        self.assertIs(self.client.session[UNLOCKED_KEY], True)
+
+    def test_wrong_answers_do_not_advance(self):
+        state = self.post("dog in the hat", question=1)
+        self.assertEqual(state["result"], "wrong")
+        self.assertEqual(state["solved"], 0)
+        self.assertNotIn(UNLOCKED_KEY, self.client.session)
+
+    def test_cannot_skip_ahead_by_tampering(self):
+        """
+        Answering a later question's answer, or claiming to be on a later
+        question, never advances past the current one.
+        """
+        self.assertEqual(self.post("banana", question=1)["result"], "wrong")
+        state = self.post("banana", question=2)
+        self.assertEqual((state["result"], state["solved"]), ("stale", 0))
+
+    def test_blank_answer_is_not_a_miss(self):
+        self.assertEqual(self.post("   ")["result"], "blank")
+        self.assertFalse(self.post("   ")["hint_available"])
+
+    def test_hints_only_after_a_miss(self):
+        state = self.post(action="hint")
+        self.assertEqual(state["hints"], [])
+        self.assertFalse(state["hint_available"])
+
+        self.assertTrue(self.post("dog")["hint_available"])
+        self.assertEqual(self.post(action="hint")["hints"], ["Striped."])
+        state = self.post(action="hint")
+        self.assertEqual(state["hints"], ["Striped.", "Tall."])
+        self.assertFalse(state["hint_available"])
+        self.assertEqual(self.post(action="hint")["hints"], ["Striped.", "Tall."])
+
+    def test_third_miss_brings_encouragement(self):
+        results = [self.post(f"wrong {n}")["result"] for n in range(1, 7)]
+        self.assertEqual(results, ["wrong", "wrong", "encourage", "wrong", "wrong", "encourage"])
+
+    def test_without_javascript(self):
+        """
+        The form also works as a plain POST: a wrong answer re-renders
+        with her text kept; a right one redirects.
+        """
+        response = self.client.post(self.url, {"answer": "dog hat", "question": 1, "action": "answer"})
+        self.assertContains(response, "That answer doesn't match our records.")
+        self.assertContains(response, 'value="dog hat"')
+
+        response = self.client.post(self.url, {"answer": "cat in hat", "question": 1, "action": "answer"})
+        self.assertRedirects(response, self.url)
+
+    def test_unlocked_visitors_go_to_the_desktop(self):
+        session = self.client.session
+        session[UNLOCKED_KEY] = True
+        session.save()
+        self.assertRedirects(self.client.get(self.url), reverse("operation_coco:desktop"))
+
+    def test_desktop_requires_unlocking(self):
+        self.assertRedirects(self.client.get(reverse("operation_coco:desktop")), self.url)
+
+    def test_no_questions_yet(self):
+        SecurityQuestion.objects.all().delete()
+        response = self.client.get(self.url)
+        self.assertContains(response, "haven't been set up yet")

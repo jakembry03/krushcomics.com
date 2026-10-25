@@ -46,6 +46,17 @@ PHASE1_INTRO = {
 }
 
 
+# One line is picked at random when she misses a question three times.
+UNLOCK_ENCOURAGE = {
+    "draft": True,
+    "lines": [
+        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 1]"},
+        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 2]"},
+        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: encouragement 3]"},
+    ],
+}
+
+
 def prepare(script):
     """
     Return a copy of a script ready for json_script: speaker names added,

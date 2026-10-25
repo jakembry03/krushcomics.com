@@ -114,6 +114,12 @@
   --t-rift: 1200ms;
   --t-arrive: 800ms;
   --t-reduced-fade: 300ms;
+
+  /* Unlock screen */
+  --t-check: 900ms;
+  --t-crack: 700ms;
+  --t-unlocking: 2000ms;
+  --t-helper: 8000ms;
   --t-mouth: 160ms;
   --dialogue-cps: 35;
 }
@@ -1414,4 +1420,462 @@ body.coco {
 .placeholder-card__text {
   margin: 0;
   font: 400 1.125rem/1.6 var(--font-mono);
+}
+
+/* ---------- Unlock: Account locked ---------- */
+
+.unlock-stage {
+  width: min(100%, 26rem);
+}
+
+.page-unlock .clock__time {
+  font-size: clamp(2.75rem, 9vw, 3.75rem);
+}
+
+.page-unlock .login-column {
+  gap: 1rem;
+}
+
+.unlock-card {
+  text-align: center;
+}
+
+.unlock-card__locked,
+.unlock-verified {
+  width: 100%;
+}
+
+.avatar__lock {
+  width: 44px;
+  height: 44px;
+}
+
+.avatar__lock-shackle {
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.avatar__lock-body {
+  fill: color-mix(in srgb, var(--ice) 75%, var(--frost-white));
+  stroke: var(--frost-white);
+  stroke-width: 1;
+}
+
+.avatar__lock-frost {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.unlock-card__title {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.unlock-card__line {
+  margin: 0.375rem 0 1rem;
+  color: var(--text-soft);
+  font-size: 0.9375rem;
+}
+
+.unlock-card__notice {
+  margin: 0.5rem 0 0;
+}
+
+.unlock-card__notice--dev {
+  color: var(--text-soft);
+  font-size: 0.875rem;
+}
+
+/* Progress dots: ice covers each until its question is answered. */
+
+.qdots {
+  display: flex;
+  justify-content: center;
+  gap: 0.875rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.qdot {
+  position: relative;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--night) 50%, transparent);
+  border: 1px solid var(--panel-border);
+}
+
+.qdot::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, color-mix(in srgb, var(--frost-white) 85%, transparent) 0 14%, transparent 34%),
+    linear-gradient(160deg, color-mix(in srgb, var(--ice-block) 75%, transparent), color-mix(in srgb, var(--ice) 35%, transparent));
+  box-shadow: inset 0 0 6px color-mix(in srgb, var(--frost-white) 60%, transparent);
+}
+
+.qdot--current {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lavender) 55%, transparent);
+}
+
+.qdot--done {
+  background: var(--heart);
+  border-color: var(--heart);
+  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--heart) 60%, transparent);
+}
+
+.qdot--done::before {
+  opacity: 0;
+}
+
+.qdot--done::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0.35rem;
+  height: 0.6rem;
+  border: solid var(--ink);
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.qdot--done.is-cracking::before {
+  animation: ice-crack-away var(--t-crack) var(--ease-out) both;
+}
+
+@keyframes ice-crack-away {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  35% {
+    opacity: 1;
+    transform: scale(1.08) rotate(-6deg);
+    filter: brightness(1.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7) rotate(14deg);
+  }
+}
+
+/* Question */
+
+.unlock-question {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.unlock-question.is-leaving {
+  animation: question-out var(--t-base) var(--ease-soft) both;
+}
+
+.unlock-question.is-entering {
+  animation: question-in var(--t-slow) var(--ease-out) both;
+}
+
+@keyframes question-out {
+  to {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+}
+
+@keyframes question-in {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+}
+
+.unlock-question__prompt {
+  font-family: var(--font-mono);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+.unlock-question__input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--night) 45%, transparent);
+  color: var(--text);
+  font: 400 1rem/1.2 var(--font-ui);
+  text-align: center;
+}
+
+.unlock-question__input:focus-visible {
+  border-color: var(--ice);
+}
+
+.unlock-form__submit {
+  width: 100%;
+  margin-top: 0.875rem;
+}
+
+.unlock-form__submit:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.unlock-hint-toggle {
+  min-height: 44px;
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--lavender);
+  font: 600 0.9375rem var(--font-ui);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.unlock-hint-toggle:hover {
+  color: var(--frost-white);
+}
+
+.unlock-hints {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.unlock-hints li {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--lavender) 45%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--night) 40%, transparent);
+  font: 400 0.9375rem/1.5 var(--font-mono);
+  animation: question-in var(--t-slow) var(--ease-out) both;
+}
+
+.unlock-hints li::before {
+  content: "Hint: ";
+  color: var(--lavender);
+  font-weight: 700;
+}
+
+/* The check mark that pops over the card on a right answer. */
+
+.unlock-check {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: var(--heart);
+  box-shadow: 0 0 2rem color-mix(in srgb, var(--heart) 70%, transparent);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+  pointer-events: none;
+}
+
+.unlock-check svg {
+  width: 2.75rem;
+  height: 2.75rem;
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.unlock-check.is-visible {
+  animation: check-pop var(--t-check) var(--ease-soft) both;
+}
+
+@keyframes check-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  45%, 75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Identity verified */
+
+.unlock-verified__title {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--heart);
+}
+
+.unlock-verified__line {
+  margin: 0.25rem 0 1.25rem;
+  font-size: 1.125rem;
+}
+
+.unlock-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--night) 55%, transparent);
+  overflow: hidden;
+}
+
+.unlock-bar__fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lavender), var(--heart));
+  animation: unlock-fill var(--t-unlocking) var(--ease-soft) forwards;
+}
+
+@keyframes unlock-fill {
+  to {
+    width: 100%;
+  }
+}
+
+.unlock-verified__status {
+  margin: 0.75rem 0 0;
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.unlock-card.is-verified .avatar__lock-shackle {
+  transform: translateY(-2px) rotate(-18deg);
+  transform-origin: 16.5px 10.5px;
+  transition: transform var(--t-slow) var(--ease-pop);
+}
+
+/* ---------- Agent Orange's encouragement pop-in ---------- */
+
+.helper {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  z-index: 25;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+  width: min(22rem, calc(100vw - 2rem));
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.helper.is-visible {
+  visibility: visible;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.helper .agent {
+  --sprite-width: 6rem;
+  flex: none;
+}
+
+.helper__rift {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 1rem;
+  width: 5rem;
+  height: 8.5rem;
+  translate: none;
+  left: auto;
+  top: auto;
+}
+
+.helper__rift,
+.helper .agent,
+.helper__bubble {
+  opacity: 0;
+}
+
+.helper.is-visible .helper__rift {
+  animation: helper-rift var(--t-helper) var(--ease-soft) both;
+}
+
+.helper.is-visible .agent {
+  animation: helper-agent var(--t-helper) var(--ease-soft) both;
+}
+
+.helper.is-visible .helper__bubble {
+  animation: helper-bubble var(--t-helper) var(--ease-soft) both;
+}
+
+@keyframes helper-rift {
+  0% { opacity: 0; transform: scale(0.05); }
+  8%, 88% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.05); }
+}
+
+@keyframes helper-agent {
+  0%, 6% { opacity: 0; transform: translateY(20%) scale(0.3); }
+  12% { opacity: 1; transform: translateY(-8%) scale(1); }
+  16%, 86% { opacity: 1; transform: none; }
+  94%, 100% { opacity: 0; transform: translateY(20%) scale(0.3); }
+}
+
+@keyframes helper-bubble {
+  0%, 14% { opacity: 0; transform: translateY(0.5rem); }
+  20%, 84% { opacity: 1; transform: none; }
+  90%, 100% { opacity: 0; }
+}
+
+.helper__bubble {
+  position: relative;
+  flex: 1;
+  margin: 0 0 4rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  background: var(--dialogue-bg);
+  color: var(--frost-white);
+  font: 400 0.9375rem/1.5 var(--font-mono);
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  backdrop-filter: blur(var(--panel-blur));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unlock-question.is-leaving,
+  .unlock-question.is-entering,
+  .unlock-hints li,
+  .qdot--done.is-cracking::before {
+    animation: none;
+  }
+
+  .helper.is-visible .helper__rift,
+  .helper.is-visible .agent,
+  .helper.is-visible .helper__bubble {
+    animation: none;
+    opacity: 1;
+  }
 }

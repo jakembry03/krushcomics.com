@@ -1,8 +1,111 @@
 {% extends "operation_coco/base.html" %}
+{% load static %}
+
+{% block preload %}
+  <link rel="preload" href="{% static 'operation_coco/fonts/JetBrainsMono-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'operation_coco/js/clock.js' %}" defer></script>
+  <script src="{% static 'operation_coco/js/sprite.js' %}" defer></script>
+  <script src="{% static 'operation_coco/js/unlock.js' %}" defer></script>
+{% endblock %}
+
+{% block body_class %}page-login page-unlock{% endblock %}
+
+{% block scene_extra %}
+  <div class="aurora"></div>
+{% endblock %}
+
+{% block topbar %}
+  {% include "operation_coco/partials/topbar.html" %}
+{% endblock %}
+
+{% block page_class %}page--login{% endblock %}
 
 {% block content %}
-  {# Stub: the Account Locked screen replaces this. #}
-  <section class="panel placeholder-card">
-    <p class="placeholder-card__text">Security questions coming soon.</p>
-  </section>
+  <div class="login-stage unlock-stage">
+    <div class="login-column">
+      <div class="clock" id="clock">
+        <time class="clock__time" data-clock="time">&nbsp;</time>
+        <p class="clock__date" data-clock="date">&nbsp;</p>
+      </div>
+
+      <section class="panel login-card unlock-card{% if result == 'wrong' or result == 'encourage' %} is-shaking{% endif %}"
+               id="unlock-card" aria-labelledby="unlock-title">
+        <div class="avatar" aria-hidden="true">
+          <svg class="avatar__lock" viewBox="0 0 24 24" focusable="false">
+            <path class="avatar__lock-shackle" d="M7.5 10.5V8a4.5 4.5 0 0 1 9 0v2.5"/>
+            <rect class="avatar__lock-body" x="5" y="10.5" width="14" height="10" rx="2.5"/>
+            <path class="avatar__lock-frost" d="M12 13.5v4M10.3 14.5l3.4 2M13.7 14.5l-3.4 2"/>
+          </svg>
+        </div>
+
+        <div class="unlock-card__locked" id="unlock-locked">
+          <h1 class="unlock-card__title" id="unlock-title">Account locked</h1>
+          <p class="unlock-card__line">Please answer your security questions to unlock your account.</p>
+
+          {% if question %}
+            <ol class="qdots" id="qdots" aria-label="Question {{ solved|add:1 }} of {{ total }}">
+              {% for dot in dots %}
+                <li class="qdot qdot--{{ dot }}"><span class="visually-hidden">{% if dot == "done" %}Answered{% elif dot == "current" %}Current question{% else %}Not yet{% endif %}</span></li>
+              {% endfor %}
+            </ol>
+
+            <form class="unlock-form" id="unlock-form" method="post" action="{% url 'operation_coco:unlock' %}" autocomplete="off" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="question" id="unlock-question-order" value="{{ question.order }}">
+              <div class="unlock-question" id="unlock-question">
+                <label class="unlock-question__prompt" for="unlock-answer" id="unlock-prompt">{{ question.prompt }}</label>
+                <input class="unlock-question__input" id="unlock-answer" name="answer" type="text"
+                       value="{{ answer }}" maxlength="200" autocomplete="off" autocapitalize="off"
+                       autocorrect="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-bwignore>
+              </div>
+              {# Submit comes first so Enter in the field submits the answer, not a hint request. #}
+              <button class="btn btn--glow unlock-form__submit" id="unlock-submit" type="submit" name="action" value="answer">Submit</button>
+
+              <p class="login-hint unlock-message{% if result == 'wrong' or result == 'encourage' or result == 'blank' %} is-error{% endif %}" id="unlock-message" role="status">
+                {% if result == "wrong" or result == "encourage" %}That answer doesn't match our records.{% elif result == "blank" %}Please type an answer.{% endif %}
+              </p>
+
+              <button class="unlock-hint-toggle" id="unlock-hint-toggle" type="submit" name="action" value="hint"
+                      formnovalidate{% if not hint_available %} hidden{% endif %}>Need a hint?</button>
+              <ol class="unlock-hints" id="unlock-hints" aria-live="polite"{% if not hints %} hidden{% endif %}>
+                {% for hint in hints %}<li>{{ hint }}</li>{% endfor %}
+              </ol>
+            </form>
+          {% else %}
+            <p class="unlock-card__notice">The security questions haven't been set up yet.</p>
+            {% if show_setup_hint %}
+              <p class="unlock-card__notice unlock-card__notice--dev">Run <code>python manage.py set_coco_questions</code></p>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <div class="unlock-verified" id="unlock-verified" hidden>
+          <p class="unlock-verified__title">Identity verified.</p>
+          <p class="unlock-verified__line">Welcome back, Coco.</p>
+          <div class="unlock-bar" aria-hidden="true"><span class="unlock-bar__fill"></span></div>
+          <p class="unlock-verified__status" role="status">Unlocking&hellip;</p>
+        </div>
+
+        <span class="unlock-check" id="unlock-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12.5 10 17.5 19 7"/></svg>
+        </span>
+      </section>
+    </div>
+  </div>
+
+  {# Agent Orange pops in from a small rift with encouragement after three misses. #}
+  <aside class="helper{% if result == 'encourage' %} is-visible is-static{% endif %}" id="helper" aria-live="polite">
+    <div class="helper__rift rift is-open" aria-hidden="true">
+      <span class="rift__halo"></span>
+      <span class="rift__portal"><span class="rift__swirl"></span></span>
+      <span class="rift__core"></span>
+    </div>
+    {% include "operation_coco/partials/agent.html" with pose="happy" agent_id="helper-agent" %}
+    <p class="helper__bubble" id="helper-bubble">{% if result == 'encourage' %}{{ dialogue.lines.0.text }}{% endif %}</p>
+  </aside>
+
+  {{ dialogue|json_script:"dialogue-data" }}
 {% endblock %}

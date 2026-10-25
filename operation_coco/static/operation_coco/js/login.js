@@ -50,35 +50,6 @@
     }
   }
 
-  /* ---------- Clock ---------- */
-
-  var timeEls = document.querySelectorAll('[data-clock="time"]');
-  var dateEls = document.querySelectorAll('[data-clock="date"]');
-  var clockTimer = null;
-
-  function renderClock() {
-    var now = new Date();
-    var time = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-    var date = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
-    timeEls.forEach(function (el) {
-      el.textContent = time;
-    });
-    dateEls.forEach(function (el) {
-      el.textContent = date;
-    });
-  }
-
-  function startClock() {
-    renderClock();
-    // Tick again just after the next minute starts.
-    clockTimer = window.setTimeout(startClock, 60000 - (Date.now() % 60000) + 50);
-  }
-
-  function stopClock() {
-    window.clearTimeout(clockTimer);
-    clockTimer = null;
-  }
-
   /* ---------- The failed-login sequence ---------- */
 
   // 1. Verifying: lock the form and show a spinner.
@@ -108,7 +79,9 @@
     var duration = cssTime("--t-freeze", 1000);
     var calm = reducedMotion.matches;
     card.classList.remove("is-shaking");
-    stopClock();
+    if (window.cocoClock) {
+      window.cocoClock.stop();
+    }
     clock.classList.add("is-frozen");
     if (!calm) {
       vignette.classList.add("is-active");
@@ -185,5 +158,4 @@
     }, 300);
   });
 
-  startClock();
 })();
