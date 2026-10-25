@@ -145,6 +145,13 @@ The guide is Jake from the future, a small superhero who arrives through a time 
 - Superhero suit in deep indigo with thin glowing `--ice` circuit-trace lines, a nod to Jake's hacker side.
 - Short cape in `--lavender`, frosted at the edges.
 - A heart emblem on the chest in `--heart`, glowing softly. It ties to the story: he carries the warmth that will thaw present-day Jake.
+
+**Color progression (warming up)**
+
+- He starts with an icy blue look: cool blue suit, `--ice` circuit traces, and a frosty cape. That gives the hacker/programmer feel and shows that he is frozen too.
+- As Coco moves through the puzzles, his colors shift gradually and slowly toward a warm orange, a little more with each solve, until he is fully warm at the finale.
+- The `--heart` emblem stays pink the whole way. It is the warmth he carries.
+- Build it so a single value drives the shift: the agent's colors are CSS custom properties in `coco.css`, mixed between an icy set and a warm set by one `--agent-warmth` value from 0 (frozen) to 1 (fully warm). Later phases set that value from server-side progress; Phase 1 keeps it at 0.
 - Jake's features: \[hair color and style, beard yes/no, glasses yes/no, skin tone, eye color — Jake to fill in\]. Until filled, use neutral defaults and mark them in a code comment.
 
 **Poses** (one SVG file per pose in `img/agent/`, same canvas size and anchor point so they swap cleanly)
