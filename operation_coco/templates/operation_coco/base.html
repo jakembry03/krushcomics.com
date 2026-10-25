@@ -1,0 +1,29 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}Operation Coco{% endblock %}</title>
+  <link rel="preload" href="{% static 'operation_coco/fonts/InterVariable.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'operation_coco/css/coco.css' %}">
+  {% block scripts %}{% endblock %}
+</head>
+<body class="coco {% block body_class %}{% endblock %}">
+  <div class="scene" aria-hidden="true">
+    <div class="scene__sky"></div>
+    <div class="scene__glow"></div>
+    {% block scene_extra %}{% endblock %}
+    {% include "operation_coco/partials/pines.html" %}
+    <canvas class="scene__snow" id="snow-canvas"></canvas>
+  </div>
+
+  {% block topbar %}{% endblock %}
+
+  <main class="page {% block page_class %}{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block overlays %}{% endblock %}
+</body>
+</html>
