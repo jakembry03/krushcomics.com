@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.http import require_safe
 
 from .dialogue import AGENT_NAME, PHASE1_INTRO, prepare
@@ -38,6 +38,14 @@ def login(request):
 @require_safe
 def next_page(request):
     """
-    Temporary end of Phase 1, where Phase 2 will start.
+    The end of Phase 1 now leads straight into the security questions.
     """
-    return render_page(request, "operation_coco/next.html")
+    return redirect("operation_coco:unlock")
+
+
+@require_safe
+def unlock(request):
+    """
+    The security questions. Stub until the unlock page is built.
+    """
+    return render_page(request, "operation_coco/unlock.html")

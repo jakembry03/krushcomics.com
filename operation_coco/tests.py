@@ -13,7 +13,7 @@ from .templatetags.coco_sprites import POSES
 PAGES = {
     "operation_coco:gate": "operation_coco/gate.html",
     "operation_coco:login": "operation_coco/login.html",
-    "operation_coco:next": "operation_coco/next.html",
+    "operation_coco:unlock": "operation_coco/unlock.html",
 }
 
 
@@ -163,7 +163,7 @@ class PageTests(TestCase):
         self.assertIsNotNone(match)
         data = json.loads(match.group(1))
         self.assertEqual(len(data["lines"]), len(PHASE1_INTRO["lines"]))
-        self.assertEqual(data["lines"][-1]["button"]["url"], reverse("operation_coco:next"))
+        self.assertEqual(data["lines"][-1]["button"]["url"], reverse("operation_coco:unlock"))
 
     def test_login_dialogue_button_url_is_resolved(self):
         """
@@ -171,14 +171,19 @@ class PageTests(TestCase):
         """
         response = self.client.get(reverse("operation_coco:login"))
         last_line = response.context["dialogue"]["lines"][-1]
-        self.assertEqual(last_line["button"]["url"], reverse("operation_coco:next"))
+        self.assertEqual(last_line["button"]["url"], reverse("operation_coco:unlock"))
         self.assertNotIn("url_name", last_line["button"])
 
-    def test_login_and_next_show_the_agent(self):
-        for url_name in ("operation_coco:login", "operation_coco:next"):
-            with self.subTest(url_name=url_name):
-                response = self.client.get(reverse(url_name))
-                self.assertTemplateUsed(response, "operation_coco/partials/agent.html")
+    def test_login_shows_the_agent(self):
+        response = self.client.get(reverse("operation_coco:login"))
+        self.assertTemplateUsed(response, "operation_coco/partials/agent.html")
+
+    def test_next_redirects_to_unlock(self):
+        """
+        The end of Phase 1 now leads into the security questions.
+        """
+        response = self.client.get(reverse("operation_coco:next"))
+        self.assertRedirects(response, reverse("operation_coco:unlock"))
 
 
 @plain_static_storage
@@ -237,13 +242,16 @@ class DialogueTests(SimpleTestCase):
             with self.subTest(text=line["text"]):
                 self.assertIn(line["pose"], POSES["agent"])
 
-    def test_lines_are_placeholders(self):
+    def test_scenes_are_marked_draft(self):
         """
-        Real dialogue never gets committed; every line stays a placeholder.
+        Jake rewrites all dialogue, so every scene is flagged as a draft.
         """
+        self.assertIs(PHASE1_INTRO.get("draft"), True)
+
+    def test_lines_fit_a_phone(self):
         for line in PHASE1_INTRO["lines"]:
             with self.subTest(text=line["text"]):
-                self.assertTrue(line["text"].startswith("[PLACEHOLDER"))
+                self.assertLessEqual(len(line["text"]), 140)
 
 
 class AgentSpriteTests(SimpleTestCase):

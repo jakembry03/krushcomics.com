@@ -1,9 +1,10 @@
 """
 Dialogue scripts, one per scene.
 
-Every line here is a placeholder. Jake writes the real dialogue himself,
-and real content never gets committed: it will arrive later through the
-admin or a private, git-ignored fixture.
+Every scene here is DRAFT dialogue, marked "draft": True, so the story
+has life during development. Jake will rewrite it all. Drafts speak
+about the relationship in general terms only and invent no personal
+details.
 
 A script is a list of lines. Each line names its speaker ("agent" or
 "villain"), the pose for that speaker's sprite, and its text. A line may
@@ -24,14 +25,23 @@ SPEAKERS = {
     "villain": {"name": VILLAIN_NAME},
 }
 
+# DRAFT DIALOGUE — Jake will rewrite
 PHASE1_INTRO = {
+    "draft": True,
     "lines": [
-        {"pose": "worried", "text": "[PLACEHOLDER: agent stops her and explains the password won't work]"},
-        {"pose": "idle",    "text": "[PLACEHOLDER: agent introduces himself as Jake from the future]"},
-        {"pose": "worried", "text": "[PLACEHOLDER: the ice villain froze present-day Jake's heart]"},
-        {"pose": "point",   "text": "[PLACEHOLDER: only she can thaw it, and he'll guide her]"},
-        {"pose": "happy",   "text": "[PLACEHOLDER: call to action]",
-         "button": {"label": "[PLACEHOLDER: button label]", "url_name": "operation_coco:next"}},
+        {"speaker": "agent", "pose": "worried",
+         "text": "Wait! Don't bother trying again, Coco. That password isn't going to work. Not anymore."},
+        {"speaker": "agent", "pose": "worried",
+         "text": "Someone broke into Jake's system and locked it up tight. Everything on here is frozen."},
+        {"speaker": "agent", "pose": "idle",
+         "text": f"Sorry, where are my manners? I'm {AGENT_NAME}. I've come from... let's just say a long way off."},
+        {"speaker": "agent", "pose": "point",
+         "text": "The system is in lockdown. Before it lets anyone in, you'll have to prove you're really Coco."},
+        {"speaker": "agent", "pose": "idle",
+         "text": "It'll ask a few questions only the real Coco could answer. Something tells me you'll do just fine."},
+        {"speaker": "agent", "pose": "happy",
+         "text": "Ready? Let's get you through security.",
+         "button": {"label": "Answer the security questions", "url_name": "operation_coco:unlock"}},
     ],
 }
 

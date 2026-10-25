@@ -1395,9 +1395,9 @@ body.coco {
   }
 }
 
-/* ---------- Next page (temporary end of Phase 1) ---------- */
+/* ---------- Placeholder card (pages still to be built) ---------- */
 
-.next-card {
+.placeholder-card {
   width: min(100%, 26rem);
   padding: 2rem 1.5rem;
   display: flex;
@@ -1407,11 +1407,11 @@ body.coco {
   text-align: center;
 }
 
-.next-card .agent {
+.placeholder-card .agent {
   --sprite-width: 9rem;
 }
 
-.next-card__text {
+.placeholder-card__text {
   margin: 0;
   font: 400 1.125rem/1.6 var(--font-mono);
 }
