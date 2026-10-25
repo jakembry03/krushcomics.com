@@ -2,12 +2,15 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.decorators.http import require_http_methods, require_safe
+from django.views.decorators.http import require_http_methods, require_POST, require_safe
 
 from . import progress
 from .answers import check_answer
 from .desktop import DESKTOP_APPS
-from .dialogue import AGENT_NAME, PHASE1_INTRO, UNLOCK_ENCOURAGE, prepare
+from .dialogue import (
+    AGENT_NAME, DESKTOP_AGENT, DESKTOP_VILLAIN, PHASE1_INTRO, UNLOCK_ENCOURAGE,
+    VILLAIN_NAME, prepare,
+)
 from .models import SecurityQuestion
 from .progress import get_thaw_level, requires_unlock
 
@@ -147,16 +150,21 @@ def _handle_unlock_post(request, questions):
     return ("encourage" if count % 3 == 0 else "wrong"), answer
 
 
-def desktop_apps(request):
+INTRO_STAGE = 1
+
+
+def desktop_apps(request, intro=False):
     """
     DESKTOP_APPS with each app's frozen or thawed state for this visitor.
+    While the intro plays, its app starts frozen so it can be thawed.
     """
     thawed = progress.thawed_stages(request)
+    if intro:
+        thawed.discard(INTRO_STAGE)
     apps = []
     for app in DESKTOP_APPS:
         app = dict(app, thawed=app["stage"] in thawed)
-        if app["thawed"]:
-            app["url"] = reverse("operation_coco:stage", args=[app["stage"]])
+        app["url"] = reverse("operation_coco:stage", args=[app["stage"]])
         apps.append(app)
     return apps
 
@@ -166,7 +174,41 @@ def desktop_apps(request):
 def desktop(request):
     """
     The FrostOS desktop: the hub for the rest of the game.
+
+    The first visit (or ?replay=1) plays the intro: the villain flies in
+    and gloats, then Agent Orange arrives and thaws the first app.
+    Afterwards the desktop loads calm.
     """
-    return render_page(request, "operation_coco/desktop.html", {
-        "apps": desktop_apps(request),
-    })
+    play_intro = request.GET.get("replay") == "1" or not progress.intro_seen(request)
+    context = {
+        "apps": desktop_apps(request, intro=play_intro),
+        "play_intro": play_intro,
+        "replay_url": reverse("operation_coco:desktop") + "?replay=1",
+        "villain_name": VILLAIN_NAME,
+    }
+    if play_intro:
+        context["intro_stage"] = INTRO_STAGE
+        context["dialogue"] = {
+            "villain": prepare(DESKTOP_VILLAIN),
+            "agent": prepare(DESKTOP_AGENT),
+        }
+    return render_page(request, "operation_coco/desktop.html", context)
+
+
+@require_POST
+@requires_unlock
+def desktop_intro_done(request):
+    """
+    Called by the page when the intro's thaw finishes.
+    """
+    progress.finish_desktop_intro(request)
+    return JsonResponse({"ok": True})
+
+
+@require_safe
+@requires_unlock
+def stage(request, number):
+    """
+    A memory puzzle. Stub until the stage placeholder is built.
+    """
+    return render_page(request, "operation_coco/desktop.html", {"apps": desktop_apps(request)})

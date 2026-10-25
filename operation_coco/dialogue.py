@@ -57,6 +57,31 @@ UNLOCK_ENCOURAGE = {
 }
 
 
+# The villain's entrance on the desktop. His last line's cue makes him
+# cackle; he flies off when she moves past it.
+DESKTOP_VILLAIN = {
+    "draft": True,
+    "lines": [
+        {"speaker": "villain", "pose": "cackle", "text": "[PLACEHOLDER: villain introduces himself]"},
+        {"speaker": "villain", "pose": "point", "text": "[PLACEHOLDER: villain points at the heart meter]"},
+        {"speaker": "villain", "pose": "smug", "text": "[PLACEHOLDER: villain gloats]"},
+        {"speaker": "villain", "pose": "cackle", "text": "[PLACEHOLDER: villain leaves]", "cue": "villain_exit"},
+    ],
+}
+
+# Agent Orange's rundown. The thaw cue on the second-to-last line thaws
+# the first app.
+DESKTOP_AGENT = {
+    "draft": True,
+    "lines": [
+        {"speaker": "agent", "pose": "worried", "text": "[PLACEHOLDER: agent rundown]"},
+        {"speaker": "agent", "pose": "point", "text": "[PLACEHOLDER: agent mentions Jake's heart]"},
+        {"speaker": "agent", "pose": "cast", "text": "[PLACEHOLDER: agent thaws the first app]", "cue": "thaw"},
+        {"speaker": "agent", "pose": "happy", "text": "[PLACEHOLDER: click the glowing app]"},
+    ],
+}
+
+
 def prepare(script):
     """
     Return a copy of a script ready for json_script: speaker names added,

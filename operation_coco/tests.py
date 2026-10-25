@@ -14,7 +14,7 @@ from .answers import check_answer, hash_answer, normalize_answer
 from .desktop import DESKTOP_APPS
 from .dialogue import AGENT_NAME, PHASE1_INTRO, VILLAIN_NAME, prepare
 from .models import SecurityQuestion
-from .progress import THAW_KEY, UNLOCKED_KEY
+from .progress import INTRO_SEEN_KEY, THAW_KEY, THAWED_KEY, UNLOCKED_KEY
 from .templatetags.coco_sprites import POSES
 
 PAGES = {
@@ -583,7 +583,49 @@ class DesktopTests(TestCase):
 
     def test_frozen_apps_are_not_links(self):
         tags = parse(self.client.get(self.url))
-        self.assertEqual(tags.find("a", **{"data-app-link": None}), [])
+        self.assertEqual([a for a in tags.find("a") if "data-app-link" in a], [])
+
+    def test_first_visit_plays_the_intro(self):
+        response = self.client.get(self.url)
+        self.assertTrue(response.context["play_intro"])
+        self.assertContains(response, 'id="intro"')
+        self.assertTemplateUsed(response, "operation_coco/partials/villain.html")
+        data = json.loads(re.search(
+            r'<script id="dialogue-data" type="application/json">(.*?)</script>',
+            response.content.decode(), re.S,
+        ).group(1))
+        self.assertEqual(set(data), {"villain", "agent"})
+        self.assertEqual(data["villain"]["lines"][-1]["cue"], "villain_exit")
+        self.assertIn("thaw", [line.get("cue") for line in data["agent"]["lines"]])
+
+    def test_intro_done_thaws_the_first_app(self):
+        response = self.client.post(reverse("operation_coco:desktop_intro_done"))
+        self.assertEqual(response.json(), {"ok": True})
+        self.assertIs(self.client.session[INTRO_SEEN_KEY], True)
+        self.assertEqual(self.client.session[THAWED_KEY], [1])
+
+        response = self.client.get(self.url)
+        self.assertFalse(response.context["play_intro"])
+        self.assertNotContains(response, 'id="intro"')
+        tags = parse(response)
+        links = [a for a in tags.find("a") if "data-app-link" in a]
+        self.assertEqual([a["href"] for a in links], [reverse("operation_coco:stage", args=[1])])
+
+    def test_replay_plays_again_with_the_app_refrozen(self):
+        self.client.post(reverse("operation_coco:desktop_intro_done"))
+        response = self.client.get(self.url + "?replay=1")
+        self.assertTrue(response.context["play_intro"])
+        self.assertFalse(response.context["apps"][0]["thawed"])
+        self.assertContains(response, "Replay intro")
+
+    def test_intro_done_needs_post_and_unlocking(self):
+        url = reverse("operation_coco:desktop_intro_done")
+        self.assertEqual(self.client.get(url).status_code, 405)
+        self.client.session.flush()
+        other = self.client_class()
+        response = other.post(url)
+        self.assertRedirects(response, reverse("operation_coco:unlock"), fetch_redirect_response=False)
+        self.assertNotIn(INTRO_SEEN_KEY, other.session)
 
     def test_heart_meter_follows_thaw_level(self):
         session = self.client.session

@@ -1,12 +1,24 @@
 {% extends "operation_coco/base.html" %}
 {% load static %}
 
+{% block preload %}
+  {% if play_intro %}
+    <link rel="preload" href="{% static 'operation_coco/fonts/JetBrainsMono-Regular.woff2' %}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{% static 'operation_coco/fonts/JetBrainsMono-Bold.woff2' %}" as="font" type="font/woff2" crossorigin>
+  {% endif %}
+{% endblock %}
+
 {% block scripts %}
   <script src="{% static 'operation_coco/js/clock.js' %}" defer></script>
   <script src="{% static 'operation_coco/js/desktop.js' %}" defer></script>
+  {% if play_intro %}
+    <script src="{% static 'operation_coco/js/sprite.js' %}" defer></script>
+    <script src="{% static 'operation_coco/js/dialogue.js' %}" defer></script>
+    <script src="{% static 'operation_coco/js/desktop-intro.js' %}" defer></script>
+  {% endif %}
 {% endblock %}
 
-{% block body_class %}page-desktop{% endblock %}
+{% block body_class %}page-desktop{% if play_intro %} is-intro{% endif %}{% endblock %}
 
 {% block topbar %}
   {% include "operation_coco/partials/topbar.html" with heart_meter=True %}
@@ -17,4 +29,33 @@
 {% block content %}
   <h1 class="visually-hidden">FrostOS desktop</h1>
   {% include "operation_coco/partials/desktop_shell.html" %}
+{% endblock %}
+
+{% block overlays %}
+  {% if play_intro %}
+    {# The villain's entrance and Agent Orange's rundown; see desktop-intro.js. #}
+    <div class="intro" id="intro" data-stage="{{ intro_stage }}"
+         data-done-url="{% url 'operation_coco:desktop_intro_done' %}">
+      {% csrf_token %}
+      <div class="frost-vignette frost-vignette--flicker" id="frost-vignette" aria-hidden="true"></div>
+      <div class="intro__trail" id="intro-trail" aria-hidden="true"></div>
+      <svg class="intro__beam" id="intro-beam" aria-hidden="true" focusable="false">
+        <path class="intro__beam-path" id="intro-beam-path" d="M0 0" pathLength="1"/>
+      </svg>
+      {% include "operation_coco/partials/villain.html" with pose="idle" %}
+
+      <div class="rift-zone desktop-agent" id="rift-zone" aria-hidden="true">
+        <div class="rift" id="rift">
+          <span class="rift__halo"></span>
+          <span class="rift__portal"><span class="rift__swirl"></span></span>
+          <span class="rift__core"></span>
+          <span class="rift__sparks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        </div>
+        {% include "operation_coco/partials/agent.html" with pose="worried" %}
+      </div>
+    </div>
+
+    {% include "operation_coco/partials/dialogue_box.html" %}
+    {{ dialogue|json_script:"dialogue-data" }}
+  {% endif %}
 {% endblock %}

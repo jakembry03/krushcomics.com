@@ -2,12 +2,13 @@
 {% comment %}
   The FrostOS desktop: app icons and the taskbar. Every later stage
   starts from one of these icons. Pass `apps` (from the desktop view):
-  each has slug, label, icon, stage, thawed, and url when thawed.
+  each has slug, label, icon, stage, thawed, and url. Pass replay_url to
+  show the Replay intro link in the taskbar.
 {% endcomment %}
 <div class="desktop">
   <ul class="desktop__apps" id="desktop-apps" aria-label="Apps">
     {% for app in apps %}
-      <li class="app app--{{ app.slug }} {% if app.thawed %}is-thawed{% else %}is-frozen{% endif %}" data-stage="{{ app.stage }}">
+      <li class="app app--{{ app.slug }} {% if app.thawed %}is-thawed{% else %}is-frozen{% endif %}" data-stage="{{ app.stage }}" data-url="{{ app.url }}">
         {% if app.thawed %}
           <a class="app__button" href="{{ app.url }}" data-app-link>
         {% else %}
@@ -28,7 +29,7 @@
     {% endfor %}
   </ul>
 
-  {# Decoration only, apart from anything passed in as taskbar_extra. #}
+  {# Decoration only, apart from the Replay intro link. #}
   <nav class="taskbar" aria-label="Taskbar">
     <span class="taskbar__pins" aria-hidden="true">
       <span class="taskbar__pin taskbar__pin--start">
@@ -44,6 +45,8 @@
         <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>
       </span>
     </span>
-    {% if taskbar_extra %}<span class="taskbar__extra">{{ taskbar_extra }}</span>{% endif %}
+    {% if replay_url %}
+      <span class="taskbar__extra"><a class="taskbar__replay" href="{{ replay_url }}">Replay intro</a></span>
+    {% endif %}
   </nav>
 </div>

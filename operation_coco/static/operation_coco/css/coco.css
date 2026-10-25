@@ -142,6 +142,21 @@
 
   /* Desktop */
   --t-tooltip: 1600ms;
+
+  /* Desktop intro (Phase 2 Build Spec) */
+  --t-calm: 1500ms;
+  --t-warning: 1000ms;
+  --t-flyby: 1500ms;
+  --t-return: 1000ms;
+  --t-exit: 1200ms;
+  --t-settle: 900ms;
+  --t-rift-desktop: 1000ms;
+  --t-beam: 500ms;
+  --t-crack-web: 700ms;
+  --t-melt: 800ms;
+  --t-flare: 1200ms;
+  --t-glance: 1500ms;
+  --t-glance-every: 7000ms;
   --app-memories: #F08DB4;
   --app-messages: #6CC6F2;
   --app-photos: #F2B45C;
@@ -151,6 +166,13 @@
   --app-glyph: var(--frost-white);
   --t-mouth: 160ms;
   --dialogue-cps: 35;
+}
+
+/* Registered so the cast flare can animate the glow color. */
+@property --agent-glow {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3FD0FF;
 }
 
 /* ---------- Base ---------- */
@@ -1102,6 +1124,14 @@ body.coco {
 }
 
 /* Sized so his waist sits at the car's rim and he's behind the windshield. */
+/* Flipping here (not on the ride) keeps the flight path unmirrored. */
+.villain-ride__inner {
+  position: absolute;
+  inset: 0;
+  scale: var(--face, 1) 1;
+  transition: scale var(--t-base) var(--ease-soft);
+}
+
 .villain-ride__seat {
   position: absolute;
   left: 19%;
@@ -1109,7 +1139,15 @@ body.coco {
   transition: transform var(--t-base) var(--ease-pop);
 }
 
-.villain-ride.is-standing .villain-ride__seat {
+.villain-ride.is-standing /* Flipping here (not on the ride) keeps the flight path unmirrored. */
+.villain-ride__inner {
+  position: absolute;
+  inset: 0;
+  scale: var(--face, 1) 1;
+  transition: scale var(--t-base) var(--ease-soft);
+}
+
+.villain-ride__seat {
   transform: translateY(-16%);
 }
 
@@ -2469,6 +2507,23 @@ body.coco {
   border-left: 1px solid var(--panel-border);
 }
 
+.taskbar__replay {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 0.75rem;
+  color: var(--frost-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.taskbar__replay:hover {
+  background: color-mix(in srgb, var(--lavender) 25%, transparent);
+}
+
 /* ---------- Desktop: phone layout ---------- */
 
 @media (max-width: 640px) {
@@ -2485,6 +2540,318 @@ body.coco {
   }
 
   .heart-meter.is-shivering {
+    animation: none;
+  }
+}
+
+/* ---------- Desktop intro ---------- */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.intro .villain-ride {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+}
+
+.intro .villain-ride.is-flying {
+  visibility: visible;
+}
+
+.intro__trail {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.puff {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--frost-white) 80%, transparent);
+  filter: blur(1px);
+  animation: puff-drift 1.4s var(--ease-out) forwards;
+}
+
+.puff--sparkle {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--ice);
+  box-shadow: 0 0 8px var(--ice), 0 0 2px var(--frost-white);
+  filter: none;
+}
+
+@keyframes puff-drift {
+  from {
+    opacity: 0.95;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--drift, 0px), 70px) scale(2);
+  }
+}
+
+/* Warning: frost flickers at the screen edges. */
+.frost-vignette--flicker {
+  --frost-clear: 55%;
+  transition: none;
+}
+
+.frost-vignette.is-flickering {
+  animation: frost-flicker 1s steps(1) infinite;
+}
+
+@keyframes frost-flicker {
+  0% { opacity: 0.85; }
+  15% { opacity: 0.2; }
+  30% { opacity: 0.7; }
+  45% { opacity: 0.1; }
+  60% { opacity: 0.9; }
+  80% { opacity: 0.35; }
+}
+
+/* A swoosh of frost over the icons as he passes. */
+.app.is-swooshed .app__ice {
+  animation: ice-swoosh 700ms var(--ease-soft);
+}
+
+@keyframes ice-swoosh {
+  40% {
+    filter: brightness(1.7);
+    box-shadow:
+      inset 0 0 1.25rem var(--frost-white),
+      0 0 1.25rem var(--ice);
+  }
+}
+
+/* His snow settles over the icons: the ice looks thicker. */
+.app__ice::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: -7px;
+  height: 14px;
+  border-radius: 10px 10px 6px 6px;
+  background: var(--frost-white);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--ice) 50%, transparent);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--t-slow) var(--ease-soft), transform var(--t-slow) var(--ease-soft);
+}
+
+.app.is-thick .app__ice {
+  background-color: color-mix(in srgb, var(--ice-block) 30%, transparent);
+}
+
+.app.is-thick .app__ice::before {
+  opacity: 0.9;
+  transform: none;
+}
+
+/* The agent's spot: lower right, above the dialogue box on narrow screens. */
+.rift-zone.desktop-agent {
+  position: fixed;
+  left: auto;
+  top: auto;
+  right: max(1.5rem, env(safe-area-inset-right, 0px));
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  width: 11rem;
+  height: 16rem;
+}
+
+.rift-zone.desktop-agent .agent {
+  --sprite-width: 9rem;
+}
+
+@media (max-width: 960px) {
+  .rift-zone.desktop-agent {
+    right: 0.25rem;
+    top: auto;
+    bottom: calc(11rem + env(safe-area-inset-bottom, 0px));
+    width: 8rem;
+    height: 11.5rem;
+  }
+
+  .rift-zone.desktop-agent .agent {
+    --sprite-width: 7rem;
+  }
+
+  .villain-ride {
+    --ride-width: 11rem;
+  }
+}
+
+/* The cast flare: his glow jumps to full warm, then fades back. */
+.agent.is-flaring {
+  animation: agent-flare var(--t-flare) var(--ease-soft);
+}
+
+@keyframes agent-flare {
+  0%, 50% {
+    --agent-glow: var(--glow-warm);
+  }
+}
+
+.agent.is-flaring .sprite__pose {
+  filter:
+    drop-shadow(0 0 4px var(--agent-rim))
+    drop-shadow(0 0 14px var(--agent-glow));
+}
+
+/* The beam of warm light from his hand to the icon. */
+.intro__beam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px var(--glow-warm)) drop-shadow(0 0 14px var(--glow-warm));
+}
+
+.intro__beam-path {
+  fill: none;
+  stroke: var(--glow-warm);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.intro__beam.is-firing {
+  animation: beam-fade calc(var(--t-beam) + var(--t-crack-web) + var(--t-melt)) var(--ease-soft) forwards;
+}
+
+.intro__beam.is-firing .intro__beam-path {
+  animation: beam-draw var(--t-beam) var(--ease-out) forwards;
+}
+
+@keyframes beam-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes beam-fade {
+  0%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The ice cracks in a spreading web, then falls away and melts. */
+.app__ice::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(20deg, transparent 49%, var(--frost-white) 49.5% 50.5%, transparent 51%),
+    linear-gradient(70deg, transparent 49%, var(--frost-white) 49.5% 50.5%, transparent 51%),
+    linear-gradient(115deg, transparent 49%, var(--frost-white) 49.5% 50.5%, transparent 51%),
+    linear-gradient(160deg, transparent 49%, var(--frost-white) 49.5% 50.5%, transparent 51%),
+    radial-gradient(circle, transparent 28%, color-mix(in srgb, var(--frost-white) 80%, transparent) 29% 31%, transparent 32%);
+  clip-path: circle(0% at 50% 50%);
+  opacity: 0;
+}
+
+.app.is-cracking .app__ice {
+  filter: brightness(1.25);
+}
+
+.app.is-cracking .app__ice::after {
+  opacity: 1;
+  animation: crack-spread var(--t-crack-web) var(--ease-out) forwards;
+}
+
+@keyframes crack-spread {
+  to {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
+.app.is-melting .app__ice {
+  animation: ice-fall var(--t-melt) var(--ease-soft) forwards;
+}
+
+@keyframes ice-fall {
+  0% {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+  30% {
+    transform: translateY(2px) scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.9) rotate(4deg);
+    clip-path: inset(0 0 40% 0);
+  }
+}
+
+.drip {
+  position: absolute;
+  top: 88%;
+  width: 6px;
+  height: 9px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: var(--ice);
+  box-shadow: 0 0 4px var(--frost-white);
+  animation: drip-fall 900ms var(--ease-soft) forwards;
+}
+
+@keyframes drip-fall {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(2.5rem);
+  }
+}
+
+.app.is-just-thawed .app__tile {
+  animation:
+    thaw-bloom var(--t-slow) var(--ease-pop),
+    app-pulse 2.2s var(--ease-soft) var(--t-slow) infinite alternate;
+}
+
+@keyframes thaw-bloom {
+  from {
+    filter: saturate(0.2) brightness(1.4);
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-vignette.is-flickering,
+  .app.is-swooshed .app__ice,
+  .agent.is-flaring {
+    animation: none;
+  }
+
+  .app.is-melting .app__ice {
+    animation: none;
+    opacity: 0;
+    transition: opacity var(--t-reduced-fade) linear;
+  }
+
+  .app.is-just-thawed .app__tile {
     animation: none;
   }
 }

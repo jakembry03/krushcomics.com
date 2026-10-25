@@ -6,6 +6,8 @@
  * - With reduced motion, a few slow flakes instead.
  * - window.cocoSnow.freeze(ms) eases the snow to a stop in mid-air and
  *   keeps it there. Returns a Promise that resolves once it has stopped.
+ * - window.cocoSnow.setWind(n) blows the snow sideways (pixels per second,
+ *   positive is to the right), easing toward the new strength. 0 is calm.
  */
 (function () {
   "use strict";
@@ -28,6 +30,10 @@
 
   // 1 is normal speed, 0 is stopped. freeze() eases this down to 0.
   var speed = 1;
+
+  // Sideways wind in pixels per second, eased toward windTarget.
+  var wind = 0;
+  var windTarget = 0;
   var frozen = false;
   var freezeStart = null;
   var freezeDuration = 0;
@@ -94,10 +100,13 @@
 
   function update(dt) {
     clock += dt * speed;
+    wind += (windTarget - wind) * Math.min(1, dt * 2.5);
     for (var i = 0; i < flakes.length; i++) {
       var flake = flakes[i];
       flake.y += flake.fall * dt * speed;
       flake.x += Math.sin(clock * flake.sway + flake.phase) * flake.drift * dt * speed;
+      // Bigger (closer) flakes catch more wind.
+      flake.x += wind * (0.5 + flake.r / 3) * dt * speed;
 
       if (flake.y > height + flake.r * 2) {
         flakes[i] = makeFlake(false);
@@ -207,8 +216,13 @@
   resize();
   start();
 
+  function setWind(strength) {
+    windTarget = reducedMotion.matches ? 0 : Number(strength) || 0;
+  }
+
   window.cocoSnow = {
     freeze: freeze,
+    setWind: setWind,
     isFrozen: function () {
       return frozen;
     }

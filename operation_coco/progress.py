@@ -41,6 +41,19 @@ def thaw_stage(request, stage):
     request.session[THAWED_KEY] = sorted(thawed_stages(request) | {stage})
 
 
+def intro_seen(request):
+    return request.session.get(INTRO_SEEN_KEY) is True
+
+
+def finish_desktop_intro(request):
+    """
+    The villain-and-agent intro has played: remember it, and the first
+    app stays thawed from now on.
+    """
+    request.session[INTRO_SEEN_KEY] = True
+    thaw_stage(request, 1)
+
+
 def requires_unlock(view):
     """
     Gate a view behind the security questions. Anyone who hasn't
