@@ -77,10 +77,22 @@
         </form>
       </section>
     </div>
+
+    {# Hidden until the failed-login sequence opens the rift. #}
+    <div class="rift-zone" id="rift-zone" aria-hidden="true">
+      <div class="rift" id="rift">
+        <span class="rift__halo"></span>
+        <span class="rift__portal"><span class="rift__swirl"></span></span>
+        <span class="rift__core"></span>
+        <span class="rift__sparks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
+      {% include "operation_coco/partials/agent.html" with pose="worried" %}
+    </div>
   </div>
 {% endblock %}
 
 {% block overlays %}
+  <div class="frost-vignette" id="frost-vignette" aria-hidden="true"></div>
   {% include "operation_coco/partials/dialogue_box.html" %}
   {{ dialogue|json_script:"dialogue-data" }}
   <div class="frost-flash frost-flash--arrive" aria-hidden="true"></div>
