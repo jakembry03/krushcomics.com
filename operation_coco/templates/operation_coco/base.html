@@ -11,7 +11,8 @@
   <script src="{% static 'operation_coco/js/snow.js' %}" defer></script>
   {% block scripts %}{% endblock %}
 </head>
-<body class="coco {% block body_class %}{% endblock %}">
+{# --thaw (0 to 1) drives the agent's glow; see get_thaw_level(). #}
+<body class="coco {% block body_class %}{% endblock %}" style="--thaw: {{ thaw_level|default:0|stringformat:'.3f' }}">
   <div class="scene" aria-hidden="true">
     <div class="scene__sky"></div>
     <div class="scene__glow"></div>

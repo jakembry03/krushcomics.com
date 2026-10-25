@@ -3,10 +3,11 @@ import re
 from html.parser import HTMLParser
 
 from django.template import Context, Template, TemplateSyntaxError
-from django.test import SimpleTestCase, override_settings
+from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from .dialogue import PHASE1_INTRO, prepare
+from .progress import THAW_KEY
 from .templatetags.coco_agent import POSES
 
 PAGES = {
@@ -36,15 +37,9 @@ class TagCollector(HTMLParser):
         ]
 
 
-def parse(response):
-    collector = TagCollector()
-    collector.feed(response.content.decode())
-    return collector
-
-
 # The site's CompressedManifestStaticFilesStorage needs `collectstatic` to
 # have run before {% static %} can resolve, so tests use plain storage.
-@override_settings(
+plain_static_storage = override_settings(
     STORAGES={
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -54,7 +49,16 @@ def parse(response):
         },
     },
 )
-class PageTests(SimpleTestCase):
+
+
+def parse(response):
+    collector = TagCollector()
+    collector.feed(response.content.decode())
+    return collector
+
+
+@plain_static_storage
+class PageTests(TestCase):
 
     def test_pages_render(self):
         """
@@ -175,6 +179,38 @@ class PageTests(SimpleTestCase):
             with self.subTest(url_name=url_name):
                 response = self.client.get(reverse(url_name))
                 self.assertTemplateUsed(response, "operation_coco/partials/agent.html")
+
+
+@plain_static_storage
+class ThawLevelTests(TestCase):
+
+    def body_style(self, url):
+        tags = parse(self.client.get(url))
+        return tags.find("body")[0]["style"]
+
+    def test_every_page_sets_thaw_on_body(self):
+        for url_name in PAGES:
+            with self.subTest(url_name=url_name):
+                self.assertEqual(self.body_style(reverse(url_name)), "--thaw: 0.000")
+
+    def test_thaw_comes_from_the_session(self):
+        session = self.client.session
+        session[THAW_KEY] = 0.25
+        session.save()
+        self.assertEqual(self.body_style(reverse("operation_coco:gate")), "--thaw: 0.250")
+
+    @override_settings(DEBUG=False)
+    def test_thaw_override_is_ignored_without_debug(self):
+        url = reverse("operation_coco:gate") + "?thaw=0.5"
+        self.assertEqual(self.body_style(url), "--thaw: 0.000")
+
+    @override_settings(DEBUG=True)
+    def test_thaw_override_previews_with_debug(self):
+        cases = {"0.5": "0.500", "1": "1.000", "7": "1.000", "-2": "0.000", "nope": "0.000", "nan": "0.000"}
+        for value, expected in cases.items():
+            with self.subTest(value=value):
+                url = reverse("operation_coco:gate") + f"?thaw={value}"
+                self.assertEqual(self.body_style(url), f"--thaw: {expected}")
 
 
 class DialogueTests(SimpleTestCase):

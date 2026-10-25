@@ -51,6 +51,12 @@
   --rift-glow: #5CE1FF;
   --ink: #231C45;
 
+  /* Phase 2 */
+  --glow-cold: #3FD0FF;
+  --glow-warm: #FF8A2A;
+  --villain: #4FD1B5;
+  --ice-block: #CDEFFF;
+
   /* Scene */
   --pine-far: #2B2358;
   --pine-near: #151030;
@@ -143,6 +149,13 @@ html {
 }
 
 body.coco {
+  /*
+   * The agent's glow, from --glow-cold at --thaw 0 to --glow-warm at 1.
+   * Declared here, not on :root, because --thaw is set on <body>.
+   */
+  --thaw: 0;
+  --agent-glow: color-mix(in oklab, var(--glow-warm) calc(var(--thaw) * 100%), var(--glow-cold));
+
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
