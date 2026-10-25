@@ -371,3 +371,314 @@ body.coco {
     animation: none;
   }
 }
+
+/* ---------- Login: FrostOS top bar ---------- */
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: calc(2.25rem + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) max(1rem, env(safe-area-inset-right, 0px)) 0 max(1rem, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--night) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--ice) 18%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.topbar__clock {
+  display: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.topbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.topbar__icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.topbar__icon-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* ---------- Login: scene and layout ---------- */
+
+.aurora {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  top: 18%;
+  height: 38%;
+  background: linear-gradient(
+    100deg,
+    transparent 8%,
+    color-mix(in srgb, var(--lavender) 55%, transparent) 30%,
+    color-mix(in srgb, var(--ice) 35%, transparent) 50%,
+    color-mix(in srgb, var(--rift) 45%, transparent) 70%,
+    transparent 92%
+  );
+  filter: blur(48px);
+  opacity: 0.4;
+  transform: skewY(-6deg);
+  animation: aurora-drift 18s var(--ease-soft) infinite alternate;
+}
+
+@keyframes aurora-drift {
+  from {
+    transform: skewY(-6deg) translateX(-4%);
+  }
+  to {
+    transform: skewY(-3deg) translateX(4%);
+  }
+}
+
+.page--login {
+  padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
+}
+
+.login-stage {
+  position: relative;
+  width: min(100%, 22rem);
+}
+
+.login-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ---------- Login: clock ---------- */
+
+.clock {
+  text-align: center;
+  text-shadow: 0 0 1.5rem color-mix(in srgb, var(--night) 70%, transparent);
+  transition: color var(--t-slow) var(--ease-soft), text-shadow var(--t-slow) var(--ease-soft);
+}
+
+.clock__time {
+  display: block;
+  font-size: clamp(3.5rem, 13vw, 5.5rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock__date {
+  margin: 0.5rem 0 0;
+  font-size: 1.125rem;
+  color: var(--text-soft);
+}
+
+/* ---------- Login: card ---------- */
+
+.login-card {
+  position: relative;
+  width: 100%;
+  padding: 2rem 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  transition: filter var(--t-slow) var(--ease-soft), opacity var(--t-slow) var(--ease-soft);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lilac-mist) 22%, transparent);
+  border: 1px solid var(--panel-border);
+  box-shadow: inset 0 0 1.25rem color-mix(in srgb, var(--ice) 25%, transparent);
+}
+
+.avatar__heart {
+  width: 44px;
+  height: 44px;
+}
+
+.avatar__heart-shape {
+  fill: color-mix(in srgb, var(--ice) 75%, var(--frost-white));
+  stroke: var(--frost-white);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.avatar__heart-frost {
+  fill: none;
+  stroke: var(--frost-white);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+
+.username {
+  margin: 0 0 0.25rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.password-form {
+  width: 100%;
+  margin: 0;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field__input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0.75rem 3.5rem 0.75rem 1.25rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--night) 45%, transparent);
+  color: var(--text);
+  /* At least 16px so phones don't zoom in on focus. */
+  font: 400 1rem/1.2 var(--font-ui);
+  transition: border-color var(--t-fast) var(--ease-soft), box-shadow var(--t-fast) var(--ease-soft);
+}
+
+.password-field__input::placeholder {
+  color: var(--text-soft);
+  opacity: 1;
+}
+
+.password-field__input:focus-visible {
+  border-color: var(--ice);
+}
+
+.password-field__input:disabled {
+  opacity: 0.6;
+}
+
+.password-field__submit {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--lavender);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lavender) 28%, transparent);
+  color: var(--frost-white);
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-soft), box-shadow var(--t-fast) var(--ease-soft);
+}
+
+.password-field__submit:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--lavender) 50%, transparent);
+}
+
+.password-field__submit:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.password-field__submit svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.login-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 1.5rem;
+  margin: 0.875rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+.login-hint.is-error {
+  color: var(--heart);
+  font-weight: 600;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ice);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Login: phone layout ---------- */
+
+@media (max-width: 640px) {
+  .topbar__brand {
+    display: none;
+  }
+
+  .topbar__clock {
+    display: block;
+  }
+
+  .page--login {
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+
+  .login-stage {
+    width: 100%;
+  }
+
+  .login-column {
+    gap: 1.25rem;
+  }
+
+  .login-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora {
+    animation: none;
+  }
+
+  .spinner {
+    animation-duration: 2s;
+  }
+}
