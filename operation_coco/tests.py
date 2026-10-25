@@ -739,3 +739,71 @@ class StageAndResetTests(TestCase):
         self.set_session(**{UNLOCKED_KEY: True})
         self.assertRedirects(self.client.get(reverse("operation_coco:reset")), reverse("operation_coco:gate"))
         self.assertNotIn(UNLOCKED_KEY, self.client.session)
+
+
+@plain_static_storage
+class GatingTests(TestCase):
+    """
+    Later stages can't be reached by typing a URL: every gated page
+    sends a visitor who hasn't unlocked to the security questions.
+    """
+
+    GATED_GET = [
+        ("operation_coco:desktop", []),
+        ("operation_coco:stage", [1]),
+        ("operation_coco:stage", [2]),
+    ]
+
+    def test_gated_pages_redirect_to_unlock(self):
+        for url_name, args in self.GATED_GET:
+            with self.subTest(url_name=url_name, args=args):
+                response = self.client.get(reverse(url_name, args=args))
+                self.assertRedirects(response, reverse("operation_coco:unlock"))
+
+    def test_gated_post_redirects_to_unlock(self):
+        response = self.client.post(reverse("operation_coco:desktop_intro_done"))
+        self.assertRedirects(response, reverse("operation_coco:unlock"))
+        self.assertNotIn(THAWED_KEY, self.client.session)
+
+    def test_partial_progress_is_not_enough(self):
+        session = self.client.session
+        session[QUESTIONS_SOLVED_KEY] = 2
+        session[THAWED_KEY] = [1]
+        session.save()
+        for url_name, args in self.GATED_GET:
+            with self.subTest(url_name=url_name, args=args):
+                response = self.client.get(reverse(url_name, args=args))
+                self.assertRedirects(response, reverse("operation_coco:unlock"))
+
+
+@plain_static_storage
+class UnlockedPageTests(TestCase):
+    """
+    The page-wide rules hold on the gated pages too.
+    """
+
+    def setUp(self):
+        session = self.client.session
+        session[UNLOCKED_KEY] = True
+        session[THAWED_KEY] = [1]
+        session.save()
+        self.urls = [
+            reverse("operation_coco:desktop"),
+            reverse("operation_coco:desktop") + "?replay=1",
+            reverse("operation_coco:stage", args=[1]),
+        ]
+
+    def test_noindex_own_base_and_no_inline_scripts(self):
+        for url in self.urls:
+            with self.subTest(url=url):
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, "operation_coco/base.html")
+                tags = parse(response)
+                self.assertTrue(tags.find("meta", name="robots", content="noindex, nofollow"))
+                for attrs in tags.find("script"):
+                    if "src" in attrs:
+                        self.assertIn("defer", attrs)
+                        self.assertTrue(attrs["src"].startswith("/static/operation_coco/"))
+                    else:
+                        self.assertEqual(attrs.get("type"), "application/json")
