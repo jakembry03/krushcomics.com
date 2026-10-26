@@ -3,11 +3,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
+
         <meta charset="UTF-8">
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
+        >
+        <meta
+            name="theme-color"
+            content="#0b0c0f"
         >
 
         <title>
@@ -15,6 +19,15 @@
                 KrushComics
             {% endblock %}
         </title>
+
+        <!-- The regular weight is used on every page, so fetch it early. -->
+        <link
+            rel="preload"
+            href="{% static 'core/fonts/JetBrainsMonoNerdFont-Regular.woff2' %}"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        >
 
         <link
             rel="stylesheet"
@@ -26,33 +39,56 @@
     </head>
 
     <body>
-        {% include "core/_navbar.html" %}
+        <a
+            class="skip-link"
+            href="#content"
+        >
+            Skip to content
+        </a>
 
-        {% block content %}
-        {% endblock %}
+        <header class="site-header">
+            {% include "core/_navbar.html" %}
+        </header>
+
+        <div
+            id="content"
+            class="site-content"
+        >
+            {% block content %}
+            {% endblock %}
+        </div>
 
         <footer class="site-footer">
             <div class="footer-inner">
 
                 <div class="footer-about">
-                    <h3>KrushComics</h3>
+                    <p class="footer-brand">
+                        <span
+                            class="icon"
+                            aria-hidden="true"
+                        >&#x276F;</span>krushcomics
+                    </p>
                     <p>
                         Built, hosted, and maintained as a personal project.
                     </p>
                 </div>
 
-                <div class="footer-links">
+                <nav
+                    class="footer-links"
+                    aria-label="Footer"
+                >
                     <a href="{% url 'about_site' %}">About This Site</a>
                     <a href="{% url 'about' %}">About</a>
                     <a href="{% url 'thoughts' %}">Thoughts</a>
                     <a href="{% url 'projects' %}">Projects</a>
                     <a href="{% url 'security' %}">Security</a>
-                </div>
+                </nav>
 
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 Jake Embry · KrushComics</p>
+                <p>&copy; 2026 Jake Embry &middot; KrushComics</p>
+                <p>built with django &middot; set in jetbrains mono</p>
             </div>
         </footer>
     </body>

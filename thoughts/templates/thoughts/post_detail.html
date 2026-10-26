@@ -19,24 +19,46 @@
 
 {% block content %}
 
-    <main>
+    <main class="thought-detail">
 
-        <article class="thought-detail">
+        <!-- Blurred copy of the cover image behind the header. -->
+        {% if post.thumbnail %}
 
-            <a
-                class="back-link"
-                href="{% url 'thoughts' %}"
+            <div
+                class="thought-backdrop"
+                aria-hidden="true"
             >
-                ← Back to Thoughts
-            </a>
+                <img
+                    src="{{ post.thumbnail.url }}"
+                    alt=""
+                >
+            </div>
+
+        {% endif %}
 
 
-            <div class="thought-detail-hero">
+        <article class="page page-narrow">
+
+            <nav
+                class="crumbs"
+                aria-label="Breadcrumb"
+            >
+                <a href="{% url 'home' %}">~</a>
+                <span aria-hidden="true">/</span>
+                <a href="{% url 'thoughts' %}">thoughts</a>
+                <span aria-hidden="true">/</span>
+                <a href="{% url 'thought_archive' 'posts' %}">posts</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{{ post.title }}</span>
+            </nav>
+
+
+            <div class="thought-hero{% if not post.thumbnail %} thought-hero-text{% endif %}">
 
                 {% if post.thumbnail %}
 
                     <img
-                        class="thought-detail-image"
+                        class="thought-hero-poster"
                         src="{{ post.thumbnail.url }}"
                         alt="Cover image for {{ post.title }}"
                     >
@@ -46,7 +68,11 @@
 
                 <header class="thought-detail-header">
 
-                    <p class="thought-label">
+                    <p class="tag">
+                        <span
+                            class="icon"
+                            aria-hidden="true"
+                        >&#xf448;</span>
                         Post
                     </p>
 
@@ -58,9 +84,16 @@
 
                     <div class="thought-meta">
 
-                        <span>
+                        <time
+                            class="thought-date"
+                            datetime="{{ post.created_at|date:'Y-m-d' }}"
+                        >
+                            <span
+                                class="icon"
+                                aria-hidden="true"
+                            >&#xf455;</span>
                             {{ post.created_at|date:"F j, Y" }}
-                        </span>
+                        </time>
 
                     </div>
 
@@ -69,10 +102,7 @@
             </div>
 
 
-            <hr class="thought-divider">
-
-
-            <div class="thought-body">
+            <div class="prose thought-body">
 
                 {{ post.body|linebreaks }}
 

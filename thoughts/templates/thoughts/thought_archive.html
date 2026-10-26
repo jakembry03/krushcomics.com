@@ -15,137 +15,141 @@
     href="{% static 'thoughts/thoughts.css' %}"
 >
 
-<link
-    rel="stylesheet"
-    href="{% static 'thoughts/archive.css' %}"
->
-
 {% endblock %}
 
 
 {% block content %}
 
-<main class="container thoughts-archive">
+<main class="page">
 
-    <!-- BACK LINK -->
+    <!-- BREADCRUMBS -->
 
-    <a
-        href="{% url 'thoughts' %}"
-        class="archive-back"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to Thoughts
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'thoughts' %}">thoughts</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ archive_kind }}</span>
+    </nav>
 
 
     <!-- HEADER -->
 
     <header class="page-header">
 
-        <span class="thoughts-eyebrow">
-            THOUGHTS / ARCHIVE
-        </span>
-
         <h1>
             {{ archive_title }}
         </h1>
 
-        <p class="page-description">
+        <p class="page-lead">
             {{ archive_description }}
         </p>
 
     </header>
 
 
-    <!-- ARCHIVE NAVIGATION -->
+    <!-- ARCHIVE NAVIGATION + SEARCH -->
 
-    <nav
-        class="archive-switcher"
-        aria-label="Choose archive"
-    >
+    <div class="toolbar">
 
-        <a
-            href="{% url 'thought_archive' 'posts' %}"
-            class="{% if archive_kind == 'posts' %}active{% endif %}"
-            {% if archive_kind == 'posts' %}
-                aria-current="page"
-            {% endif %}
-        >
-            Posts
-        </a>
-
-        <a
-            href="{% url 'thought_archive' 'reviews' %}"
-            class="{% if archive_kind == 'reviews' %}active{% endif %}"
-            {% if archive_kind == 'reviews' %}
-                aria-current="page"
-            {% endif %}
-        >
-            Reviews
-        </a>
-
-        <a
-            href="{% url 'thought_archive' 'all' %}"
-            class="{% if archive_kind == 'all' %}active{% endif %}"
-            {% if archive_kind == 'all' %}
-                aria-current="page"
-            {% endif %}
-        >
-            All Thoughts
-        </a>
-
-    </nav>
-
-
-    <!-- SEARCH -->
-
-    <form
-        class="search-form"
-        method="get"
-        role="search"
-    >
-
-        <input
-            type="search"
-            name="q"
-            value="{{ query }}"
-            aria-label="Search this archive"
-            placeholder="Search {{ archive_title|lower }}..."
+        <nav
+            class="tabs"
+            aria-label="Choose archive"
         >
 
-        <button type="submit">
-            Search
-        </button>
+            <a
+                href="{% url 'thought_archive' 'posts' %}"
+                class="{% if archive_kind == 'posts' %}active{% endif %}"
+                {% if archive_kind == 'posts' %}
+                    aria-current="page"
+                {% endif %}
+            >
+                Posts
+            </a>
 
-    </form>
+            <a
+                href="{% url 'thought_archive' 'reviews' %}"
+                class="{% if archive_kind == 'reviews' %}active{% endif %}"
+                {% if archive_kind == 'reviews' %}
+                    aria-current="page"
+                {% endif %}
+            >
+                Reviews
+            </a>
+
+            <a
+                href="{% url 'thought_archive' 'all' %}"
+                class="{% if archive_kind == 'all' %}active{% endif %}"
+                {% if archive_kind == 'all' %}
+                    aria-current="page"
+                {% endif %}
+            >
+                All Thoughts
+            </a>
+
+        </nav>
+
+
+        <form
+            class="search"
+            method="get"
+            role="search"
+        >
+
+            <label class="search-field">
+
+                <span
+                    class="icon"
+                    aria-hidden="true"
+                >&#xf422;</span>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ query }}"
+                    aria-label="Search this archive"
+                    placeholder="search {{ archive_title|lower }}..."
+                >
+
+            </label>
+
+            <button
+                class="btn btn-primary"
+                type="submit"
+            >
+                Search
+            </button>
+
+        </form>
+
+    </div>
 
 
     <!-- ARCHIVE CONTENT -->
 
     <section class="archive-collection">
 
-        <div class="archive-collection-header">
-
-            <h2>
-                {{ archive_title }}
-            </h2>
-
-            <span>
-                {{ page_obj.paginator.count }}
-                entr{{ page_obj.paginator.count|pluralize:"y,ies" }}
-            </span>
-
-        </div>
+        <p class="section-meta archive-count">
+            {{ page_obj.paginator.count }}
+            entr{{ page_obj.paginator.count|pluralize:"y,ies" }}
+            {% if query %}
+                matching "{{ query }}"
+            {% endif %}
+        </p>
 
 
         <div class="thought-grid">
 
             {% for thought in thoughts %}
 
-                {% include "thoughts/_thought_card.html" with excerpt_words=22 %}
+                {% include "thoughts/_thought_card.html" %}
 
             {% empty %}
 
-                <p class="no-thoughts">
+                <p class="empty">
 
                     {% if query %}
 
@@ -169,13 +173,14 @@
         {% if page_obj.has_other_pages %}
 
             <nav
-                class="archive-pagination"
+                class="pagination"
                 aria-label="Archive pages"
             >
 
                 {% if page_obj.has_previous %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.previous_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
                     >
                         &larr; Previous
@@ -193,6 +198,7 @@
                 {% if page_obj.has_next %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.next_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
                     >
                         Next &rarr;

@@ -31,8 +31,12 @@
 
         <div class="security-card-info">
 
-            <span class="security-kind">
+            <span class="tag">
                 {% if item.kind == 'writeup' %}
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf023b;</span>
                     CTF Write-Up
                 {% endif %}
             </span>
@@ -58,7 +62,7 @@
             </p>
 
             <p class="security-card-date">
-                {{ item.published_at|date:"F j, Y" }}
+                {{ item.published_at|date:"M j, Y" }}
             </p>
 
         </div>

@@ -23,19 +23,21 @@
 :root,
 html[data-theme="light"],
 html[data-theme="dark"] {
-    /* Public palette from core/css/site.css, without its layout reset. */
-    --krush-background: #111318;
-    --krush-surface: #1a1e26;
-    --krush-surface-raised: #222834;
+    /* Public palette from core/css/site.css, without its layout reset.
+       --krush-brand stays a deeper orange than the public accent because
+       Django puts light text on it (buttons, module headings). */
+    --krush-background: #0b0c0f;
+    --krush-surface: #14161b;
+    --krush-surface-raised: #1a1d23;
     --krush-brand: #b94d16;
-    --krush-brand-text: #ff9a52;
-    --krush-accent: #ffb780;
+    --krush-brand-text: #ff8a3d;
+    --krush-accent: #ffa766;
     --krush-brand-dark: #9d3e10;
-    --krush-brand-tint: #3b291e;
+    --krush-brand-tint: #2e1f15;
     --krush-on-brand: #fff5ed;
-    --krush-text: #edf2fa;
-    --krush-muted: #a8b3c7;
-    --krush-border: #343e50;
+    --krush-text: #e6e8eb;
+    --krush-muted: #969ca8;
+    --krush-border: #22262e;
 
     --primary: var(--krush-brand);
     --secondary: var(--krush-brand);
@@ -108,42 +110,101 @@ html[data-theme="dark"] {
    these rules cannot reach any other part of the admin.
 --------------------------------- */
 
+/* Same self-hosted font files as core/css/site.css. Only the navbar
+   uses it; the rest of the admin keeps Django's own font stack. */
+@font-face {
+    font-family: "JetBrainsMono Nerd Font";
+    src: url("../fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrainsMono Nerd Font";
+    src: url("../fonts/JetBrainsMonoNerdFont-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+#krush-admin-nav {
+    background-color: var(--krush-background);
+
+    border-bottom: 1px solid var(--krush-border);
+}
+
 #krush-admin-nav .navbar {
     display: flex;
 
     justify-content: space-between;
     align-items: center;
 
-    padding: 20px 60px;
+    gap: 24px;
 
-    border-bottom: 1px solid var(--krush-border);
+    width: min(100% - 80px, 1240px);
+    min-height: 60px;
 
-    background-color: var(--krush-surface);
+    margin: 0 auto;
+
+    font-family: "JetBrainsMono Nerd Font", ui-monospace, monospace;
 }
 
 #krush-admin-nav .navbar .nav-brand {
-    font-size: 22px;
-    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
 
+    gap: 10px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: var(--krush-text);
+}
+
+#krush-admin-nav .navbar .nav-brand-prompt {
     color: var(--krush-brand-text);
+}
+
+#krush-admin-nav .navbar .nav-brand-cursor {
+    display: inline-block;
+
+    width: 0.55em;
+    height: 1.1em;
+
+    margin-left: -6px;
+
+    background-color: var(--krush-brand-text);
 }
 
 #krush-admin-nav .navbar .nav-links {
     display: flex;
 
-    gap: 30px;
+    gap: 4px;
 }
 
 #krush-admin-nav .navbar .nav-links a {
-    color: var(--krush-text);
+    padding: 6px 12px;
 
-    font-weight: 500;
+    font-size: 14px;
 
-    transition: color 0.2s ease;
+    color: var(--krush-muted);
+
+    border-radius: 6px;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 #krush-admin-nav .navbar .nav-links a:hover,
 #krush-admin-nav .navbar .nav-links a:focus {
+    color: var(--krush-text);
+
+    background-color: var(--krush-surface);
+}
+
+#krush-admin-nav .navbar .nav-links a.is-active {
     color: var(--krush-brand-text);
 }
 
@@ -168,17 +229,25 @@ html[data-theme="dark"] {
 /* ---------------------------------
    Responsive Navigation
 
-   Mirrors the 600px breakpoint in core/css/site.css.
+   Mirrors the 720px breakpoint in core/css/site.css.
 --------------------------------- */
 
-@media (max-width: 600px) {
+@media (max-width: 720px) {
 
     #krush-admin-nav .navbar {
-        padding: 18px 20px;
+        flex-wrap: wrap;
+
+        gap: 4px;
+
+        width: min(100% - 32px, 1240px);
+
+        padding: 14px 0 8px;
     }
 
     #krush-admin-nav .navbar .nav-links {
-        gap: 18px;
+        width: 100%;
+
+        overflow-x: auto;
     }
 
 }

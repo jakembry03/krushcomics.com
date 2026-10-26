@@ -1,9 +1,12 @@
 {% comment %}
-    One card in the Thoughts list.
+    One poster card in the Thoughts carousels and archive grid.
 
     Expects `thought` to be either a Review or a Post. `thought.kind` is the
     plain class attribute set on each model ("review" / "post"), which is what
     picks the detail URL, the type label and whether a rating is shown.
+
+    Thumbnails are shown as 2:3 movie posters. Thoughts without a thumbnail
+    get a typeset placeholder poster with their title on it.
 {% endcomment %}
 
 <article class="thought-card">
@@ -17,67 +20,75 @@
         {% endif %}
     >
 
-        <div class="thought-card-layout">
+        <div class="thought-poster">
 
             {% if thought.thumbnail %}
 
-                <div class="thought-thumbnail-container">
+                <img
+                    src="{{ thought.thumbnail.url }}"
+                    alt=""
+                    loading="lazy"
+                >
 
-                    <img
-                        class="thought-thumbnail"
-                        src="{{ thought.thumbnail.url }}"
-                        alt="{{ thought.title }}"
-                    >
+            {% else %}
 
+                <div
+                    class="thought-poster-placeholder"
+                    aria-hidden="true"
+                >
+                    <span class="icon">
+                        {% if thought.kind == 'review' %}
+                            &#xf0230;
+                        {% else %}
+                            &#xf448;
+                        {% endif %}
+                    </span>
+
+                    <span class="thought-poster-title">
+                        {{ thought.title }}
+                    </span>
                 </div>
 
             {% endif %}
 
 
-            <div class="thought-card-info">
+            {% if thought.kind == 'review' %}
 
-                <div class="thought-card-top">
+                <span class="thought-rating">
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf51f;</span>
+                    {{ thought.rating }}
+                    <span class="visually-hidden">out of 10</span>
+                </span>
 
-                    <div class="thought-card-heading">
+            {% endif %}
 
-                        <span class="thought-kind">
-                            {% if thought.kind == 'review' %}
-                                Review
-                            {% else %}
-                                Post
-                            {% endif %}
-                        </span>
-
-                        <h3 class="thought-title">
-                            {{ thought.title }}
-                        </h3>
-
-                    </div>
+        </div>
 
 
+        <div class="thought-card-info">
+
+            <p class="thought-card-meta">
+
+                <span class="thought-kind">
                     {% if thought.kind == 'review' %}
-
-                        <span class="thought-rating">
-                            {{ thought.rating }} / 10
-                        </span>
-
+                        Review
+                    {% else %}
+                        Post
                     {% endif %}
+                </span>
 
-                </div>
+                <time datetime="{{ thought.created_at|date:'Y-m-d' }}">
+                    {{ thought.created_at|date:"M j, Y" }}
+                </time>
 
+            </p>
 
-                <p class="thought-preview">
-                    {% with words=excerpt_words|default:35 %}
-                        {{ thought.body|truncatewords:words }}
-                    {% endwith %}
-                </p>
-
-
-                <p class="thought-date">
-                    {{ thought.created_at|date:"F j, Y" }}
-                </p>
-
-            </div>
+            <h3 class="thought-title">
+                {{ thought.title }}
+            </h3>
 
         </div>
 

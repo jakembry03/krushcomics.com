@@ -15,24 +15,28 @@
                     alt="Thumbnail for {{ project.title }}"
                     loading="lazy"
                 >
-            
+
             {% else %}
 
                 <span
                     class="project-placeholder"
                     aria-hidden="true"
                 >
-                    &lt; &gt;
+                    &lt;/&gt;
                 </span>
 
             {% endif %}
 
         </div>
-    
+
         <!--Project information -->
         <div class="project-card-content">
 
             <h3 class="project-card-title">
+                <span
+                    class="icon"
+                    aria-hidden="true"
+                >&#xf401;</span>
                 {{ project.title }}
             </h3>
 
@@ -41,11 +45,15 @@
             </p>
 
             <span class="project-card-action">
-                Explore Project &rarr;
+                explore project
+                <span
+                    class="icon"
+                    aria-hidden="true"
+                >&#xf432;</span>
             </span>
 
         </div>
-    
+
     </a>
-    
+
 </article>

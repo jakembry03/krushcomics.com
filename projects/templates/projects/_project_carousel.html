@@ -1,23 +1,23 @@
 {% if items %}
 
     <div
-        class="project-carousel"
+        class="carousel project-carousel"
         role="region"
         aria-label="Latest projects"
         tabindex="0"
     >
 
         {% for project in items %}
-            
+
             {% include "projects/_project_card.html" %}
-        
+
         {% endfor %}
-    
+
     </div>
 
 {% else %}
 
-    <p class="projects-empty">
+    <p class="empty">
         No projects have been added yet.
         Check back soon!
     </p>

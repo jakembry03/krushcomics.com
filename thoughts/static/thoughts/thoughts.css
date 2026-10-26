@@ -1,606 +1,448 @@
 /* ---------------------------------
-   Thoughts Page Layout
+   Thoughts
 
-   Consolidated from the old reviews.css and posts.css, which were
-   identical apart from their class name prefixes. Colors, spacing,
-   borders, thumbnail sizes, hover effects and breakpoints are carried
-   over unchanged; the only new piece is the REVIEW / POST type label.
+   Poster cards, the archive grid and the review / post detail
+   pages. The hub, archive search, tabs, carousel and link rows
+   use the shared components in core/css/site.css.
 --------------------------------- */
 
-.container {
-    width: min(100% - 48px, 900px);
-    margin: 0 auto;
-
-    padding-top: 70px;
-    padding-bottom: 80px;
-}
-
-
-/* ---------------------------------
-   Thoughts Page Header
---------------------------------- */
-
-.page-header {
-    margin-bottom: 40px;
-}
-
-.page-header h1 {
-    margin: 0;
-
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1;
-
-    letter-spacing: -0.05em;
-
-    color: var(--accent);
-}
-
-.page-description {
-    max-width: 600px;
-
-    margin-top: 20px;
-
-    font-size: 1.1rem;
-
-    color: var(--muted-text);
-}
-
-
-/* ---------------------------------
-   Search
---------------------------------- */
-
-.search-form {
-    max-width: 650px;
-
-    display: flex;
-    gap: 10px;
-
+.thoughts-search {
     margin-bottom: 64px;
 }
 
-.search-form input {
-    flex: 1;
-
-    padding: 14px 16px;
-
-    font: inherit;
-
-    background-color: var(--surface);
-    color: var(--text);
-
-    border: 1px solid var(--border);
-    border-radius: 10px;
-
-    outline: none;
-}
-
-.search-form input:focus {
-    border-color: var(--brand);
-}
-
-.search-form button {
-    padding: 14px 22px;
-
-    font: inherit;
-    font-weight: 600;
-
-    border: none;
-    border-radius: 10px;
-
-    background-color: var(--brand);
-    color: var(--on-brand);
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.15s ease;
-}
-
-.search-form button:hover {
-    background-color: var(--brand-active);
-
-    transform: translateY(-1px);
-}
-
 
 /* ---------------------------------
-   Thought List
---------------------------------- */
-
-.section-title {
-    margin-bottom: 20px;
-
-    font-size: 0.85rem;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.12em;
-
-    color: var(--muted-text);
-}
-
-.thought-list {
-    display: grid;
-
-    gap: 18px;
-
-    padding-bottom: 80px;
-}
-
-.no-thoughts {
-    color: var(--muted-text);
-}
-
-
-/* ---------------------------------
-   Thought Card
+   Poster Card
 --------------------------------- */
 
 .thought-card {
-    background-color: var(--surface);
-
-    border: 1px solid var(--border);
-    border-radius: 14px;
-
-    overflow: hidden;
-
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.thought-card:hover {
-    transform: translateY(-2px);
-
-    border-color: var(--brand);
-
-    box-shadow: 0 6px 18px var(--brand-glow);
+    min-width: 0;
 }
 
 .thought-link {
-    display: block;
+    display: flex;
+    flex-direction: column;
 
-    padding: 20px;
+    gap: 12px;
+
+    height: 100%;
 
     color: inherit;
 
     text-decoration: none;
 }
 
-
-/* ---------------------------------
-   Thought Card Layout
---------------------------------- */
-
-.thought-card-layout {
-    display: flex;
-
-    gap: 24px;
-
-    min-height: 190px;
+.thought-link:hover {
+    color: inherit;
 }
 
+.thought-poster {
+    position: relative;
 
-/* ---------------------------------
-   Thought Thumbnail
---------------------------------- */
-
-.thought-thumbnail-container {
-    flex: 0 0 135px;
-
-    width: 135px;
-    height: 190px;
+    aspect-ratio: 2 / 3;
 
     overflow: hidden;
-
-    border-radius: 10px;
-
-    background-color: var(--border);
-}
-
-.thought-card .thought-thumbnail {
-    display: block;
-
-    width: 135px;
-    height: 190px;
-
-    max-width: 135px;
-
-    object-fit: cover;
-}
-
-
-/* ---------------------------------
-   Thought Card Information
---------------------------------- */
-
-.thought-card-info {
-    flex: 1;
-
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-}
-
-
-/* ---------------------------------
-   Thought Card Type + Title + Rating
---------------------------------- */
-
-.thought-card-top {
-    display: flex;
-
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 24px;
-}
-
-.thought-card-heading {
-    min-width: 0;
-}
-
-.thought-kind {
-    display: inline-block;
-
-    margin-bottom: 8px;
-
-    padding: 3px 9px;
-
-    font-size: 0.68rem;
-    font-weight: 700;
-
-    line-height: 1.4;
-
-    letter-spacing: 0.12em;
-
-    text-transform: uppercase;
-
-    color: var(--brand-text);
-
-    background-color: var(--brand-hover);
-
-    border-radius: 999px;
-}
-
-.thought-title {
-    margin: 0;
-
-    font-size: 1.3rem;
-
-    line-height: 1.3;
-
-    letter-spacing: -0.02em;
-
-    color: var(--text);
-}
-
-.thought-rating {
-    flex-shrink: 0;
-
-    font-weight: 700;
-
-    color: var(--accent);
-}
-
-
-/* ---------------------------------
-   Thought Preview
---------------------------------- */
-
-.thought-preview {
-    margin: 18px 0 20px;
-
-    max-width: 550px;
-
-    line-height: 1.6;
-
-    color: var(--text);
-}
-
-
-/* ---------------------------------
-   Thought Date
---------------------------------- */
-
-.thought-date {
-    margin: auto 0 0;
-
-    text-align: right;
-
-    font-size: 0.9rem;
-
-    color: var(--muted-text);
-}
-
-
-/* ---------------------------------
-   Thought Detail Page
---------------------------------- */
-
-.thought-detail {
-    max-width: 800px;
-
-    margin: 0 auto;
-
-    padding: 70px 24px 100px;
-}
-
-.back-link {
-    display: inline-block;
-
-    margin-bottom: 56px;
-
-    color: var(--muted-text);
-
-    text-decoration: none;
-
-    transition: color 0.2s ease;
-}
-
-.back-link:hover {
-    color: var(--brand-text);
-}
-
-
-/* ---------------------------------
-   Thought Detail Hero
---------------------------------- */
-
-.thought-detail-hero {
-    display: flex;
-    align-items: center;
-
-    gap: 36px;
-}
-
-.thought-detail-image {
-    width: 200px;
-    height: 280px;
-
-    flex-shrink: 0;
-
-    object-fit: cover;
-
-    border-radius: 14px;
 
     background-color: var(--surface);
 
     border: 1px solid var(--border);
+    border-radius: var(--radius);
 
-    box-shadow: 0 8px 24px var(--shadow);
+    transition:
+        transform 0.3s var(--ease),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-.thought-detail-header {
-    flex: 1;
+.thought-poster img {
+    display: block;
 
-    margin-bottom: 0;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.5s var(--ease);
 }
 
-.thought-label {
-    margin: 0 0 12px;
+.thought-link:hover .thought-poster,
+.thought-link:focus-visible .thought-poster {
+    transform: translateY(-4px);
 
-    font-size: 0.8rem;
-    font-weight: 600;
+    border-color: var(--accent-line);
 
-    letter-spacing: 0.12em;
-
-    text-transform: uppercase;
-
-    color: var(--brand-text);
+    box-shadow:
+        var(--shadow),
+        0 0 0 1px var(--accent-line);
 }
 
-.thought-detail h1 {
-    margin: 0;
+.thought-link:hover .thought-poster img {
+    transform: scale(1.04);
+}
 
-    font-size: clamp(2.4rem, 6vw, 4rem);
 
-    line-height: 1.05;
+/* Placeholder poster for thoughts without a thumbnail. */
 
-    letter-spacing: -0.045em;
+.thought-poster-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 16px 14px;
+
+    background-color: var(--surface);
+    background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+}
+
+.thought-poster-placeholder .icon {
+    font-size: 1.6rem;
 
     color: var(--accent);
 }
 
-.thought-meta {
-    display: flex;
-    align-items: center;
+.thought-poster-title {
+    display: -webkit-box;
 
-    gap: 10px;
+    overflow: hidden;
 
-    margin-top: 20px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
 
-    color: var(--muted-text);
+    color: var(--text);
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
 }
 
-.thought-detail-rating {
+
+/* Rating badge in the poster's corner. */
+
+.thought-rating {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 3px 8px;
+
+    font-size: 0.75rem;
     font-weight: 700;
 
-    color: var(--brand-text);
+    color: var(--text);
+
+    background-color: rgba(11, 12, 15, 0.82);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.thought-rating .icon {
+    font-size: 0.7rem;
+
+    color: var(--accent);
+}
+
+
+/* Text under the poster. */
+
+.thought-card-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+}
+
+.thought-card-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0 8px;
+
+    font-size: 0.72rem;
+
+    color: var(--text-muted);
+}
+
+.thought-kind {
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color: var(--accent);
+}
+
+.thought-title {
+    display: -webkit-box;
+
+    overflow: hidden;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+
+    transition: color 0.2s ease;
+}
+
+.thought-link:hover .thought-title {
+    color: var(--accent);
 }
 
 
 /* ---------------------------------
-   Thought Body
+   Carousel and Grid Sizing
 --------------------------------- */
 
-.thought-divider {
-    margin: 48px 0;
+.thought-carousel > .thought-card {
+    width: clamp(150px, 16vw, 196px);
+}
 
-    border: none;
+.thought-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+
+    gap: 40px 22px;
+}
+
+.archive-count {
+    margin-bottom: 24px;
+}
+
+
+/* ---------------------------------
+   Detail Page
+--------------------------------- */
+
+.thought-detail {
+    position: relative;
+
+    isolation: isolate;
+}
+
+/* Blurred poster behind the header, fading into the page. */
+
+.thought-backdrop {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: -1;
+
+    height: 560px;
+
+    overflow: hidden;
+}
+
+.thought-backdrop img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0.32;
+
+    filter: blur(60px) saturate(1.4);
+
+    transform: scale(1.3);
+}
+
+.thought-backdrop::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(11, 12, 15, 0.2),
+        var(--bg)
+    );
+}
+
+
+/* Poster + header. */
+
+.thought-hero {
+    display: grid;
+
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: end;
+
+    gap: 40px;
+}
+
+.thought-hero-text {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.thought-hero-poster {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 2 / 3;
+
+    object-fit: cover;
+
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow);
+}
+
+.thought-detail-header h1 {
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+}
+
+.thought-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 16px 32px;
+
+    margin-top: 24px;
+
+    font-size: 0.85rem;
+
+    color: var(--text-muted);
+}
+
+.thought-date {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+/* Rating: score plus a ten-segment bar filled to the score. */
+
+.rating {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.rating-score {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+
+    color: var(--accent);
+}
+
+.rating-scale {
+    margin-left: 2px;
+
+    font-size: 0.85rem;
+    font-weight: 400;
+
+    color: var(--text-faint);
+}
+
+.rating-bar {
+    --segment: 14px;
+
+    position: relative;
+
+    width: calc(var(--segment) * 10);
+    height: 8px;
+
+    background: repeating-linear-gradient(
+        90deg,
+        var(--border-strong) 0 calc(var(--segment) - 3px),
+        transparent calc(var(--segment) - 3px) var(--segment)
+    );
+}
+
+.rating-bar::after {
+    content: "";
+
+    position: absolute;
+    inset: 0 auto 0 0;
+
+    width: calc(var(--rating) * var(--segment));
+
+    background: repeating-linear-gradient(
+        90deg,
+        var(--accent) 0 calc(var(--segment) - 3px),
+        transparent calc(var(--segment) - 3px) var(--segment)
+    );
+}
+
+
+/* Body. */
+
+.thought-body {
+    margin-top: 56px;
+    padding-top: 40px;
 
     border-top: 1px solid var(--border);
 }
 
-.thought-body {
-    font-size: 1.1rem;
-
-    line-height: 1.8;
-
-    color: var(--text);
-}
-
-.thought-body p {
-    margin: 0 0 24px;
-}
-
 
 /* ---------------------------------
-   Responsive - Tablet
+   Responsive
 --------------------------------- */
 
 @media (max-width: 700px) {
 
-    .container {
-        width: min(100% - 32px, 900px);
-
-        padding-top: 50px;
+    .thoughts-search {
+        margin-bottom: 48px;
     }
 
-    .page-header {
-        margin-bottom: 32px;
+    .thought-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+
+        gap: 32px 16px;
     }
 
-    .search-form {
-        flex-direction: column;
+    .thought-carousel > .thought-card {
+        width: 148px;
     }
 
+    .thought-hero {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
 
-    /* Thought Cards */
-
-    .thought-card-layout {
-        gap: 16px;
-
-        min-height: 160px;
+        gap: 28px;
     }
 
-    .thought-thumbnail-container {
-        flex: 0 0 110px;
-
-        width: 110px;
-        height: 160px;
+    .thought-hero-poster {
+        width: 170px;
     }
 
-    .thought-card .thought-thumbnail {
-        width: 110px;
-        height: 160px;
-
-        max-width: 110px;
+    .thought-body {
+        margin-top: 40px;
+        padding-top: 32px;
     }
 
-    .thought-card-top {
-        gap: 12px;
-    }
-
-    .thought-kind {
-        margin-bottom: 6px;
-    }
-
-    .thought-title {
-        font-size: 1.1rem;
-    }
-
-    .thought-preview {
-        margin-top: 14px;
-
-        font-size: 0.95rem;
-    }
-
-
-    /* Thought Detail */
-
-    .thought-detail {
-        padding:
-            50px
-            20px
-            80px;
-    }
-
-    .back-link {
-        margin-bottom: 36px;
-    }
-
-    .thought-detail-hero {
-        align-items: flex-start;
-
-        gap: 24px;
-    }
-
-    .thought-detail-image {
-        width: 150px;
-        height: 210px;
-    }
-
-    .thought-meta {
-        flex-wrap: wrap;
-    }
-}
-
-
-/* ---------------------------------
-   Responsive - Mobile
---------------------------------- */
-
-@media (max-width: 500px) {
-
-    .thought-link {
-        padding: 16px;
-    }
-
-
-    /* Thought Cards */
-
-    .thought-card-layout {
-        gap: 14px;
-
-        min-height: 130px;
-    }
-
-    .thought-thumbnail-container {
-        flex: 0 0 90px;
-
-        width: 90px;
-        height: 130px;
-    }
-
-    .thought-card .thought-thumbnail {
-        width: 90px;
-        height: 130px;
-
-        max-width: 90px;
-    }
-
-    .thought-card-top {
-        flex-direction: column;
-
-        gap: 4px;
-    }
-
-    .thought-preview {
-        margin: 12px 0;
-
-        font-size: 0.9rem;
-    }
-
-    .thought-date {
-        margin-top: auto;
-
-        font-size: 0.8rem;
-    }
-
-
-    /* Thought Detail */
-
-    .thought-detail-hero {
-        flex-direction: column;
-    }
-
-    .thought-detail-image {
-        width: 180px;
-        height: 250px;
-    }
 }

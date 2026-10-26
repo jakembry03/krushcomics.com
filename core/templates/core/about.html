@@ -14,121 +14,158 @@
 
 {% block content %}
 
-<main class="about-container">
+<main class="page">
+
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
+    >
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">about</span>
+    </nav>
 
     {% if profile %}
 
-        <article class="about-content">
+        <div class="about-layout">
 
-            {% if profile.profile_picture %}
-                <img
-                    class="about-profile-picture"
-                    src="{{ profile.profile_picture.url }}"
-                    alt="{{ profile.name }}"
-                >
-            {% endif %}
+            <!-- PROFILE CARD -->
+
+            <aside class="about-card">
+
+                {% if profile.profile_picture %}
+                    <img
+                        class="about-profile-picture"
+                        src="{{ profile.profile_picture.url }}"
+                        alt="{{ profile.name }}"
+                    >
+                {% endif %}
+
+                <div class="about-card-body">
+
+                    <p class="about-card-name">
+                        {{ profile.name }}
+                    </p>
+
+                    {% if profile.tagline %}
+                        <p class="about-tagline">
+                            {{ profile.tagline }}
+                        </p>
+                    {% endif %}
 
 
-            <h1>About Me</h1>
+                    {% if profile.github_url or profile.linkedin_url %}
+
+                        <div class="about-links">
+
+                            {% if profile.github_url %}
+                                <a
+                                    class="btn btn-ghost"
+                                    href="{{ profile.github_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <span
+                                        class="icon"
+                                        aria-hidden="true"
+                                    >&#xf408;</span>
+                                    GitHub
+                                </a>
+                            {% endif %}
 
 
-            {% if profile.tagline %}
-                <p class="about-tagline">
-                    {{ profile.tagline }}
-                </p>
-            {% endif %}
+                            {% if profile.linkedin_url %}
+                                <a
+                                    class="btn btn-ghost"
+                                    href="{{ profile.linkedin_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <span
+                                        class="icon"
+                                        aria-hidden="true"
+                                    >&#xf0e1;</span>
+                                    LinkedIn
+                                </a>
+                            {% endif %}
 
+                        </div>
 
-            {% if profile.intro %}
-                <div class="about-intro">
-                    {{ profile.intro|linebreaks }}
+                    {% endif %}
+
                 </div>
-            {% endif %}
+
+            </aside>
 
 
-            {% if profile.about_body %}
-                <section class="about-section">
+            <!-- ABOUT TEXT -->
 
-                    <h2>About Me</h2>
+            <article class="about-content">
 
-                    <div class="about-body">
-                        {{ profile.about_body|linebreaks }}
-                    </div>
+                <header class="page-header">
 
-                </section>
-            {% endif %}
+                    <h1>About Me</h1>
 
+                    {% if profile.intro %}
+                        <div class="page-lead">
+                            {{ profile.intro|linebreaks }}
+                        </div>
+                    {% endif %}
 
-            {% if profile.site_story %}
-                <section class="about-section">
-
-                    <h2>Why I Built KrushComics</h2>
-
-                    <div class="about-body">
-                        {{ profile.site_story|linebreaks }}
-                    </div>
-
-                </section>
-            {% endif %}
+                </header>
 
 
-            {% if profile.interests %}
-                <section class="about-section">
+                {% if profile.about_body %}
+                    <section class="about-section">
 
-                    <h2>Interests</h2>
+                        <div class="prose">
+                            {{ profile.about_body|linebreaks }}
+                        </div>
 
-                    <div class="about-body">
-                        {{ profile.interests|linebreaks }}
-                    </div>
-
-                </section>
-            {% endif %}
+                    </section>
+                {% endif %}
 
 
-            {% if profile.github_url or profile.linkedin_url %}
+                {% if profile.site_story %}
+                    <section class="about-section">
 
-                <section class="about-section">
+                        <h2 class="block-title">Why I Built KrushComics</h2>
 
-                    <h2>Find Me Online</h2>
+                        <div class="prose">
+                            {{ profile.site_story|linebreaks }}
+                        </div>
 
-                    <div class="about-links">
-
-                        {% if profile.github_url %}
-                            <a
-                                href="{{ profile.github_url }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                GitHub
-                            </a>
-                        {% endif %}
+                    </section>
+                {% endif %}
 
 
-                        {% if profile.linkedin_url %}
-                            <a
-                                href="{{ profile.linkedin_url }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                LinkedIn
-                            </a>
-                        {% endif %}
+                {% if profile.interests %}
+                    <section class="about-section">
 
-                    </div>
+                        <h2 class="block-title">Interests</h2>
 
-                </section>
+                        <div class="prose">
+                            {{ profile.interests|linebreaks }}
+                        </div>
 
-            {% endif %}
+                    </section>
+                {% endif %}
 
-        </article>
+            </article>
+
+        </div>
 
     {% else %}
 
-        <h1>About Me</h1>
+        <header class="page-header">
 
-        <p>
-            About information has not been added yet.
-        </p>
+            <h1>About Me</h1>
+
+            <p class="page-lead">
+                About information has not been added yet.
+            </p>
+
+        </header>
 
     {% endif %}
 

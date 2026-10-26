@@ -20,21 +20,29 @@
 
 {% block content %}
 
-<main class="security-page">
+<main class="page">
+
+    <!-- BREADCRUMBS -->
+
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
+    >
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">security</span>
+    </nav>
+
 
     <!-- PAGE INTRODUCTION -->
 
-    <header class="security-header">
-
-        <span class="security-eyebrow">
-            CYBERSECURITY / SECURITY
-        </span>
+    <header class="page-header">
 
         <h1>
             Security.
         </h1>
 
-        <p class="security-description">
+        <p class="page-lead">
             CTF write-ups, home lab builds, and
             vulnerability research.
         </p>
@@ -44,21 +52,29 @@
 
     <!-- LATEST ADDITIONS -->
 
-    <section class="security-panel">
+    <section class="section">
 
-        <span class="security-eyebrow">
-            01 / RECENT ADDITIONS
-        </span>
+        <div class="section-head">
 
-        <h2 class="security-panel-title">
-            Latest in Security
-        </h2>
+            <div>
 
-        <p class="security-panel-description">
-            {{ latest_items|length }}
-            recent entr{{ latest_items|length|pluralize:"y,ies" }}
-            &middot; Scroll to explore &rarr;
-        </p>
+                <span class="section-kicker">
+                    // 01 &middot; recent additions
+                </span>
+
+                <h2>
+                    Latest in Security
+                </h2>
+
+                <p class="section-meta">
+                    {{ latest_items|length }}
+                    recent entr{{ latest_items|length|pluralize:"y,ies" }}
+                    &middot; scroll to explore &rarr;
+                </p>
+
+            </div>
+
+        </div>
 
         {% include "security/_security_carousel.html" with items=latest_items %}
 
@@ -67,49 +83,63 @@
 
     <!-- SECTION NAVIGATION -->
 
-    <section class="security-panel">
+    <section class="section">
 
-        <span class="security-eyebrow">
-            02 / EXPLORE
-        </span>
+        <div class="section-head">
 
-        <h2 class="security-panel-title">
-            Browse by Section
-        </h2>
+            <div>
 
-        <p class="security-panel-description">
-            Pick the kind of security work
-            you're interested in.
-        </p>
+                <span class="section-kicker">
+                    // 02 &middot; explore
+                </span>
+
+                <h2>
+                    Browse by Section
+                </h2>
+
+                <p class="section-meta">
+                    Pick the kind of security work
+                    you're interested in.
+                </p>
+
+            </div>
+
+        </div>
 
 
         <nav
-            class="security-sections"
+            class="link-list"
             aria-label="Browse security sections"
         >
 
             <!-- CTF WRITE-UPS -->
 
             <a
-                class="security-section"
+                class="link-row"
                 href="{% url 'writeup_list' %}"
             >
 
-                <span class="security-section-icon">
-                    &#9873;&#xFE0E;
-                </span>
+                <span
+                    class="link-row-icon icon"
+                    aria-hidden="true"
+                >&#xf023b;</span>
 
-                <h3>
-                    CTF Write-Ups
-                </h3>
+                <div class="link-row-text">
 
-                <p>
-                    Walkthroughs of the CTF challenges I've solved.
-                </p>
+                    <h3>
+                        CTF Write-Ups
+                    </h3>
 
-                <span class="security-section-arrow">
-                    Explore &rarr;
-                </span>
+                    <p>
+                        Walkthroughs of the CTF challenges I've solved.
+                    </p>
+
+                </div>
+
+                <span
+                    class="link-row-arrow icon"
+                    aria-hidden="true"
+                >&#xf432;</span>
 
             </a>
 
@@ -117,25 +147,31 @@
             <!-- LABS -->
 
             <a
-                class="security-section"
+                class="link-row"
                 href="{% url 'security_labs' %}"
             >
 
-                <span class="security-section-icon">
-                    &#9881;&#xFE0E;
-                </span>
+                <span
+                    class="link-row-icon icon"
+                    aria-hidden="true"
+                >&#xf499;</span>
 
-                <h3>
-                    Labs
-                </h3>
+                <div class="link-row-text">
 
-                <p>
-                    Home lab builds and simulated attacks.
-                </p>
+                    <h3>
+                        Labs
+                    </h3>
 
-                <span class="security-section-arrow">
-                    Explore &rarr;
-                </span>
+                    <p>
+                        Home lab builds and simulated attacks.
+                    </p>
+
+                </div>
+
+                <span
+                    class="link-row-arrow icon"
+                    aria-hidden="true"
+                >&#xf432;</span>
 
             </a>
 
@@ -143,25 +179,31 @@
             <!-- RESEARCH -->
 
             <a
-                class="security-section"
+                class="link-row"
                 href="{% url 'security_research' %}"
             >
 
-                <span class="security-section-icon">
-                    &#8981;
-                </span>
+                <span
+                    class="link-row-icon icon"
+                    aria-hidden="true"
+                >&#xf46b;</span>
 
-                <h3>
-                    Research
-                </h3>
+                <div class="link-row-text">
 
-                <p>
-                    Vulnerability research and investigation reports.
-                </p>
+                    <h3>
+                        Research
+                    </h3>
 
-                <span class="security-section-arrow">
-                    Explore &rarr;
-                </span>
+                    <p>
+                        Vulnerability research and investigation reports.
+                    </p>
+
+                </div>
+
+                <span
+                    class="link-row-arrow icon"
+                    aria-hidden="true"
+                >&#xf432;</span>
 
             </a>
 

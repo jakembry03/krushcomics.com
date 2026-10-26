@@ -15,31 +15,34 @@
     href="{% static 'projects/css/projects.css' %}"
 >
 
-<link
-    rel="stylesheet"
-    href="{% static 'projects/css/project_carousel.css' %}"
->
-
 {% endblock %}
 
 
 {% block content %}
 
-<main class="projects-page">
+<main class="page">
+
+    <!-- BREADCRUMBS -->
+
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
+    >
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">projects</span>
+    </nav>
+
 
     <!-- PAGE INTRODUCTION -->
 
-    <header class="projects-header">
-
-        <span class="projects-label">
-            DEVELOPMENT / PROJECTS
-        </span>
+    <header class="page-header">
 
         <h1>
             Things I'm Building.
         </h1>
 
-        <p class="projects-intro">
+        <p class="page-lead">
             A collection of applications,
             experiments, and ideas I've
             brought to life.
@@ -50,24 +53,24 @@
 
     <!-- LATEST PROJECTS -->
 
-    <section class="projects-collection">
+    <section class="section">
 
-        <div class="projects-section-header">
+        <div class="section-head">
 
             <div>
 
-                <span class="projects-label">
-                    01 / RECENT DEVELOPMENT
+                <span class="section-kicker">
+                    // 01 &middot; recent development
                 </span>
 
                 <h2>
                     Latest Projects
                 </h2>
 
-                <p class="projects-section-description">
+                <p class="section-meta">
                     {{ latest_projects|length }}
                     recent project{{ latest_projects|length|pluralize }}
-                    &middot; Scroll to explore &rarr;
+                    &middot; scroll to explore &rarr;
                 </p>
 
             </div>
@@ -81,49 +84,67 @@
 
     <!-- ARCHIVE NAVIGATION -->
 
-    <section class="projects-collection projects-explore">
+    <section class="section">
 
-        <span class="projects-label">
-            02 / EXPLORE
-        </span>
+        <div class="section-head">
 
-        <h2>
-            Explore My Work
-        </h2>
+            <div>
 
-        <p class="projects-section-description">
-            Browse everything I've built,
-            from completed applications
-            to ongoing experiments.
-        </p>
+                <span class="section-kicker">
+                    // 02 &middot; explore
+                </span>
+
+                <h2>
+                    Explore My Work
+                </h2>
+
+                <p class="section-meta">
+                    Browse everything I've built,
+                    from completed applications
+                    to ongoing experiments.
+                </p>
+
+            </div>
+
+        </div>
 
 
-        <a
-            class="project-archive-link"
-            href="{% url 'project_archive' %}"
+        <nav
+            class="link-list"
+            aria-label="Browse projects"
         >
 
-            <span
-                class="project-archive-icon"
-                aria-hidden="true"
+            <a
+                class="link-row"
+                href="{% url 'project_archive' %}"
             >
-                &lt; &gt;
-            </span>
 
-            <h3>
-                All Projects
-            </h3>
+                <span
+                    class="link-row-icon icon"
+                    aria-hidden="true"
+                >&#xf44f;</span>
 
-            <p>
-                The complete collection
-                of my development projects.
-            </p>
+                <div class="link-row-text">
 
-            <span class="project-archive-action">
-                Explore Projects &rarr;
-            </span>
+                    <h3>
+                        All Projects
+                    </h3>
 
-        </a>
+                    <p>
+                        The complete collection
+                        of my development projects.
+                    </p>
+
+                </div>
+
+                <span
+                    class="link-row-arrow icon"
+                    aria-hidden="true"
+                >&#xf432;</span>
+
+            </a>
+
+        </nav>
 
     </section>
 

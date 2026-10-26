@@ -20,31 +20,31 @@
 
 {% block content %}
 
-<main class="projects-page">
+<main class="page">
 
-    <!-- BACK LINK -->
+    <!-- BREADCRUMBS -->
 
-    <a
-        class="project-archive-back"
-        href="{% url 'projects' %}"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to Projects
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'projects' %}">projects</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">archive</span>
+    </nav>
 
 
     <!-- ARCHIVE INTRODUCTION -->
 
-    <header class="projects-header">
-
-        <span class="projects-label">
-            PROJECTS / ARCHIVE
-        </span>
+    <header class="page-header">
 
         <h1>
             All Projects
         </h1>
 
-        <p class="projects-intro">
+        <p class="page-lead">
             Every application, experiment,
             and project I've worked on.
         </p>
@@ -54,20 +54,12 @@
 
     <!-- PROJECT GRID -->
 
-    <section class="projects-collection">
+    <section>
 
-        <div class="projects-section-header">
-
-            <h2>
-                Explore My Projects
-            </h2>
-
-            <p>
-                {{ page_obj.paginator.count }}
-                project{{ page_obj.paginator.count|pluralize }}
-            </p>
-
-        </div>
+        <p class="section-meta projects-count">
+            {{ page_obj.paginator.count }}
+            project{{ page_obj.paginator.count|pluralize }}
+        </p>
 
 
         <div class="project-grid">
@@ -78,7 +70,7 @@
 
             {% empty %}
 
-                <p class="projects-empty">
+                <p class="empty">
                     No projects have been added yet.
                     Check back soon!
                 </p>
@@ -93,13 +85,14 @@
         {% if page_obj.has_other_pages %}
 
             <nav
-                class="project-pagination"
+                class="pagination"
                 aria-label="Project archive pages"
             >
 
                 {% if page_obj.has_previous %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.previous_page_number }}"
                     >
                         &larr; Previous
@@ -117,6 +110,7 @@
                 {% if page_obj.has_next %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.next_page_number }}"
                     >
                         Next &rarr;
