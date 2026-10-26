@@ -20,25 +20,35 @@
 
 {% block content %}
 
-<main class="security-page">
+<main class="page">
 
-    <!-- BACK LINK -->
+    <!-- BREADCRUMBS -->
 
-    <a
-        href="{% url 'writeup_list' %}"
-        class="security-back"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to CTF Write-Ups
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'security' %}">security</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'writeup_list' %}">writeups</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ ctf.slug }}</span>
+    </nav>
 
 
     <!-- HEADER -->
 
-    <header class="security-header">
+    <header class="page-header">
 
-        <span class="security-eyebrow">
-            SECURITY / CTF WRITE-UPS / {{ ctf.year }}
-        </span>
+        <p class="tag">
+            <span
+                class="icon"
+                aria-hidden="true"
+            >&#xf023b;</span>
+            CTF &middot; {{ ctf.year }}
+        </p>
 
         <h1>
             {{ ctf.name }}
@@ -46,7 +56,7 @@
 
         {% if ctf.description %}
 
-            <p class="security-description">
+            <p class="page-lead">
                 {{ ctf.description }}
             </p>
 
@@ -55,12 +65,16 @@
         {% if ctf.website %}
 
             <a
-                class="security-external-link"
+                class="btn btn-ghost security-external-link"
                 href="{{ ctf.website }}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Event website &nearr;
+                Event website
+                <span
+                    class="icon"
+                    aria-hidden="true"
+                >&#xf465;</span>
             </a>
 
         {% endif %}
@@ -70,18 +84,26 @@
 
     <!-- CHALLENGES -->
 
-    <section class="security-panel">
+    <section>
 
-        <div class="security-collection-header">
+        <div class="section-head">
 
-            <h2>
-                Challenges
-            </h2>
+            <div>
 
-            <span>
+                <span class="section-kicker">
+                    // challenges
+                </span>
+
+                <h2>
+                    Challenges
+                </h2>
+
+            </div>
+
+            <p class="section-meta">
                 {{ writeups|length }}
                 write-up{{ writeups|length|pluralize }}
-            </span>
+            </p>
 
         </div>
 
@@ -94,7 +116,7 @@
 
             {% empty %}
 
-                <p class="security-empty">
+                <p class="empty">
                     No write-ups have been published for this CTF yet.
                 </p>
 

@@ -20,31 +20,65 @@
 
 {% block content %}
 
-<main class="project-detail">
+<main class="page page-narrow project-detail">
 
-    <a
-        class="project-back-link"
-        href="{% url 'projects' %}"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to Projects
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'projects' %}">projects</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ project.title }}</span>
+    </nav>
 
 
     <!-- PROJECT INTRODUCTION -->
 
-    <header class="project-detail-header">
+    <header class="page-header">
 
-        <span class="projects-label">
-            PROJECT / DEVELOPMENT
-        </span>
+        <p class="tag">
+            <span
+                class="icon"
+                aria-hidden="true"
+            >&#xf401;</span>
+            Project
+        </p>
 
         <h1>
             {{ project.title }}
         </h1>
 
-        <p class="project-detail-description">
-            {{ project.description }}
+        <p class="page-lead">
+            {{ project.description|truncatewords:30 }}
         </p>
+
+
+        {% if project.github_url %}
+
+            <div class="project-actions">
+
+                <a
+                    class="btn btn-primary"
+                    href="{{ project.github_url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf408;</span>
+                    View on GitHub
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf465;</span>
+                </a>
+
+            </div>
+
+        {% endif %}
 
     </header>
 
@@ -66,7 +100,7 @@
                 class="project-placeholder"
                 aria-hidden="true"
             >
-                &lt; &gt;
+                &lt;/&gt;
             </span>
 
         {% endif %}
@@ -78,11 +112,11 @@
 
     <section class="project-detail-section">
 
-        <h2>
+        <h2 class="block-title">
             About This Project
         </h2>
 
-        <div class="project-detail-text">
+        <div class="prose">
             {{ project.description|linebreaks }}
         </div>
 
@@ -95,31 +129,15 @@
 
         <section class="project-detail-section">
 
-            <h2>
+            <h2 class="block-title">
                 Planned Additions
             </h2>
 
-            <div class="project-detail-text">
+            <div class="prose">
                 {{ project.planned_additions|linebreaks }}
             </div>
 
         </section>
-
-    {% endif %}
-
-
-    <!-- GITHUB LINK -->
-
-    {% if project.github_url %}
-
-        <a
-            class="project-github-button"
-            href="{{ project.github_url }}"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            View on GitHub &nearr;
-        </a>
 
     {% endif %}
 

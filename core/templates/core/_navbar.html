@@ -5,42 +5,89 @@
     site (core/base.html) and the Django admin (templates/admin/base_site.html)
     so the link list only ever has to be edited in one place.
 
-    The markup is unchanged from what core/base.html used to hold inline.
+    The link for the current section gets the `is-active` class. Sections are
+    matched by URL prefix so detail pages (e.g. /thoughts/review/1/) still
+    highlight their parent; Home only matches the root exactly.
 {% endcomment %}
 
-<nav class="navbar">
+{% url 'home' as home_url %}
+{% url 'about' as about_url %}
+{% url 'thoughts' as thoughts_url %}
+{% url 'projects' as projects_url %}
+{% url 'security' as security_url %}
+{% url 'admin:index' as admin_url %}
+
+<nav
+    class="navbar"
+    aria-label="Main"
+>
 
     <a
         class="nav-brand"
-        href="{% url 'home' %}"
+        href="{{ home_url }}"
     >
-        KrushComics
+        <span
+            class="nav-brand-prompt"
+            aria-hidden="true"
+        >&#x276F;</span>
+        krushcomics<span class="nav-brand-cursor" aria-hidden="true"></span>
     </a>
 
     <div class="nav-links">
 
-        <a href="{% url 'home' %}">
-            Home
+        <a
+            href="{{ home_url }}"
+            {% if request.path == home_url %}
+                class="is-active"
+                aria-current="page"
+            {% endif %}
+        >
+            home
         </a>
 
-        <a href="{% url 'about' %}">
-            About
+        <a
+            href="{{ about_url }}"
+            {% if about_url in request.path %}
+                class="is-active"
+            {% endif %}
+        >
+            about
         </a>
 
-        <a href="{% url 'thoughts' %}">
-            Thoughts
+        <a
+            href="{{ thoughts_url }}"
+            {% if thoughts_url in request.path %}
+                class="is-active"
+            {% endif %}
+        >
+            thoughts
         </a>
 
-        <a href="{% url 'projects' %}">
-            Projects
+        <a
+            href="{{ projects_url }}"
+            {% if projects_url in request.path %}
+                class="is-active"
+            {% endif %}
+        >
+            projects
         </a>
 
-        <a href="{% url 'security' %}">
-            Security
+        <a
+            href="{{ security_url }}"
+            {% if security_url in request.path %}
+                class="is-active"
+            {% endif %}
+        >
+            security
         </a>
 
-        <a href="{% url 'admin:index' %}">
-            Admin
+        <a
+            href="{{ admin_url }}"
+            {% if admin_url in request.path %}
+                class="is-active"
+            {% endif %}
+        >
+            admin
         </a>
 
     </div>

@@ -20,98 +20,110 @@
 
 {% block content %}
 
-<main class="security-page">
+<main class="page">
 
-    <!-- BACK LINK -->
+    <!-- BREADCRUMBS -->
 
-    <a
-        href="{% url 'security' %}"
-        class="security-back"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to Security
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'security' %}">security</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">writeups</span>
+    </nav>
 
 
     <!-- HEADER -->
 
-    <header class="security-header">
-
-        <span class="security-eyebrow">
-            SECURITY / CTF WRITE-UPS
-        </span>
+    <header class="page-header">
 
         <h1>
             CTF Write-Ups
         </h1>
 
-        <p class="security-description">
+        <p class="page-lead">
             Walkthroughs of the CTF challenges I've solved.
         </p>
 
     </header>
 
 
-    <!-- BROWSE BY CTF -->
+    <!-- BROWSE BY CTF + SEARCH -->
 
-    {% if ctfs %}
+    <div class="toolbar">
 
-        <nav
-            class="security-switcher"
-            aria-label="Browse by CTF"
+        {% if ctfs %}
+
+            <nav
+                class="chips"
+                aria-label="Browse by CTF"
+            >
+
+                {% for ctf in ctfs %}
+
+                    <a
+                        class="chip"
+                        href="{{ ctf.get_absolute_url }}"
+                    >
+                        {{ ctf }}
+                    </a>
+
+                {% endfor %}
+
+            </nav>
+
+        {% endif %}
+
+
+        <form
+            class="search"
+            method="get"
+            role="search"
         >
 
-            {% for ctf in ctfs %}
+            <label class="search-field">
 
-                <a href="{{ ctf.get_absolute_url }}">
-                    {{ ctf }}
-                </a>
+                <span
+                    class="icon"
+                    aria-hidden="true"
+                >&#xf422;</span>
 
-            {% endfor %}
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ query }}"
+                    aria-label="Search write-ups"
+                    placeholder="search write-ups, tools, or ctfs..."
+                >
 
-        </nav>
+            </label>
 
-    {% endif %}
+            <button
+                class="btn btn-primary"
+                type="submit"
+            >
+                Search
+            </button>
 
+        </form>
 
-    <!-- SEARCH -->
-
-    <form
-        class="security-search"
-        method="get"
-        role="search"
-    >
-
-        <input
-            type="search"
-            name="q"
-            value="{{ query }}"
-            aria-label="Search write-ups"
-            placeholder="Search write-ups, tools, or CTFs..."
-        >
-
-        <button type="submit">
-            Search
-        </button>
-
-    </form>
+    </div>
 
 
     <!-- WRITE-UPS -->
 
-    <section class="security-panel">
+    <section>
 
-        <div class="security-collection-header">
-
-            <h2>
-                All Write-Ups
-            </h2>
-
-            <span>
-                {{ page_obj.paginator.count }}
-                write-up{{ page_obj.paginator.count|pluralize }}
-            </span>
-
-        </div>
+        <p class="section-meta security-count">
+            {{ page_obj.paginator.count }}
+            write-up{{ page_obj.paginator.count|pluralize }}
+            {% if query %}
+                matching "{{ query }}"
+            {% endif %}
+        </p>
 
 
         <div class="security-grid">
@@ -122,7 +134,7 @@
 
             {% empty %}
 
-                <p class="security-empty">
+                <p class="empty">
 
                     {% if query %}
 
@@ -146,13 +158,14 @@
         {% if page_obj.has_other_pages %}
 
             <nav
-                class="security-pagination"
+                class="pagination"
                 aria-label="Write-up pages"
             >
 
                 {% if page_obj.has_previous %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.previous_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
                     >
                         &larr; Previous
@@ -170,6 +183,7 @@
                 {% if page_obj.has_next %}
 
                     <a
+                        class="btn btn-ghost"
                         href="?page={{ page_obj.next_page_number }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"
                     >
                         Next &rarr;

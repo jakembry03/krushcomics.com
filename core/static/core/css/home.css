@@ -4,611 +4,195 @@
 
 
 /* ---------------------------------------------------------
-   Full-Width Banner
+   Banner
    --------------------------------------------------------- */
 
-.home-banner {
-    width: 100%;
+.hero {
+    position: relative;
+}
+
+.hero-banner {
+    position: relative;
+
+    height: clamp(260px, 33vw, 520px);
 
     overflow: hidden;
 
-    background-color: #0b0d11;
+    background-color: var(--bg);
+}
+
+.hero-banner-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center 40%;
+}
+
+/*
+    Fade the artwork into the page background at the bottom and
+    darken the left edge slightly so the terminal reads cleanly.
+*/
+
+.hero-banner::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(11, 12, 15, 0) 35%,
+            rgba(11, 12, 15, 0.6) 70%,
+            var(--bg) 100%
+        ),
+        linear-gradient(
+            to right,
+            rgba(11, 12, 15, 0.45),
+            rgba(11, 12, 15, 0) 45%
+        );
+
+    pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+   Terminal Introduction
+   --------------------------------------------------------- */
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
+
+    width: min(100% - 2 * var(--gutter), var(--content));
+
+    margin: calc(-1 * clamp(96px, 11vw, 170px)) auto 0;
+}
+
+.terminal {
+    max-width: 600px;
+
+    overflow: hidden;
+
+    background-color: rgba(15, 17, 21, 0.88);
+
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow);
+
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+
+.terminal-bar {
+    display: grid;
+
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    padding: 10px 14px;
+
+    font-size: 0.75rem;
+
+    color: var(--text-faint);
 
     border-bottom: 1px solid var(--border);
 }
 
+.terminal-dots {
+    display: flex;
 
-.home-banner-image {
-    display: block;
-
-    width: 100%;
-
-    height: clamp(280px, 31vw, 520px);
-
-    object-fit: cover;
-    object-position: center;
+    gap: 6px;
 }
 
+.terminal-dots span {
+    width: 10px;
+    height: 10px;
 
-/* =========================================================
-   MAIN HOMEPAGE CONTAINER
-   ========================================================= */
+    background-color: var(--border-strong);
 
-/*
-    The homepage is intentionally wider than the site's normal
-    reading/content pages.
-
-    The banner is still full viewport width, while the homepage
-    content can now stretch to 1500px.
-*/
-
-.home-page {
-    width: min(100% - 48px, 1500px);
-
-    margin: 0 auto;
-
-    padding: 32px 0 100px;
+    border-radius: 50%;
 }
 
-
-/* ---------------------------------------------------------
-   Shared Section Label
-   --------------------------------------------------------- */
-
-.section-label {
-    display: inline-block;
-
-    margin-bottom: 10px;
-
-    font-size: 0.76rem;
-    font-weight: 700;
-
-    letter-spacing: 0.15em;
-
-    text-transform: uppercase;
-
-    color: var(--brand-text);
+.terminal-dots span:first-child {
+    background-color: var(--accent);
 }
 
-
-/* =========================================================
-   INTRODUCTION STRIP
-   ========================================================= */
-
-/*
-    The introduction intentionally remains narrower than the
-    carousels.
-
-    This creates three levels of width:
-
-    Banner      -> full viewport
-    Carousels   -> up to 1500px
-    Intro       -> up to 1200px
-*/
-
-.home-intro {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-
-    align-items: center;
-
-    gap: 48px;
-
-    width: min(100%, 1200px);
-
-    margin: 0 auto;
-
-    padding: 28px 32px;
-
-    background-color: var(--surface);
-
-    border: 1px solid var(--border);
-    border-radius: 14px;
+.terminal-body {
+    padding: 20px 24px 22px;
 }
 
+.terminal-command {
+    font-size: 0.875rem;
 
-/* ---------------------------------------------------------
-   Introduction Copy
-   --------------------------------------------------------- */
-
-.home-intro-copy {
-    min-width: 0;
+    color: var(--text-muted);
 }
 
-
-.home-intro h1 {
-    margin: 0;
-
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-
-    line-height: 1.15;
-
-    letter-spacing: -0.03em;
-
-    color: var(--text);
-}
-
-
-.home-intro-tagline {
-    margin-top: 8px;
-
-    font-size: 1rem;
-    font-weight: 600;
+.terminal-prompt {
+    margin-right: 6px;
 
     color: var(--accent);
 }
 
+.terminal-name {
+    margin: 4px 0 2px;
 
-.home-intro-description {
-    max-width: 680px;
-
-    margin-top: 10px;
-
-    font-size: 0.95rem;
-
-    line-height: 1.7;
-
-    color: var(--muted-text);
-}
-
-
-/* ---------------------------------------------------------
-   Introduction Navigation
-   --------------------------------------------------------- */
-
-.home-intro-links {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    min-width: 145px;
-}
-
-
-.home-intro-links a {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 22px;
-
-    width: 100%;
-
-    padding: 9px 0;
-
-    color: var(--text);
-
-    font-size: 0.95rem;
-    font-weight: 600;
-
-    text-decoration: none;
-
-    border-bottom: 1px solid var(--border);
-
-    transition:
-        color 0.2s ease,
-        border-color 0.2s ease;
-}
-
-
-.home-intro-links a:first-child {
-    border-top: 1px solid var(--border);
-}
-
-
-.home-intro-links a span {
-    color: var(--brand-text);
-
-    transition: transform 0.2s ease;
-}
-
-
-.home-intro-links a:hover {
-    color: var(--brand-text);
-
-    border-color: var(--brand);
-}
-
-
-.home-intro-links a:hover span {
-    transform: translateX(4px);
-}
-
-
-/* =========================================================
-   LATEST CONTENT SECTIONS
-   ========================================================= */
-
-/*
-    These sections are no longer giant cards containing smaller
-    cards.
-
-    Instead, the content sits directly on the page like an
-    editorial section.
-*/
-
-.latest-section {
-    margin-top: 56px;
-
-    padding: 0;
-
-    background-color: transparent;
-
-    border: 0;
-    border-radius: 0;
-}
-
-
-/* ---------------------------------------------------------
-   Section Header
-   --------------------------------------------------------- */
-
-.latest-section-header {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: flex-end;
-
-    gap: 20px;
-
-    margin-bottom: 20px;
-    padding: 0 4px 20px;
-
-    border-bottom: 1px solid var(--border);
-}
-
-
-.latest-section-header .section-label {
-    margin-bottom: 8px;
-}
-
-
-.latest-section-header h2 {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-
+    font-size: clamp(1.9rem, 4.5vw, 2.75rem);
     line-height: 1.15;
-
-    letter-spacing: -0.025em;
-
-    color: var(--text);
 }
 
-
-.section-description {
-    margin-top: 8px;
+.terminal-output {
+    margin-bottom: 18px;
 
     font-size: 0.9rem;
 
-    color: var(--muted-text);
+    color: var(--text-muted);
 }
 
+.terminal-ls {
+    display: flex;
 
-/* ---------------------------------------------------------
-   View All Link
-   --------------------------------------------------------- */
+    flex-wrap: wrap;
 
-.section-link {
-    flex-shrink: 0;
+    gap: 4px 24px;
 
-    padding: 9px 17px;
+    margin: 2px 0 14px;
+}
 
-    border: 1px solid var(--brand);
-    border-radius: 999px;
-
-    color: var(--brand-text);
-
-    font-size: 0.9rem;
+.terminal-ls a {
     font-weight: 600;
 
     text-decoration: none;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
 }
 
-
-.section-link:hover {
-    background-color: var(--brand);
-
-    color: var(--on-brand);
-
-    transform: translateY(-1px);
+.terminal-ls a:hover {
+    text-decoration: underline;
 }
 
+.terminal-cursor {
+    display: inline-block;
 
-/* =========================================================
-   HOMEPAGE THOUGHT CAROUSEL
-   ========================================================= */
+    width: 0.55em;
+    height: 1.1em;
 
-/*
-    The normal Thoughts carousel uses gaps between cards.
+    vertical-align: text-bottom;
 
-    On the homepage only, the cards become a continuous strip
-    with touching borders.
-*/
+    background-color: var(--accent);
 
-.home-page .thought-carousel {
-    gap: 0;
-
-    padding: 0 2px 22px;
-
-    scroll-padding-left: 2px;
-}
-
-
-/*
-    Wider cards give the artwork and titles more room while
-    still allowing part of the next card to remain visible.
-*/
-
-.home-page .thought-carousel .thought-card {
-    position: relative;
-
-    flex: 0 0 clamp(310px, 25vw, 390px);
-
-    min-width: 0;
-
-    border-radius: 0;
-
-    box-shadow: none;
-
-    scroll-snap-align: start;
-}
-
-
-/*
-    Pull neighboring cards together by one pixel so two
-    individual borders visually become one shared border.
-*/
-
-.home-page .thought-carousel .thought-card + .thought-card {
-    margin-left: -1px;
-}
-
-
-/*
-    The outside edges of the full strip retain a subtle radius,
-    while the internal cards remain square.
-*/
-
-.home-page .thought-carousel .thought-card:first-child {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-
-
-.home-page .thought-carousel .thought-card:last-child {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-
-/*
-    Instead of lifting cards away from the strip on hover,
-    highlight their border while keeping everything aligned.
-*/
-
-.home-page .thought-carousel .thought-card:hover,
-.home-page .thought-carousel .thought-card:focus-within {
-    z-index: 2;
-
-    transform: none;
-
-    border-color: var(--brand);
-
-    box-shadow:
-        0 0 0 1px var(--brand),
-        0 6px 18px var(--brand-glow);
+    animation: cursor-blink 1.1s steps(1) infinite;
 }
 
 
 /* ---------------------------------------------------------
-   Thought Card Sizing
+   Content
    --------------------------------------------------------- */
 
-.home-page .thought-carousel .thought-link {
-    height: 100%;
-}
-
-
-.home-page .thought-carousel .thought-card-layout {
-    flex-direction: column;
-
-    gap: 16px;
-
-    min-height: 0;
-}
-
-
-.home-page .thought-carousel .thought-thumbnail-container {
-    flex: none;
-
-    width: 100%;
-    height: 190px;
-}
-
-
-.home-page .thought-carousel .thought-card .thought-thumbnail {
-    width: 100%;
-    max-width: none;
-
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-.home-page .thought-carousel .thought-card-info {
-    flex: 1;
-
-    min-height: 180px;
-}
-
-
-.home-page .thought-carousel .thought-card-top {
-    flex-direction: column;
-
-    gap: 8px;
-}
-
-
-.home-page .thought-carousel .thought-title {
-    font-size: 1.2rem;
-
-    line-height: 1.3;
-}
-
-
-.home-page .thought-carousel .thought-preview {
-    margin: 10px 0 14px;
-
-    font-size: 0.95rem;
-}
-
-
-.home-page .thought-carousel .thought-date {
-    margin-top: auto;
-
-    text-align: left;
-}
-
-
-/* =========================================================
-   HOMEPAGE PROJECT CAROUSEL
-   ========================================================= */
-
-/*
-    Projects use the same connected-panel visual language as
-    Thoughts so both homepage sections feel related.
-*/
-
-.home-page .project-carousel {
-    gap: 0;
-
-    padding: 0 2px 22px;
-
-    scroll-padding-left: 2px;
-}
-
-
-.home-page .project-carousel > .project-card {
-    position: relative;
-
-    flex: 0 0 clamp(310px, 25vw, 390px);
-
-    min-width: 0;
-
-    border-radius: 0;
-
-    box-shadow: none;
-
-    scroll-snap-align: start;
-}
-
-
-.home-page .project-carousel > .project-card + .project-card {
-    margin-left: -1px;
-}
-
-
-.home-page .project-carousel > .project-card:first-child {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-
-
-.home-page .project-carousel > .project-card:last-child {
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-
-.home-page .project-carousel > .project-card:hover,
-.home-page .project-carousel > .project-card:focus-within {
-    z-index: 2;
-
-    transform: none;
-
-    border-color: var(--brand);
-
-    box-shadow:
-        0 0 0 1px var(--brand),
-        0 6px 18px var(--brand-glow);
-}
-
-
-.home-page .project-carousel .project-card-link {
-    height: 100%;
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 800px) {
-
-    .home-banner-image {
-        height: clamp(230px, 42vw, 360px);
-    }
-
-
-    .home-page {
-        width: min(100% - 32px, 1500px);
-
-        padding-top: 24px;
-    }
-
-
-    .home-intro {
-        grid-template-columns: 1fr;
-
-        gap: 24px;
-
-        padding: 26px 24px;
-    }
-
-
-    .home-intro-links {
-        width: 100%;
-
-        flex-direction: row;
-
-        flex-wrap: wrap;
-
-        gap: 18px;
-    }
-
-
-    .home-intro-links a {
-        width: auto;
-
-        gap: 8px;
-
-        border: 0;
-
-        padding: 4px 0;
-    }
-
-
-    .home-intro-links a:first-child {
-        border-top: 0;
-    }
-
-
-    .home-page .thought-carousel .thought-card,
-    .home-page .project-carousel > .project-card {
-        flex-basis: min(70vw, 350px);
-    }
-
+.home-page {
+    padding-top: 64px;
 }
 
 
@@ -616,95 +200,22 @@
    MOBILE
    ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
-    .home-banner-image {
+    .hero-banner {
         height: 220px;
-
-        object-position: center;
     }
 
+    .hero-inner {
+        margin-top: -64px;
+    }
+
+    .terminal-body {
+        padding: 16px 18px 18px;
+    }
 
     .home-page {
-        width: min(100% - 24px, 1500px);
-
-        padding-bottom: 64px;
-    }
-
-
-    .home-intro {
-        padding: 22px 18px;
-
-        border-radius: 12px;
-    }
-
-
-    .home-intro h1 {
-        font-size: 1.8rem;
-    }
-
-
-    .home-intro-description {
-        font-size: 0.9rem;
-    }
-
-
-    .home-intro-links {
-        flex-direction: column;
-
-        gap: 0;
-
-        align-items: stretch;
-    }
-
-
-    .home-intro-links a {
-        display: flex;
-
-        justify-content: space-between;
-
-        width: 100%;
-
-        padding: 9px 0;
-
-        border-bottom: 1px solid var(--border);
-    }
-
-
-    .home-intro-links a:first-child {
-        border-top: 1px solid var(--border);
-    }
-
-
-    .latest-section {
-        margin-top: 42px;
-    }
-
-
-    .latest-section-header {
-        align-items: flex-start;
-
-        flex-direction: column;
-
-        margin-bottom: 16px;
-
-        padding-bottom: 16px;
-    }
-
-
-    /*
-        On phones, almost one full card is shown with a small piece
-        of the next card peeking into view.
-    */
-
-    .home-page .thought-carousel .thought-card,
-    .home-page .project-carousel > .project-card {
-        flex-basis: min(84vw, 330px);
-    }
-
-
-    .home-page .thought-carousel .thought-thumbnail-container {
-        height: 175px;
+        padding-top: 48px;
     }
 
 }

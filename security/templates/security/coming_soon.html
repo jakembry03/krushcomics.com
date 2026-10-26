@@ -20,44 +20,49 @@
 
 {% block content %}
 
-<main class="security-page">
+<main class="page">
 
-    <!-- BACK LINK -->
+    <!-- BREADCRUMBS -->
 
-    <a
-        href="{% url 'security' %}"
-        class="security-back"
+    <nav
+        class="crumbs"
+        aria-label="Breadcrumb"
     >
-        &larr; Back to Security
-    </a>
+        <a href="{% url 'home' %}">~</a>
+        <span aria-hidden="true">/</span>
+        <a href="{% url 'security' %}">security</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ section_title|lower }}</span>
+    </nav>
 
 
     <!-- HEADER -->
 
-    <header class="security-header">
-
-        <span class="security-eyebrow">
-            SECURITY / {{ section_title|upper }}
-        </span>
+    <header class="page-header">
 
         <h1>
             {{ section_title }}
         </h1>
 
-        <p class="security-description">
+        <p class="page-lead">
             {{ section_description }}
         </p>
 
     </header>
 
 
-    <section class="security-panel">
+    <section class="coming-soon">
 
-        <h2 class="security-panel-title">
+        <p class="coming-soon-prompt">
+            <span aria-hidden="true">&#x276F;</span>
+            ls ./{{ section_title|lower }}
+        </p>
+
+        <h2>
             Coming Soon
         </h2>
 
-        <p class="security-panel-description">
+        <p>
             Nothing has been posted in this section yet.
             In the meantime, check out the
             <a href="{% url 'writeup_list' %}">CTF write-ups</a>.

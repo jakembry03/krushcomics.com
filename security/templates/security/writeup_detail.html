@@ -21,19 +21,31 @@
 
     <main>
 
-        <article class="writeup-detail">
+        <article class="page page-narrow writeup-detail">
 
-            <a
-                class="security-back"
-                href="{{ writeup.ctf.get_absolute_url }}"
+            <nav
+                class="crumbs"
+                aria-label="Breadcrumb"
             >
-                &larr; Back to {{ writeup.ctf }}
-            </a>
+                <a href="{% url 'home' %}">~</a>
+                <span aria-hidden="true">/</span>
+                <a href="{% url 'security' %}">security</a>
+                <span aria-hidden="true">/</span>
+                <a href="{% url 'writeup_list' %}">writeups</a>
+                <span aria-hidden="true">/</span>
+                <a href="{{ writeup.ctf.get_absolute_url }}">{{ writeup.ctf.slug }}</a>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{{ writeup.slug }}</span>
+            </nav>
 
 
             {% if not writeup.is_published %}
 
                 <p class="writeup-draft-notice">
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf449;</span>
                     Draft preview &mdash; only staff can see this page
                     until it is published.
                 </p>
@@ -43,10 +55,14 @@
 
             <!-- HEADER -->
 
-            <header class="writeup-header">
+            <header class="page-header writeup-header">
 
-                <p class="security-eyebrow">
-                    CTF WRITE-UP / {{ writeup.ctf }}
+                <p class="tag">
+                    <span
+                        class="icon"
+                        aria-hidden="true"
+                    >&#xf023b;</span>
+                    CTF Write-Up
                 </p>
 
                 <h1>
@@ -56,6 +72,10 @@
                 {% if writeup.published_at %}
 
                     <p class="writeup-date">
+                        <span
+                            class="icon"
+                            aria-hidden="true"
+                        >&#xf455;</span>
                         {{ writeup.published_at|date:"F j, Y" }}
                     </p>
 
@@ -64,7 +84,7 @@
             </header>
 
 
-            <!-- CHALLENGE DETAILS -->
+            <!-- CHALLENGE DETAILS, laid out as front matter -->
 
             <dl class="writeup-facts">
 
@@ -120,11 +140,11 @@
 
             <section class="writeup-section">
 
-                <h2>
+                <h2 class="block-title">
                     Summary
                 </h2>
 
-                <div class="writeup-summary">
+                <div class="prose">
                     {{ writeup.summary|linebreaks }}
                 </div>
 
@@ -135,11 +155,11 @@
 
             <section class="writeup-section">
 
-                <h2>
+                <h2 class="block-title">
                     Write-Up
                 </h2>
 
-                <div class="writeup-prose">
+                <div class="prose">
                     {{ writeup.body|render_markdown }}
                 </div>
 
@@ -152,11 +172,11 @@
 
                 <section class="writeup-section">
 
-                    <h2>
+                    <h2 class="block-title">
                         Lessons Learned
                     </h2>
 
-                    <div class="writeup-prose">
+                    <div class="prose">
                         {{ writeup.lessons_learned|render_markdown }}
                     </div>
 
