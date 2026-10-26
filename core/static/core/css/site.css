@@ -85,11 +85,12 @@
     --text-muted: #969ca8;
     --text-faint: #646a76;
 
-    /* Orange accent */
-    --accent: #ff8a3d;
-    --accent-hover: #ffa766;
-    --accent-soft: rgba(255, 138, 61, 0.12);
-    --accent-line: rgba(255, 138, 61, 0.45);
+    /* Red accent. Previous orange, to switch back:
+       #ff8a3d / #ffa766 / rgba(255, 138, 61, …) */
+    --accent: #ff4f4f;
+    --accent-hover: #ff7a7a;
+    --accent-soft: rgba(255, 79, 79, 0.12);
+    --accent-line: rgba(255, 79, 79, 0.45);
     --on-accent: #140a03;
 
     --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);

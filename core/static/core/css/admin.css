@@ -29,11 +29,13 @@ html[data-theme="dark"] {
     --krush-background: #0b0c0f;
     --krush-surface: #14161b;
     --krush-surface-raised: #1a1d23;
-    --krush-brand: #b94d16;
-    --krush-brand-text: #ff8a3d;
-    --krush-accent: #ffa766;
-    --krush-brand-dark: #9d3e10;
-    --krush-brand-tint: #2e1f15;
+    /* Red accent. Previous orange: #b94d16 / #ff8a3d / #ffa766 /
+       #9d3e10 / #2e1f15 */
+    --krush-brand: #b42318;
+    --krush-brand-text: #ff4f4f;
+    --krush-accent: #ff7a7a;
+    --krush-brand-dark: #8f1d14;
+    --krush-brand-tint: #2e1517;
     --krush-on-brand: #fff5ed;
     --krush-text: #e6e8eb;
     --krush-muted: #969ca8;
