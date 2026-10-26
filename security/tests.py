@@ -260,7 +260,7 @@ class SecurityPageTests(SecurityTestData):
         self.assertContains(
             response,
             'href="/security/"',
-            count=2,
+            count=3,
         )
 
 
