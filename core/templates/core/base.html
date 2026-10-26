@@ -20,6 +20,23 @@
             {% endblock %}
         </title>
 
+        <!-- Tab icon and home-screen icons. -->
+        <link
+            rel="icon"
+            href="{% static 'core/icons/favicon.ico' %}"
+            sizes="48x48"
+        >
+        <link
+            rel="icon"
+            href="{% static 'core/icons/favicon-192.png' %}"
+            type="image/png"
+            sizes="192x192"
+        >
+        <link
+            rel="apple-touch-icon"
+            href="{% static 'core/icons/apple-touch-icon.png' %}"
+        >
+
         <!-- The regular weight is used on every page, so fetch it early. -->
         <link
             rel="preload"
