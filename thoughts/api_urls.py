@@ -1,5 +1,5 @@
 from django.urls import path
-from . import api
+from . import api, copper_api
 
 urlpatterns = [
     path(
@@ -24,5 +24,10 @@ urlpatterns = [
         "thoughts/reviews/",
         api.review_create,
         name="api_review_create",
+    ),
+
+    path(
+        "copper/thoughts/posts/",
+
     )
 ]
