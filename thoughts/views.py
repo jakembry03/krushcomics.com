@@ -24,7 +24,7 @@ def thought_archive(request, kind):
         },
         "all": {
             "title": "All Thoughts",
-            "description": "Every review and opst in one place.",
+            "description": "Every review and post in one place.",
         },
     }
 
@@ -43,7 +43,7 @@ def thought_archive(request, kind):
 
         matches = (
             Q(title__icontains=query) |
-            Q(body__icontaints=query)
+            Q(body__icontains=query)
         )
 
         reviews = reviews.filter(matches)

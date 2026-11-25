@@ -104,7 +104,7 @@ def post_create(request):
     if not isinstance(title, str) or not title.strip():
         errors["title"] = "Title is required and must be text."
     elif len(title.strip()) > 200:
-        errors["title"] = "Title must be 200 characters of fewer."
+        errors["title"] = "Title must be 200 characters or fewer."
     if not isinstance(body, str) or not body.strip():
         errors["body"] = "Body is required and must be text."
     if errors:
@@ -128,7 +128,8 @@ def post_create(request):
 @permission_classes([IsAdminUser])
 def review_create(request):
     """
-    Create a new Review from JSON {"}
+    Create a new Review from JSON:
+    {"title": "...", "body": "...", "rating": 8.5}
     """
     title = request.data.get("title")
     body = request.data.get("body")
@@ -161,6 +162,12 @@ def review_create(request):
                 if not isinstance(exponent, int) or exponent < -1:
                     errors["rating"] = "Rating can have at most one decimal place."
 
+    if errors:
+        return Response(
+            {"errors": errors},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     review = Review.objects.create(
         title=title.strip(),
         body=body.strip(),
@@ -169,6 +176,6 @@ def review_create(request):
 
     return Response(
         serialize_thought(review),
-        status=status.HTTP_200_OK,
+        status=status.HTTP_201_CREATED,
     )
 
