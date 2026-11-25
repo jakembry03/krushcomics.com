@@ -115,9 +115,9 @@ def individual_project(request, pk):
     """
     try:
         project = Project.objects.get(pk=pk)
-    except project.DoesNotExist:
+    except Project.DoesNotExist:
         return Response(
-            {"error": "Thought not found."},
+            {"error": "Project not found."},
             status=status.HTTP_404_NOT_FOUND,
         )
 
